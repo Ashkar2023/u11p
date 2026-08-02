@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b0d10" />
+    <meta
+      name="description"
+      content="A simple football match and goals tracker."
+    />
+    <title>Matchday</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="site-header">
+        <button class="brand" type="button" data-view="matches" aria-label="Go to matches">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Matchday</span>
+        </button>
+
+        <nav class="main-nav" aria-label="Primary navigation">
+          <button class="nav-button is-active" type="button" data-view="matches">
+            Matches
+          </button>
+          <button class="nav-button" type="button" data-view="stats">
+            Scorers
+          </button>
+        </nav>
+      </header>
+
+      <main id="app" tabindex="-1" aria-live="polite">
+        <div class="status-card">
+          <span class="loader" aria-hidden="true"></span>
+          <p>Loading matches…</p>
+        </div>
+      </main>
+
+      <footer class="site-footer">Local match records</footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,402 @@
+{
+    "teams": [
+        {
+            "id": 1,
+            "name": "Paappan FC"
+        },
+        {
+            "id": 2,
+            "name": "Cheppu Fighters"
+        }
+    ],
+    "players": [
+        {
+            "id": 0,
+            "name": "Unknown"
+        },
+        {
+            "id": 1,
+            "name": "Ashkar"
+        },
+        {
+            "id": 2,
+            "name": "Peku"
+        },
+        {
+            "id": 3,
+            "name": "Miqu"
+        },
+        {
+            "id": 4,
+            "name": "Athar"
+        },
+        {
+            "id": 5,
+            "name": "Haseem"
+        },
+        {
+            "id": 6,
+            "name": "Huzain"
+        },
+        {
+            "id": 7,
+            "name": "Abdullah"
+        },
+        {
+            "id": 8,
+            "name": "Manu Paappan"
+        },
+        {
+            "id": 9,
+            "name": "Milan"
+        },
+        {
+            "id": 10,
+            "name": "Saleem"
+        },
+        {
+            "id": 11,
+            "name": "Bablu"
+        },
+        {
+            "id": 12,
+            "name": "Siddique"
+        },
+        {
+            "id": 13,
+            "name": "Shukoor"
+        },
+        {
+            "id": 14,
+            "name": "Ajmal"
+        },
+        {
+            "id": 15,
+            "name": "Jaleel"
+        },
+        {
+            "id": 16,
+            "name": "Latheef"
+        },
+        {
+            "id": 17,
+            "name": "Sajeer"
+        },
+        {
+            "id": 18,
+            "name": "Bavakunj"
+        },
+        {
+            "id": 19,
+            "name": "Shafeeq Cheppu"
+        },
+        {
+            "id": 20,
+            "name": "Sabith"
+        },
+        {
+            "id": 21,
+            "name": "Ameen"
+        },
+        {
+            "id": 22,
+            "name": "Nazmel"
+        },
+        {
+            "id": 23,
+            "name": "Aideed"
+        },
+        {
+            "id": 24,
+            "name": "Ansar"
+        },
+        {
+            "id": 25,
+            "name": "Adhil"
+        },
+        {
+            "id": 26,
+            "name": "Noushad mama"
+        },
+        {
+            "id": 27,
+            "name": "Akku"
+        },
+        {
+            "id": 28,
+            "name": "Faruq"
+        },
+        {
+            "id": 29,
+            "name": "Kavu"
+        },
+        {
+            "id": 30,
+            "name": "Rashid"
+        },
+        {
+            "id": 31,
+            "name": "Shabab"
+        },
+        {
+            "id": 32,
+            "name": "Sulaiman"
+        },
+        {
+            "id": 33,
+            "name": "Athar 2"
+        },
+        {
+            "id": 34,
+            "name": "Riyas"
+        }
+    ],
+    "matches": [
+        {
+            "id": 1,
+            "date": "2026-06-13",
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 4
+                },
+                {
+                    "teamId": 2,
+                    "score": 6
+                }
+            ],
+            "goals": null
+        },
+        {
+            "id": 2,
+            "date": "2026-06-27",
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 7
+                },
+                {
+                    "teamId": 2,
+                    "score": 5
+                }
+            ],
+            "goals": null
+        },
+        {
+            "id": 3,
+            "date": "2026-07-04",
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 9
+                },
+                {
+                    "teamId": 2,
+                    "score": 5
+                }
+            ],
+            "goals": null
+        },
+        {
+            "id": 4,
+            "date": "2026-07-11",
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 5
+                },
+                {
+                    "teamId": 2,
+                    "score": 6
+                }
+            ],
+            "goals": null
+        },
+        {
+            "id": 5,
+            "date": "2026-07-18",
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 5
+                },
+                {
+                    "teamId": 2,
+                    "score": 3
+                }
+            ],
+            "goals": [
+                {
+                    "playerId": 8,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 1
+                },
+                {
+                    "playerId": 14,
+                    "teamId": 1,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 1,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 5,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 17,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 1
+                },
+                {
+                    "playerId": 6,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 11,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "date": "2026-07-25",
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 5
+                },
+                {
+                    "teamId": 2,
+                    "score": 4
+                }
+            ],
+            "goals": [
+                {
+                    "playerId": 8,
+                    "teamId": 1,
+                    "count": 3,
+                    "penaltiesCount": 2
+                },
+                {
+                    "playerId": 25,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 4,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 17,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 6,
+                    "teamId": 2,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 28,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "date": "2026-08-01",
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 4
+                },
+                {
+                    "teamId": 2,
+                    "score": 9
+                }
+            ],
+            "goals": [
+                {
+                    "playerId": 1,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 14,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 22,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 19,
+                    "teamId": 1,
+                    "count": 1,
+                    "ownGoal": true
+                },
+                {
+                    "playerId": 15,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 6,
+                    "teamId": 2,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 9,
+                    "teamId": 2,
+                    "count": 3,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 20,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 7,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": null,
+                    "teamId": 2,
+                    "count": 1,
+                    "ownGoal": true
+                }
+            ]
+        }
+    ]
+}

@@ -1,43 +1,23 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0b0d10" />
-    <meta
-      name="description"
-      content="A simple football match and goals tracker."
-    />
-    <title>Matchday</title>
-    <link rel="stylesheet" href="styles.css" />
-    <script src="app.js" defer></script>
-  </head>
-  <body>
-    <div class="app-shell">
-      <header class="site-header">
-        <button class="brand" type="button" data-view="matches" aria-label="Go to matches">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span>Matchday</span>
-        </button>
+    <meta name="description" content="A simple football match and goals tracker." />
+    <title>United XI Pallilamkara</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./src/index.css" />
+</head>
 
-        <nav class="main-nav" aria-label="Primary navigation">
-          <button class="nav-button is-active" type="button" data-view="matches">
-            Matches
-          </button>
-          <button class="nav-button" type="button" data-view="stats">
-            Scorers
-          </button>
-        </nav>
-      </header>
+<body class="antialiased">
+    <div id="root"></div>
+    <script type="module" src="./src/index.jsx"></script>
+</body>
 
-      <main id="app" tabindex="-1" aria-live="polite">
-        <div class="status-card">
-          <span class="loader" aria-hidden="true"></span>
-          <p>Loading matches…</p>
-        </div>
-      </main>
-
-      <footer class="site-footer">Local match records</footer>
-    </div>
-  </body>
 </html>

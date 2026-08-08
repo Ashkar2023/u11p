@@ -2,17 +2,21 @@
     "teams": [
         {
             "id": 1,
-            "name": "Paappan FC"
+            "name": "Paappan FC",
+            "logo": "/pfc.png"
+
         },
         {
             "id": 2,
-            "name": "Cheppu Fighters"
+            "name": "Cheppu Fighters",
+            "logo": "/cf.png"
         }
     ],
     "players": [
         {
             "id": 0,
-            "name": "Unknown"
+            "name": "Unknown",
+            "hidden": true
         },
         {
             "id": 1,
@@ -20,7 +24,7 @@
         },
         {
             "id": 2,
-            "name": "Peku"
+            "name": "Sulaiman"
         },
         {
             "id": 3,
@@ -140,21 +144,13 @@
         },
         {
             "id": 32,
-            "name": "Sulaiman"
-        },
-        {
-            "id": 33,
-            "name": "Athar 2"
-        },
-        {
-            "id": 34,
             "name": "Riyas"
         }
     ],
     "matches": [
         {
             "id": 1,
-            "date": "2026-06-13",
+            "date": "2026-06-13T14:30:00.000Z",
             "teams": [
                 {
                     "teamId": 1,
@@ -169,7 +165,7 @@
         },
         {
             "id": 2,
-            "date": "2026-06-27",
+            "date": "2026-06-27T14:30:00.000Z",
             "teams": [
                 {
                     "teamId": 1,
@@ -184,7 +180,7 @@
         },
         {
             "id": 3,
-            "date": "2026-07-04",
+            "date": "2026-07-04T14:30:00.000Z",
             "teams": [
                 {
                     "teamId": 1,
@@ -199,7 +195,7 @@
         },
         {
             "id": 4,
-            "date": "2026-07-11",
+            "date": "2026-07-11T14:30:00.000Z",
             "teams": [
                 {
                     "teamId": 1,
@@ -214,7 +210,7 @@
         },
         {
             "id": 5,
-            "date": "2026-07-18",
+            "date": "2026-07-18T14:30:00.000Z",
             "teams": [
                 {
                     "teamId": 1,
@@ -272,7 +268,7 @@
         },
         {
             "id": 6,
-            "date": "2026-07-25",
+            "date": "2026-07-25T14:30:00.000Z",
             "teams": [
                 {
                     "teamId": 1,
@@ -324,7 +320,7 @@
         },
         {
             "id": 7,
-            "date": "2026-08-01",
+            "date": "2026-08-01T15:30:00.000Z",
             "teams": [
                 {
                     "teamId": 1,
@@ -375,7 +371,7 @@
                 {
                     "playerId": 9,
                     "teamId": 2,
-                    "count": 3,
+                    "count": 5,
                     "penaltiesCount": 0
                 },
                 {
@@ -389,12 +385,19 @@
                     "teamId": 2,
                     "count": 1,
                     "penaltiesCount": 0
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "date": "2026-08-08T15:30:00.000Z",
+            "isUpcoming": true,
+            "teams": [
+                {
+                    "teamId": 1
                 },
                 {
-                    "playerId": null,
-                    "teamId": 2,
-                    "count": 1,
-                    "ownGoal": true
+                    "teamId": 2
                 }
             ]
         }

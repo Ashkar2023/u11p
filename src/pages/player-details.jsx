@@ -1,5 +1,6 @@
 import { useLocation, useRoute } from "wouter";
 import data from "../data.json";
+import SafeImage from "../components/safe-image";
 
 function BackIcon() {
     return (
@@ -29,11 +30,6 @@ export const PlayerDetails = () => {
         }
     };
 
-    const useFallback = (event) => {
-        event.currentTarget.onerror = null;
-        event.currentTarget.src = "/user.png";
-    };
-
     if (!player || player.hidden) {
         return (
             <main className="min-h-dvh bg-zinc-950 px-4 py-6 text-white">
@@ -61,11 +57,11 @@ export const PlayerDetails = () => {
 
                 <section>
                     <div className="h-72 overflow-hidden rounded-lg border border-white/10 bg-zinc-900 sm:h-96">
-                        <img
+                        <SafeImage
                             className="size-full object-cover"
-                            src={player.image || "/user.png"}
+                            src={player.image}
+                            fallbackSrc="/user.png"
                             alt={`${player.name} profile`}
-                            onError={useFallback}
                         />
                     </div>
 

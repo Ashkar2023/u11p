@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SafeImage from "../components/safe-image";
 import data from "../data.json";
 import { PageLayout } from "../layout";
 
@@ -115,7 +116,7 @@ function TeamStats() {
                 {teamStats.map((team) => (
                     <article className="rounded-lg border border-white/10 bg-black/20 p-3" key={team.id}>
                         <header className="mb-3 flex flex-col items-center gap-2 border-b border-white/10 pb-3 text-center">
-                            <img className="size-16 object-contain" src={team.logo} alt={`${team.name} logo`} />
+                            <SafeImage className="size-16 object-contain" src={team.logo} alt={`${team.name} logo`} />
                             <h2 className="text-sm font-semibold text-zinc-100">{team.name}</h2>
                         </header>
 
@@ -141,11 +142,6 @@ function GoalScorers() {
     const [period, setPeriod] = useState(ALL_TIME);
     const goalScorers = calculateGoalScorers(matchesForPeriod(period));
 
-    const useFallback = (event) => {
-        event.currentTarget.onerror = null;
-        event.currentTarget.src = "/user.png";
-    };
-
     return (
         <section className="rounded-lg border border-white/10 bg-zinc-900/75 p-3 shadow-2xl shadow-black/25">
             <div className="mb-1 flex items-center justify-between gap-3">
@@ -163,11 +159,11 @@ function GoalScorers() {
                             key={player.id}
                         >
                             <span className="text-xs font-semibold text-amber-400">{index + 1}</span>
-                            <img
+                            <SafeImage
                                 className="size-8 rounded-full border border-white/10 bg-zinc-800 object-cover"
-                                src={player.image || "/user.png"}
+                                src={player.image}
+                                fallbackSrc="/user.png"
                                 alt=""
-                                onError={useFallback}
                             />
                             <span className="truncate text-base font-medium text-zinc-100">
                                 {player.name}

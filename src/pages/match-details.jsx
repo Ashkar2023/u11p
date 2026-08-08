@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocation, useRoute } from "wouter";
 import MatchCard from "../components/match.card";
+import SafeImage from "../components/safe-image";
 import data from "../data.json";
 
 const teamsById = new Map(data.teams.map((team) => [team.id, team]));
@@ -26,7 +27,7 @@ function GoalIcon() {
 function TeamHeading({ team }) {
     return (
         <header className="flex items-center justify-center gap-2 border-b border-white/10 pb-3 text-center">
-            <img className="size-9 object-contain" src={team.logo} alt="" />
+            <SafeImage className="size-9 object-contain" src={team.logo} alt="" />
             <h3 className="text-sm font-semibold text-zinc-100">{team.name}</h3>
         </header>
     );
@@ -73,11 +74,6 @@ function MatchFacts({ match, teams }) {
 }
 
 function Lineup({ match, teams }) {
-    const useFallback = (event) => {
-        event.currentTarget.onerror = null;
-        event.currentTarget.src = "/user.png";
-    };
-
     return (
         <div className="grid grid-cols-2 divide-x divide-white/10">
             {teams.map((team) => {
@@ -93,11 +89,11 @@ function Lineup({ match, teams }) {
                                     const player = playersById.get(playerId);
                                     return (
                                         <li className="flex min-w-0 items-center gap-2 border-b border-white/10 py-2 last:border-b-0" key={playerId}>
-                                            <img
+                                            <SafeImage
                                                 className="size-8 shrink-0 rounded-full bg-zinc-800 object-cover"
-                                                src={player?.image || "/user.png"}
+                                                src={player?.image}
+                                                fallbackSrc="/user.png"
                                                 alt=""
-                                                onError={useFallback}
                                             />
                                             <span className="min-w-0 truncate text-sm text-zinc-200">
                                                 {player?.name ?? `Player ${playerId}`}

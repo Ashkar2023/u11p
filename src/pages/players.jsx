@@ -1,21 +1,17 @@
 import data from "../data.json";
 import { PageLayout } from "../layout";
 import { Link } from "wouter";
+import SafeImage from "../components/safe-image";
 
 const visiblePlayers = data.players.filter((player) => !player.hidden);
 
 function PlayerAvatar({ player }) {
-    const useFallback = (event) => {
-        event.currentTarget.onerror = null;
-        event.currentTarget.src = "/user.png";
-    };
-
     return (
-        <img
+        <SafeImage
             className="h-[70%] w-full shrink-0 bg-zinc-800 object-cover"
-            src={player.image || "/user.png"}
+            src={player.image}
+            fallbackSrc="/user.png"
             alt={`${player.name} profile`}
-            onError={useFallback}
         />
     );
 }

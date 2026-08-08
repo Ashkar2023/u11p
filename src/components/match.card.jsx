@@ -1,9 +1,10 @@
 import { formatDate } from "../utils/date.util";
+import SafeImage from "./safe-image";
 
 function Team({ team }) {
     return (
         <div className="flex min-w-0 flex-1 flex-col items-center gap-1 text-center">
-            <img
+            <SafeImage
                 className="size-20 object-contain sm:size-24"
                 src={team.logo}
                 alt={`${team.name} logo`}

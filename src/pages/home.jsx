@@ -1,4 +1,5 @@
 import MatchCard from "../components/match.card";
+import SafeImage from "../components/safe-image";
 import data from "../data.json";
 import Layout from "../layout";
 import { Link } from "wouter";
@@ -105,7 +106,7 @@ function TopScorersPreview() {
                         key={player.id}
                     >
                         <span className="text-xs font-semibold text-amber-400">{index + 1}</span>
-                        <img
+                        <SafeImage
                             className="size-8 rounded-full border border-white/10 bg-zinc-800 object-cover"
                             src="/user.png"
                             alt=""

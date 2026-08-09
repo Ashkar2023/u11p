@@ -49,7 +49,8 @@
         },
         {
             "id": 8,
-            "name": "Manu Paappan"
+            "name": "Manu Paappan",
+            "image": "/players/manu.png"
         },
         {
             "id": 9,
@@ -76,7 +77,8 @@
         },
         {
             "id": 14,
-            "name": "Ajmal"
+            "name": "Ajmal",
+            "image":"/players/aju.png"
         },
         {
             "id": 15,
@@ -89,7 +91,8 @@
         },
         {
             "id": 17,
-            "name": "Sajeer"
+            "name": "Sajeer",
+            "image": "/players/sajeer.png"
         },
         {
             "id": 18,
@@ -147,7 +150,9 @@
         },
         {
             "id": 31,
-            "name": "Shabab"
+            "name": "Shabab",
+            "image":"/players/shabab.png"
+
         },
         {
             "id": 32,

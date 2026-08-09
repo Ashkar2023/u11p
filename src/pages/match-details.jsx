@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useRoute } from "wouter";
+import { Link, useLocation, useRoute } from "wouter";
 import MatchCard from "../components/match.card";
 import SafeImage from "../components/safe-image";
 import data from "../data.json";
@@ -47,18 +47,24 @@ function MatchFacts({ match, teams }) {
                                 {goals.map((goal, index) => {
                                     const player = playersById.get(goal.playerId);
                                     return (
-                                        <li className="flex min-w-0 items-center gap-2 py-1.5" key={`${goal.playerId}-${index}`}>
-                                            <GoalIcon />
-                                            <span className="min-w-0 flex-1 truncate text-sm text-zinc-200">
-                                                {player?.name ?? `Player ${goal.playerId}`}
-                                                {goal.ownGoal ? " (OG)" : ""}
-                                            </span>
-                                            {goal.count > 1 && (
-                                                <span className="text-xs font-semibold text-zinc-400">×{goal.count}</span>
-                                            )}
-                                            {goal.penaltiesCount > 0 && (
-                                                <span className="text-[10px] text-zinc-500">{goal.penaltiesCount}P</span>
-                                            )}
+                                        <li key={`${goal.playerId}-${index}`}>
+                                            <Link
+                                                className="flex min-w-0 items-center gap-2 rounded-md py-1.5 transition-colors hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-amber-400"
+                                                href={`/players/${goal.playerId}`}
+                                                aria-label={`View ${player?.name ?? `Player ${goal.playerId}`}`}
+                                            >
+                                                <GoalIcon />
+                                                <span className="min-w-0 flex-1 truncate text-sm text-zinc-200">
+                                                    {player?.name ?? `Player ${goal.playerId}`}
+                                                    {goal.ownGoal ? " (OG)" : ""}
+                                                </span>
+                                                {goal.count > 1 && (
+                                                    <span className="text-xs font-semibold text-zinc-400">×{goal.count}</span>
+                                                )}
+                                                {goal.penaltiesCount > 0 && (
+                                                    <span className="text-[10px] text-zinc-500">{goal.penaltiesCount}P</span>
+                                                )}
+                                            </Link>
                                         </li>
                                     );
                                 })}
@@ -88,16 +94,22 @@ function Lineup({ match, teams }) {
                                 {playerIds.map((playerId) => {
                                     const player = playersById.get(playerId);
                                     return (
-                                        <li className="flex min-w-0 items-center gap-2 border-b border-white/10 py-2 last:border-b-0" key={playerId}>
-                                            <SafeImage
-                                                className="size-8 shrink-0 rounded-full bg-zinc-800 object-cover"
-                                                src={player?.image}
-                                                fallbackSrc="/user.png"
-                                                alt=""
-                                            />
-                                            <span className="min-w-0 truncate text-sm text-zinc-200">
-                                                {player?.name ?? `Player ${playerId}`}
-                                            </span>
+                                        <li className="border-b border-white/10 last:border-b-0" key={playerId}>
+                                            <Link
+                                                className="flex min-w-0 items-center gap-2 rounded-md py-2 transition-colors hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-amber-400"
+                                                href={`/players/${playerId}`}
+                                                aria-label={`View ${player?.name ?? `Player ${playerId}`}`}
+                                            >
+                                                <SafeImage
+                                                    className="size-10 shrink-0 rounded-full bg-zinc-600 object-cover object-top"
+                                                    src={player?.image}
+                                                    fallbackSrc="/user.png"
+                                                    alt=""
+                                                />
+                                                <span className="min-w-0 truncate text-sm text-zinc-200">
+                                                    {player?.name ?? `Player ${playerId}`}
+                                                </span>
+                                            </Link>
                                         </li>
                                     );
                                 })}

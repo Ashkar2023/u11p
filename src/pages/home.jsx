@@ -102,21 +102,28 @@ function TopScorersPreview() {
             <ol>
                 {topScorers.map((player, index) => (
                     <li
-                        className="grid grid-cols-[1rem_2rem_1fr_auto] items-center gap-2 border-b border-white/10 py-1.5 last:border-b-0"
+                        className="border-b border-white/10 last:border-b-0"
                         key={player.id}
                     >
-                        <span className="text-xs font-semibold text-amber-400">{index + 1}</span>
-                        <SafeImage
-                            className="size-8 rounded-full border border-white/10 bg-zinc-800 object-cover"
-                            src="/user.png"
-                            alt=""
-                        />
-                        <span className="truncate text-base font-medium text-zinc-100">
-                            {player.name}
-                        </span>
-                        <span className="text-base font-normal text-white" aria-label={`${player.goals} goals`}>
-                            {player.goals}
-                        </span>
+                        <Link
+                            className="grid grid-cols-[1rem_2.5rem_1fr_auto] items-center gap-2 rounded-md py-1.5 transition-colors hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-amber-400"
+                            href={`/players/${player.id}`}
+                            aria-label={`View ${player.name}`}
+                        >
+                            <span className="text-xs font-semibold text-amber-400">{index + 1}</span>
+                            <SafeImage
+                                className="size-10 rounded-full border border-white/10 bg-zinc-600 object-cover object-top"
+                                src={player.image}
+                                fallbackSrc="/user.png"
+                                alt=""
+                            />
+                            <span className="truncate text-base font-medium text-zinc-100">
+                                {player.name}
+                            </span>
+                            <span className="text-base font-normal text-white" aria-label={`${player.goals} goals`}>
+                                {player.goals}
+                            </span>
+                        </Link>
                     </li>
                 ))}
             </ol>

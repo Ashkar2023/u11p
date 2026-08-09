@@ -208,7 +208,7 @@ export const Stats = () => {
         <PageLayout>
             <div className="mx-auto grid w-full max-w-3xl gap-5">
                 <div className="mb-2">
-                    <h1 className="text-xl font-semibold text-amber-400 sm:text-2xl">Players</h1>
+                    <h1 className="text-xl font-semibold text-amber-400 sm:text-2xl">Stats</h1>
                 </div>
                 <TeamStats />
                 <GoalScorers />

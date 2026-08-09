@@ -90,7 +90,7 @@ function Shell({ children, showHero }) {
     return (
         <div className="min-h-dvh bg-zinc-950 text-white">
             {showHero && (
-                <header className="h-64 bg-[url('/stadium.png')] bg-cover bg-center px-4 pt-4 sm:h-72">
+                <header className="h-64 bg-[url('/stadium.png')] bg-cover bg-center px-4 pt-8 sm:h-72">
                     <img
                         className="mx-auto h-44 w-auto object-contain sm:h-52"
                         src="/u11p-logo.png"

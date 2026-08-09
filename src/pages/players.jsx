@@ -21,7 +21,7 @@ export const Players = () => {
         <PageLayout>
             <section className="mx-auto w-full max-w-3xl">
                 <div className="mb-4">
-                    <h1 className="text-xl font-semibold text-white sm:text-2xl">Players</h1>
+                    <h1 className="text-xl font-semibold text-amber-400 sm:text-2xl">Players</h1>
                     <p className="mt-1 text-sm text-zinc-400">
                         {visiblePlayers.length} players
                     </p>

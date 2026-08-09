@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useSearchParams } from "wouter";
 import SafeImage from "../components/safe-image";
 import data from "../data.json";
 import { PageLayout } from "../layout";
@@ -61,6 +61,28 @@ function PeriodSelect({ value, onChange, label }) {
     );
 }
 
+function usePeriodFilter(paramName) {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const requestedPeriod = searchParams.get(paramName);
+    const period = availableMonths.includes(requestedPeriod) ? requestedPeriod : ALL_TIME;
+
+    const setPeriod = (nextPeriod) => {
+        setSearchParams((currentParams) => {
+            const nextParams = new URLSearchParams(currentParams);
+
+            if (nextPeriod === ALL_TIME) {
+                nextParams.delete(paramName);
+            } else {
+                nextParams.set(paramName, nextPeriod);
+            }
+
+            return nextParams;
+        }, { replace: true });
+    };
+
+    return [period, setPeriod];
+}
+
 function calculateTeamStats(matches) {
     return data.teams.map((team) => {
         const stats = { wins: 0, losses: 0, goalsFor: 0, goalsAgainst: 0 };
@@ -100,7 +122,7 @@ function calculateGoalScorers(matches) {
 }
 
 function TeamStats() {
-    const [period, setPeriod] = useState(ALL_TIME);
+    const [period, setPeriod] = usePeriodFilter("teamPeriod");
     const teamStats = calculateTeamStats(matchesForPeriod(period));
 
     return (
@@ -139,14 +161,14 @@ function TeamStats() {
 }
 
 function GoalScorers() {
-    const [period, setPeriod] = useState(ALL_TIME);
+    const [period, setPeriod] = usePeriodFilter("scorersPeriod");
     const goalScorers = calculateGoalScorers(matchesForPeriod(period));
 
     return (
         <section className="rounded-lg border border-white/10 bg-zinc-900/75 p-3 shadow-2xl shadow-black/25">
             <div className="mb-1 flex items-center justify-between gap-3">
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-amber-400 sm:text-lg">
-                    Goal scorers
+                    Top scorers
                 </h2>
                 <PeriodSelect value={period} onChange={setPeriod} label="Goal scorers period" />
             </div>
@@ -185,6 +207,9 @@ export const Stats = () => {
     return (
         <PageLayout>
             <div className="mx-auto grid w-full max-w-3xl gap-5">
+                <div className="mb-2">
+                    <h1 className="text-xl font-semibold text-amber-400 sm:text-2xl">Players</h1>
+                </div>
                 <TeamStats />
                 <GoalScorers />
             </div>

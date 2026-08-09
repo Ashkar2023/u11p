@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Link } from "wouter";
+import { Link, useSearchParams } from "wouter";
 import MatchCard from "../components/match.card";
 import data from "../data.json";
 import { PageLayout } from "../layout";
@@ -36,7 +35,24 @@ function formatMonth(month) {
 }
 
 export const Matches = () => {
-    const [period, setPeriod] = useState(ALL_TIME);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const requestedPeriod = searchParams.get("period");
+    const period = availableMonths.includes(requestedPeriod) ? requestedPeriod : ALL_TIME;
+
+    const setPeriod = (nextPeriod) => {
+        setSearchParams((currentParams) => {
+            const nextParams = new URLSearchParams(currentParams);
+
+            if (nextPeriod === ALL_TIME) {
+                nextParams.delete("period");
+            } else {
+                nextParams.set("period", nextPeriod);
+            }
+
+            return nextParams;
+        }, { replace: true });
+    };
+
     const visibleMatches = period === ALL_TIME
         ? completedMatches
         : completedMatches.filter((match) => getMonthKey(match.date) === period);
@@ -46,7 +62,7 @@ export const Matches = () => {
             <div className="mx-auto w-full max-w-3xl">
                 <header className="mb-4 flex items-center justify-between gap-3">
                     <div>
-                        <h1 className="text-xl font-semibold text-white sm:text-2xl">Matches</h1>
+                        <h1 className="text-xl font-semibold sm:text-2xl text-amber-400">Matches</h1>
                         <p className="mt-1 text-sm text-zinc-400">
                             {visibleMatches.length} {visibleMatches.length === 1 ? "match" : "matches"}
                         </p>

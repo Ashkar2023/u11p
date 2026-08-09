@@ -22,6 +22,12 @@ export const PlayerDetails = () => {
         return total + playerGoals;
     }, 0);
 
+    const matchesPlayed = data.matches.filter((match) =>
+        !match.isUpcoming && match.lineup?.some((entry) =>
+            (entry.players ?? entry.playerIds ?? []).includes(player?.id),
+        ),
+    ).length;
+
     const goBack = () => {
         if (window.history.length > 1) {
             window.history.back();
@@ -56,9 +62,9 @@ export const PlayerDetails = () => {
                 </button>
 
                 <section>
-                    <div className="h-72 overflow-hidden rounded-lg border border-white/10 bg-zinc-900 sm:h-96">
+                    <div className="aspect-5/6 overflow-hidden rounded-lg border border-white/10 bg-zinc-900">
                         <SafeImage
-                            className="size-full object-cover"
+                            className="size-full object-cover object-top"
                             src={player.image}
                             fallbackSrc="/user.png"
                             alt={`${player.name} profile`}
@@ -70,7 +76,13 @@ export const PlayerDetails = () => {
                     </h1>
 
                     <div className="mt-6 border-y border-white/10 py-4">
-                        <dl>
+                        <dl className="space-y-3">
+                            <div className="flex items-center justify-between gap-4">
+                                <dt className="text-sm text-zinc-400 sm:text-base">Matches played</dt>
+                                <dd className="text-xl font-semibold text-amber-400 sm:text-2xl">
+                                    {matchesPlayed}
+                                </dd>
+                            </div>
                             <div className="flex items-center justify-between gap-4">
                                 <dt className="text-sm text-zinc-400 sm:text-base">Goals</dt>
                                 <dd className="text-xl font-semibold text-amber-400 sm:text-2xl">

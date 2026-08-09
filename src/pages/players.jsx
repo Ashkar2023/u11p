@@ -8,10 +8,11 @@ const visiblePlayers = data.players.filter((player) => !player.hidden);
 function PlayerAvatar({ player }) {
     return (
         <SafeImage
-            className="h-[70%] w-full shrink-0 bg-zinc-800 object-cover"
+            className="h-[70%] w-full shrink-0 bg-zinc-800 object-cover object-top"
             src={player.image}
             fallbackSrc="/user.png"
             alt={`${player.name} profile`}
+            loading="lazy"
         />
     );
 }

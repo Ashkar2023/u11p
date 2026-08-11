@@ -1,0 +1,181 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema#",
+    "title": "Football League Data",
+    "type": "object",
+    "required": [
+        "teams",
+        "players",
+        "matches"
+    ],
+    "properties": {
+        "teams": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "logo": {
+                        "type": "string",
+                        "description": "Path to team logo image"
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "players": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": "string",
+                        "description": "Path to player image"
+                    },
+                    "hidden": {
+                        "type": "boolean",
+                        "description": "If true, player identity is not shown"
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "matches": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "date",
+                    "teams"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "motmPlayerId": {
+                        "description": "Man of the Match player ID",
+                        "oneOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "teams": {
+                        "type": "array",
+                        "minItems": 2,
+                        "maxItems": 2,
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "teamId",
+                                "score"
+                            ],
+                            "properties": {
+                                "teamId": {
+                                    "type": "integer"
+                                },
+                                "score": {
+                                    "type": "integer",
+                                    "minimum": 0
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    },
+                    "lineup": {
+                        "type": "array",
+                        "minItems": 2,
+                        "maxItems": 2,
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "teamId",
+                                "playerIds"
+                            ],
+                            "properties": {
+                                "teamId": {
+                                    "type": "integer"
+                                },
+                                "playerIds": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer"
+                                    },
+                                    "description": "List of player IDs in this team's lineup"
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    },
+                    "goals": {
+                        "oneOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "required": [
+                                        "playerId",
+                                        "teamId",
+                                        "count"
+                                    ],
+                                    "properties": {
+                                        "playerId": {
+                                            "type": "integer"
+                                        },
+                                        "teamId": {
+                                            "type": "integer"
+                                        },
+                                        "count": {
+                                            "type": "integer",
+                                            "minimum": 1
+                                        },
+                                        "penaltiesCount": {
+                                            "type": "integer",
+                                            "minimum": 0
+                                        },
+                                        "ownGoal": {
+                                            "type": "boolean",
+                                            "description": "If true, this was an own goal"
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            }
+                        ]
+                    }
+                },
+                "additionalProperties": false
+            }
+        }
+    },
+    "additionalProperties": false
+}

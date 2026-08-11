@@ -41,7 +41,7 @@ function groupVotes(votes, allPlayers) {
         ));
 }
 
-export default function MotmVotes({ matchId, allPlayers = data.players }) {
+export default function MotmVotes({ matchId, allPlayers = data.players, isFinal = false }) {
     const [votes, setVotes] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState("");
@@ -110,11 +110,15 @@ export default function MotmVotes({ matchId, allPlayers = data.players }) {
     }
 
     return (
-        <section aria-label="Current Man of the Match votes">
+        <section aria-label={isFinal ? "Final Man of the Match vote results" : "Current Man of the Match votes"}>
             <header className="mb-4 flex items-end justify-between gap-3">
                 <div>
-                    <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-amber-400">Live ranking</p>
-                    <h2 className="text-xl font-black text-white">Current votes</h2>
+                    <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-amber-400">
+                        {isFinal ? "Final ranking" : "Live ranking"}
+                    </p>
+                    <h2 className="text-xl font-black text-white">
+                        {isFinal ? "Vote results" : "Current votes"}
+                    </h2>
                 </div>
                 <p className="text-sm font-semibold text-zinc-400">{votes.length} total</p>
             </header>

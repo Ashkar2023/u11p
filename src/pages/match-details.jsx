@@ -131,18 +131,26 @@ export const MatchDetails = () => {
     const [, params] = useRoute("/matches/:id");
     const [, navigate] = useLocation();
     const [activeTab, setActiveTab] = useState("facts");
-    const [now] = useState(() => new Date());
+    const [now, setNow] = useState(() => new Date());
     const match = data.matches.find((item) => String(item.id) === params?.id);
     const [hasVoted, setHasVoted] = useState(() => (
         params?.id ? localStorage.getItem(`voted_match_${params.id}`) === "true" : false
     ));
+    const [isVoteFeedbackVisible, setIsVoteFeedbackVisible] = useState(false);
 
     useEffect(() => {
+        const timer = window.setInterval(() => setNow(new Date()), 1000);
+        return () => window.clearInterval(timer);
+    }, []);
+
+    useEffect(() => {
+        setIsVoteFeedbackVisible(false);
         setHasVoted(params?.id
             ? localStorage.getItem(`voted_match_${params.id}`) === "true"
             : false);
         const handleVote = (event) => {
             if (event.detail?.matchId !== String(params?.id)) return;
+            setIsVoteFeedbackVisible(false);
             setHasVoted(true);
             setActiveTab("votes");
         };
@@ -152,8 +160,13 @@ export const MatchDetails = () => {
 
     const votingStatus = match ? getMatchVotingStatus(match.date, now) : "closed";
     const canShowVoting = votingStatus === "open" && !hasVoted;
-    const canShowVotes = votingStatus === "open" && hasVoted;
+    const canShowVotes = votingStatus === "open" || votingStatus === "closed";
     const canShowMotmTab = canShowVoting || canShowVotes;
+    const tabColumnClass = canShowVoting && canShowVotes
+        ? "grid-cols-4"
+        : canShowMotmTab
+            ? "grid-cols-3"
+            : "grid-cols-2";
 
     useEffect(() => {
         if (activeTab === "vote" && !canShowVoting) {
@@ -220,10 +233,11 @@ export const MatchDetails = () => {
                 />
 
                 <section className="mt-5">
-                    <div className={`grid ${canShowMotmTab ? "grid-cols-3" : "grid-cols-2"} border-b border-white/10`} role="tablist" aria-label="Match details">
+                    <div className={`grid ${tabColumnClass} border-b border-white/10`} role="tablist" aria-label="Match details">
                         <button
                             className={`border-b-2 px-3 py-3 text-sm font-semibold transition-colors ${activeTab === "facts" ? "border-amber-400 text-amber-400" : "border-transparent text-zinc-500"}`}
                             type="button"
+                            disabled={isVoteFeedbackVisible}
                             role="tab"
                             aria-selected={activeTab === "facts"}
                             onClick={() => setActiveTab("facts")}
@@ -233,21 +247,35 @@ export const MatchDetails = () => {
                         <button
                             className={`border-b-2 px-3 py-3 text-sm font-semibold transition-colors ${activeTab === "lineup" ? "border-amber-400 text-amber-400" : "border-transparent text-zinc-500"}`}
                             type="button"
+                            disabled={isVoteFeedbackVisible}
                             role="tab"
                             aria-selected={activeTab === "lineup"}
                             onClick={() => setActiveTab("lineup")}
                         >
                             Lineup
                         </button>
-                        {canShowMotmTab && (
+                        {canShowVoting && (
                             <button
-                                className={`border-b-2 px-2 py-3 text-sm font-semibold transition-colors ${(activeTab === "vote" || activeTab === "votes") ? "border-amber-400 text-amber-400" : "border-transparent text-zinc-500"}`}
+                                className={`border-b-2 px-2 py-3 text-sm font-semibold transition-colors ${activeTab === "vote" ? "border-amber-400 text-amber-400" : "border-transparent text-zinc-500"}`}
                                 type="button"
+                                disabled={isVoteFeedbackVisible}
                                 role="tab"
-                                aria-selected={activeTab === "vote" || activeTab === "votes"}
-                                onClick={() => setActiveTab(canShowVoting ? "vote" : "votes")}
+                                aria-selected={activeTab === "vote"}
+                                onClick={() => setActiveTab("vote")}
                             >
-                                {canShowVoting ? "Vote MOTM" : "Votes"}
+                                Vote MOTM
+                            </button>
+                        )}
+                        {canShowVotes && (
+                            <button
+                                className={`border-b-2 px-2 py-3 text-sm font-semibold transition-colors ${activeTab === "votes" ? "border-amber-400 text-amber-400" : "border-transparent text-zinc-500"}`}
+                                type="button"
+                                disabled={isVoteFeedbackVisible}
+                                role="tab"
+                                aria-selected={activeTab === "votes"}
+                                onClick={() => setActiveTab("votes")}
+                            >
+                                Votes
                             </button>
                         )}
                     </div>
@@ -260,12 +288,14 @@ export const MatchDetails = () => {
                                 matchId={String(match.id)}
                                 lineup={match.lineup}
                                 allPlayers={data.players}
+                                onFeedbackShown={() => setIsVoteFeedbackVisible(true)}
                             />
                         )}
                         {activeTab === "votes" && canShowVotes && (
                             <MotmVotes
                                 matchId={String(match.id)}
                                 allPlayers={data.players}
+                                isFinal={votingStatus === "closed"}
                             />
                         )}
                     </div>

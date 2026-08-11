@@ -76,7 +76,6 @@ export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title, m
 
             {motm && (
                 <div className="mx-auto mt-3 flex max-w-sm items-center justify-center gap-2 border-t border-white/10 pt-3 text-xs text-zinc-300 sm:text-sm">
-                    <StarIcon />
                     <span><span className="font-semibold text-amber-400">MOTM:</span> {motm.name ?? motm}</span>
                 </div>
             )}

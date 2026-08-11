@@ -768,6 +768,21 @@
                     "penaltiesCount": 0
                 }
             ]
+        },
+        {
+            "id": 10,
+            "date": "2026-08-11T16:30:00.000Z",
+            "teams": [
+                {
+                    "teamId": 1
+                },
+                {
+                    "teamId": 2
+                }
+            ],
+            "lineup": [],
+            "goals": [],
+            "motmPlayerId": null
         }
     ]
 }

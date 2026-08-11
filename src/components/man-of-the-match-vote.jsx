@@ -45,6 +45,7 @@ export default function ManOfTheMatchVote({
     matchId,
     lineup,
     allPlayers = data.players,
+    onFeedbackShown,
 }) {
     const [votedPlayerIds, setVotedPlayerIds] = useState([]);
     const [fetchVotedError, setFetchVotedError] = useState("");
@@ -91,12 +92,16 @@ export default function ManOfTheMatchVote({
         () => resolveLineup(lineup, allPlayers),
         [lineup, allPlayers],
     );
-    const eligibleVoters = useMemo(() => {
+    const voters = useMemo(() => {
         const votedIds = new Set(votedPlayerIds);
-        return allPlayers.filter(
-            (player) => !player.hidden && !votedIds.has(String(player.id)),
-        );
+        return allPlayers
+            .filter((player) => !player.hidden)
+            .map((player) => ({
+                ...player,
+                hasVoted: votedIds.has(String(player.id)),
+            }));
     }, [allPlayers, votedPlayerIds]);
+    const eligibleVoterCount = voters.filter((player) => !player.hasVoted).length;
 
     const initialIndex = 0;
     const [selectedIndex, setSelectedIndex] = useState(initialIndex);
@@ -107,6 +112,7 @@ export default function ManOfTheMatchVote({
     const [unlockProgress, setUnlockProgress] = useState(0);
     const [isUnlocked, setIsUnlocked] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
     const [voteError, setVoteError] = useState("");
     const [successfulVote, setSuccessfulVote] = useState(null);
 
@@ -255,24 +261,11 @@ export default function ManOfTheMatchVote({
     };
 
     const candidate = candidates[selectedIndex];
+    const selectedVoterPlayer = allPlayers.find(
+        (player) => String(player.id) === String(selectedVoter),
+    );
     const canVote = isUnlocked && !isMoving && !isDragging && !isSubmitting
-        && Boolean(selectedVoter) && Boolean(candidate);
-
-    useEffect(() => {
-        if (!successfulVote) return undefined;
-
-        const timer = window.setTimeout(() => {
-            window.dispatchEvent(new CustomEvent("motm-voted", {
-                detail: {
-                    matchId: String(matchId),
-                    voter: successfulVote.voter.name,
-                    candidate: successfulVote.candidate.name,
-                },
-            }));
-        }, 2500);
-
-        return () => window.clearTimeout(timer);
-    }, [matchId, successfulVote]);
+        && Boolean(selectedVoterPlayer) && Boolean(candidate);
 
     const submitVote = async () => {
         if (!canVote) return;
@@ -284,9 +277,7 @@ export default function ManOfTheMatchVote({
                 throw new Error("VITE_APPSCRIPT_URL is not configured.");
             }
 
-            const voter = allPlayers.find(
-                (player) => String(player.id) === String(selectedVoter),
-            );
+            const voter = selectedVoterPlayer;
             if (!voter) {
                 throw new Error("Please select a valid voter.");
             }
@@ -317,9 +308,12 @@ export default function ManOfTheMatchVote({
 
             localStorage.setItem(`voted_match_${matchId}`, "true");
             setSuccessfulVote({ voter, candidate });
+            onFeedbackShown?.();
+            setIsConfirmationOpen(false);
             setIsSubmitting(false);
         } catch (error) {
             setVoteError(error instanceof Error ? error.message : "Vote could not be saved.");
+            setIsConfirmationOpen(false);
             setIsSubmitting(false);
         }
     };
@@ -343,7 +337,18 @@ export default function ManOfTheMatchVote({
             return;
         }
 
-        if (canVote) submitVote();
+        if (canVote) setIsConfirmationOpen(true);
+    };
+
+    const goToVotes = () => {
+        if (!successfulVote) return;
+        window.dispatchEvent(new CustomEvent("motm-voted", {
+            detail: {
+                matchId: String(matchId),
+                voter: successfulVote.voter.name,
+                candidate: successfulVote.candidate.name,
+            },
+        }));
     };
 
     const buttonLabel = isSubmitting
@@ -356,13 +361,23 @@ export default function ManOfTheMatchVote({
         const votedFor = successfulVote.candidate;
 
         return (
-            <section className="flex min-h-96 flex-col items-center justify-center rounded-3xl border border-emerald-400/20 bg-zinc-900 px-6 py-10 text-center shadow-2xl shadow-black/40" role="status">
+            <section className="relative flex min-h-96 flex-col items-center justify-center rounded-3xl border border-emerald-400/20 bg-zinc-900 px-6 py-16 text-center shadow-2xl shadow-black/40" role="status">
+                <button
+                    className="absolute right-4 top-4 rounded-lg border border-emerald-400/30 bg-emerald-400/10 px-3 py-2 text-xs font-bold text-emerald-300 transition-colors hover:bg-emerald-400/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
+                    type="button"
+                    onClick={goToVotes}
+                >
+                    Go to votes
+                </button>
                 <span className="flex size-16 items-center justify-center rounded-full bg-emerald-400 text-zinc-950 shadow-lg shadow-emerald-500/25">
                     <svg className="size-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="m5 12 4 4L19 6" />
                     </svg>
                 </span>
                 <p className="mt-4 text-xs font-bold uppercase tracking-[0.28em] text-emerald-400">Vote recorded</p>
+                <p className="mt-2 text-sm text-zinc-300">
+                    <span className="font-bold text-white">{successfulVote.voter.name}</span> voted for
+                </p>
                 <SafeImage
                     className="mt-6 size-32 rounded-full border-2 border-amber-300 bg-zinc-800 object-cover object-top shadow-xl shadow-amber-500/15"
                     src={votedFor.image}
@@ -371,7 +386,6 @@ export default function ManOfTheMatchVote({
                 />
                 <h2 className="mt-4 text-2xl font-black text-white">{votedFor.name}</h2>
                 <p className="mt-1 text-sm font-semibold text-zinc-400">Player ID #{votedFor.id}</p>
-                <p className="mt-6 text-xs text-zinc-500">Opening current votes…</p>
             </section>
         );
     }
@@ -417,11 +431,18 @@ export default function ManOfTheMatchVote({
                         className="h-12 w-full appearance-none rounded-xl border border-white/10 bg-zinc-950 px-4 pr-10 text-sm text-white outline-none transition focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 disabled:text-zinc-600"
                         value={selectedVoter}
                         onChange={(event) => setSelectedVoter(event.target.value)}
-                        disabled={eligibleVoters.length === 0 || isSubmitting}
+                        disabled={!isUnlocked || eligibleVoterCount === 0 || isSubmitting}
                     >
-                        <option value="">{eligibleVoters.length ? "Select your name" : "Everyone has voted"}</option>
-                        {eligibleVoters.map((player) => (
-                            <option value={String(player.id)} key={player.id ?? player.name}>{player.name}</option>
+                        <option value="">{eligibleVoterCount ? "Select your name" : "Everyone has voted"}</option>
+                        {voters.map((player) => (
+                            <option
+                                className={player.hasVoted ? "text-zinc-500 line-through" : undefined}
+                                disabled={player.hasVoted}
+                                value={String(player.id)}
+                                key={player.id ?? player.name}
+                            >
+                                {player.name}{player.hasVoted ? " — Voted" : ""}
+                            </option>
                         ))}
                     </select>
                     <svg className="pointer-events-none absolute right-4 top-1/2 size-4 -translate-y-1/2 text-amber-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -506,6 +527,53 @@ export default function ManOfTheMatchVote({
             </p>
             {voteError && <p className="px-5 text-center text-sm text-red-400" role="alert">{voteError}</p>}
             {fetchVotedError && <p className="px-5 text-center text-sm text-red-400" role="alert">{fetchVotedError}</p>}
+
+            {isConfirmationOpen && candidate && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4 backdrop-blur-sm" role="presentation">
+                    <section
+                        className="w-full max-w-sm rounded-3xl border border-white/10 bg-zinc-900 p-5 text-center shadow-2xl shadow-black"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby={`confirm-vote-${matchId}`}
+                    >
+                        <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-amber-400">Confirm your vote</p>
+                        <h3 className="mt-1 text-xl font-black text-white" id={`confirm-vote-${matchId}`}>Are you sure?</h3>
+                        <p className="mt-5 text-base text-zinc-300">
+                            You are <span className="font-black text-white">“{selectedVoterPlayer?.name}”</span>
+                        </p>
+                        <div className="mt-5 border-t border-white/10 pt-5">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-500">Voting for</p>
+                            <SafeImage
+                                className="mx-auto mt-3 size-28 rounded-full border-2 border-amber-300 bg-zinc-800 object-cover object-top shadow-lg shadow-amber-500/15"
+                                src={candidate.image}
+                                fallbackSrc="/user.png"
+                                alt={candidate.name}
+                            />
+                            <p className="mt-3 text-lg font-black text-amber-300">{candidate.name}</p>
+                            <p className="mt-1 text-xs font-semibold text-zinc-500">Player ID #{candidate.id}</p>
+                        </div>
+                        <p className="mt-5 text-sm text-zinc-400">A submitted vote cannot be changed.</p>
+                        <div className="mt-5 grid grid-cols-2 gap-3">
+                            <button
+                                className="h-11 rounded-xl border border-white/10 bg-zinc-800 text-sm font-bold text-zinc-200 transition-colors hover:bg-zinc-700 disabled:opacity-50"
+                                type="button"
+                                disabled={isSubmitting}
+                                onClick={() => setIsConfirmationOpen(false)}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="h-11 rounded-xl bg-amber-400 text-sm font-black text-zinc-950 transition-colors hover:bg-amber-300 disabled:cursor-wait disabled:opacity-60"
+                                type="button"
+                                disabled={isSubmitting}
+                                onClick={submitVote}
+                            >
+                                {isSubmitting ? "Submitting…" : "Yes, submit"}
+                            </button>
+                        </div>
+                    </section>
+                </div>
+            )}
         </section>
     );
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "wouter";
+import { useSearchParams } from "wouter";
 import MatchCard from "../components/match.card";
 import data from "../data.json";
 import { PageLayout } from "../layout";
@@ -90,24 +90,19 @@ export const Matches = () => {
                         const [homeResult, awayResult] = match.teams;
 
                         return (
-                            <Link
-                                className="block rounded-lg transition-transform active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
-                                href={`/matches/${match.id}`}
-                                aria-label={`View match from ${match.date}`}
+                            <MatchCard
+                                date={match.date}
+                                teamA={teamsById.get(homeResult.teamId)}
+                                teamB={teamsById.get(awayResult.teamId)}
+                                scoreA={homeResult.score}
+                                scoreB={awayResult.score}
+                                motm={getMatchVotingStatus(match.date, now) === "closed"
+                                    ? playersById.get(match.motmPlayerId)
+                                    : null}
+                                matchdayCount={match.id}
+                                matchHref={`/matches/${match.id}`}
                                 key={match.id}
-                            >
-                                <MatchCard
-                                    date={match.date}
-                                    teamA={teamsById.get(homeResult.teamId)}
-                                    teamB={teamsById.get(awayResult.teamId)}
-                                    scoreA={homeResult.score}
-                                    scoreB={awayResult.score}
-                                    motm={getMatchVotingStatus(match.date, now) === "closed"
-                                        ? playersById.get(match.motmPlayerId)
-                                        : null}
-                                    matchdayCount={match.id}
-                                />
-                            </Link>
+                            />
                         );
                     })}
                 </div>

@@ -1,4 +1,5 @@
 import { formatDate } from "../utils/date.util";
+import { Link } from "wouter";
 import SafeImage from "./safe-image";
 
 function Team({ team }) {
@@ -24,8 +25,9 @@ function StarIcon() {
     );
 }
 
-export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title, motm, matchdayCount, hideMatchdayCount }) {
+export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title, motm, matchdayCount, hideMatchdayCount, matchHref }) {
     const hasResult = Number.isFinite(scoreA) && Number.isFinite(scoreB);
+    const MotmWrapper = motm?.id ? Link : "div";
     const scoreColor = (score, opponentScore) => {
         if (score > opponentScore) {
             return "text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.45)]";
@@ -37,47 +39,82 @@ export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title, m
     };
 
     return (
-        <section className="rounded-lg border border-white/10 bg-zinc-900/75 p-3 shadow-2xl shadow-black/25">
-            <div className="mb-2 flex items-center justify-between gap-4">
-                {
-                    title && 
-                    <h2 className="text-sm font-semibold uppercase tracking-wide text-amber-400 sm:text-lg">
-                        {title}
-                    </h2>
-                }
-                {!hideMatchdayCount && <h4 className="text-xs text-zinc-500 sm:text-sm">Match {matchdayCount}</h4>}
-                <time className="text-xs text-zinc-400 sm:text-sm" dateTime={date}>
-                    {formatDate(date)}
-                </time>
-            </div>
-
-            <div className="flex items-center justify-between gap-3 sm:gap-8">
-                <Team team={teamA} />
-
-                <div
-                    className={`flex shrink-0 items-center font-bold tracking-tight text-white ${hasResult ? "gap-6 text-4xl sm:gap-4 sm:text-6xl" : "text-center text-sm sm:text-base"}`}
-                    aria-label={hasResult
-                        ? `${teamA.name} ${scoreA}, ${teamB.name} ${scoreB}`
-                        : "Match result awaiting update"}
-                >
-                    {hasResult ? (
-                        <>
-                            <span className={scoreColor(scoreA, scoreB)}>{scoreA}</span>
-                            <span className="text-4xl font-bold text-zinc-400">–</span>
-                            <span className={scoreColor(scoreB, scoreA)}>{scoreB}</span>
-                        </>
-                    ) : (
-                        <span className="max-w-20 text-zinc-500">Awaiting result</span>
-                    )}
+        <section className="relative rounded-lg border border-white/10 bg-zinc-900/75 p-3 shadow-2xl shadow-black/25">
+            {matchHref && (
+                <Link
+                    className="absolute inset-0 z-0 rounded-lg transition-transform active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
+                    href={matchHref}
+                    aria-label={`View match from ${date}`}
+                />
+            )}
+            <div className={matchHref ? "pointer-events-none relative z-[1]" : undefined}>
+                <div className="mb-2 flex items-center justify-between gap-4">
+                    {
+                        title &&
+                        <h2 className="text-sm font-semibold uppercase tracking-wide text-amber-400 sm:text-lg">
+                            {title}
+                        </h2>
+                    }
+                    {!hideMatchdayCount && <h4 className="text-xs text-zinc-500 sm:text-sm">Match {matchdayCount}</h4>}
+                    <time className="text-xs text-zinc-400 sm:text-sm" dateTime={date}>
+                        {formatDate(date)}
+                    </time>
                 </div>
 
-                <Team team={teamB} />
+                <div className="flex items-center justify-between gap-3 sm:gap-8">
+                    <Team team={teamA} />
+
+                    <div
+                        className={`flex shrink-0 items-center font-bold tracking-tight text-white ${hasResult ? "gap-6 text-4xl sm:gap-4 sm:text-6xl" : "text-center text-sm sm:text-base"}`}
+                        aria-label={hasResult
+                            ? `${teamA.name} ${scoreA}, ${teamB.name} ${scoreB}`
+                            : "Match result awaiting update"}
+                    >
+                        {hasResult ? (
+                            <>
+                                <span className={scoreColor(scoreA, scoreB)}>{scoreA}</span>
+                                <span className="text-4xl font-bold text-zinc-400">–</span>
+                                <span className={scoreColor(scoreB, scoreA)}>{scoreB}</span>
+                            </>
+                        ) : (
+                            <span className="max-w-20 text-zinc-500">Awaiting result</span>
+                        )}
+                    </div>
+
+                    <Team team={teamB} />
+                </div>
             </div>
 
             {motm && (
-                <div className="mx-auto mt-3 flex max-w-sm items-center justify-center gap-2 border-t border-white/10 pt-3 text-xs text-zinc-300 sm:text-sm">
-                    <span><span className="font-semibold text-amber-400">MOTM:</span> {motm.name ?? motm}</span>
-                </div>
+                <MotmWrapper
+                    className="relative z-10 mt-4 block overflow-hidden rounded-xl border border-amber-300/20 bg-gradient-to-r from-amber-400/10 via-zinc-950 to-zinc-950 transition-transform active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
+                    {...(motm?.id ? {
+                        href: `/players/${motm.id}`,
+                        "aria-label": `View ${motm.name} player profile`,
+                    } : {})}
+                >
+                    <span className="absolute -left-8 -top-12 size-28 rounded-full bg-amber-400/10 blur-3xl" aria-hidden="true" />
+                    <span className="absolute -bottom-10 right-2 size-24 rounded-full bg-amber-300/10 blur-2xl" aria-hidden="true" />
+                    <div className="relative flex min-h-20 items-center gap-3 px-3 py-2.5 pr-20 sm:min-h-24 sm:px-4 sm:pr-28">
+                        <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-amber-300/20 bg-amber-400/10 shadow-inner shadow-amber-300/10 sm:size-10">
+                            <StarIcon />
+                        </span>
+                        <div className="min-w-0">
+                            <p className="text-[9px] font-black uppercase tracking-[0.22em] text-amber-400 sm:text-[10px]">
+                                Man of the Match
+                            </p>
+                            <p className="mt-1 truncate text-lg font-black leading-none text-white sm:text-xl">
+                                {motm.name ?? motm}
+                            </p>
+                        </div>
+                    </div>
+                    <SafeImage
+                        className="absolute right-3 top-1/2 size-16 -translate-y-1/2 rounded-full border-2 border-amber-300/70 bg-zinc-800 object-cover object-top shadow-lg shadow-black/40 sm:right-5 sm:size-20"
+                        src={motm.image}
+                        fallbackSrc="/user.png"
+                        alt={motm.name ?? String(motm)}
+                    />
+                </MotmWrapper>
             )}
         </section>
     );

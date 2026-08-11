@@ -53,6 +53,14 @@
                     "hidden": {
                         "type": "boolean",
                         "description": "If true, player identity is not shown"
+                    },
+                    "topScorerMonths": {
+                        "type": "array",
+                        "description": "Months when the player finished as top scorer",
+                        "items": {
+                            "type": "string"
+                        },
+                        "uniqueItems": true
                     }
                 },
                 "additionalProperties": false

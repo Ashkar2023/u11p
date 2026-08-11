@@ -50,7 +50,8 @@
         {
             "id": 8,
             "name": "Manu Paappan",
-            "image": "/players/manu.png"
+            "image": "/players/manu.png",
+            "topScorerMonths": ["July 2026"]
         },
         {
             "id": 9,

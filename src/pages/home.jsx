@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import MatchCard from "../components/match.card";
-import MotmCard from "../components/motm.card";
 import SafeImage from "../components/safe-image";
 import data from "../data.json";
 import Layout from "../layout";
@@ -202,32 +201,18 @@ export const Home = () => {
                         </svg>
                     </Link>
                 )}
-                <Link
-                    className="block rounded-lg transition-transform active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
-                    href={`/matches/${recentMatch.id}`}
-                    aria-label="View recent match details"
-                >
-                    <MatchCard
-                        date={recentMatch.date}
-                        teamA={homeTeam}
-                        teamB={awayTeam}
-                        scoreA={homeResult.score}
-                        scoreB={awayResult.score}
-                        title="Recent Match"
-                        motm={recentMotm}
-                        matchdayCount={recentMatch.id}
-                        hideMatchdayCount
-                    />
-                </Link>
-                {recentMotm && (
-                    <Link
-                        className="block rounded-lg transition-transform active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
-                        href={`/players/${recentMotm.id}`}
-                        aria-label={`View Man of the Match ${recentMotm.name}`}
-                    >
-                        <MotmCard player={recentMotm} matchDate={recentMatch.date} />
-                    </Link>
-                )}
+                <MatchCard
+                    date={recentMatch.date}
+                    teamA={homeTeam}
+                    teamB={awayTeam}
+                    scoreA={homeResult.score}
+                    scoreB={awayResult.score}
+                    title="Recent Match"
+                    motm={recentMotm}
+                    matchdayCount={recentMatch.id}
+                    hideMatchdayCount
+                    matchHref={`/matches/${recentMatch.id}`}
+                />
                 <TopScorersPreview />
             </div>
         </Layout>

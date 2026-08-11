@@ -2,11 +2,10 @@ import { Link, useSearchParams } from "wouter";
 import SafeImage from "../components/safe-image";
 import data from "../data.json";
 import { PageLayout } from "../layout";
+import { hasMatchResult } from "../utils/date.util";
 
 const ALL_TIME = "all";
-const completedMatches = data.matches.filter(
-    (match) => !match.isUpcoming && match.teams.every((team) => Number.isFinite(team.score)),
-);
+const completedMatches = data.matches.filter(hasMatchResult);
 const playersById = new Map(data.players.map((player) => [player.id, player]));
 const monthKeyFormatter = new Intl.DateTimeFormat("en-CA", {
     year: "numeric",

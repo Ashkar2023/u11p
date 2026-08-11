@@ -6,6 +6,8 @@ import { MatchDetails } from "./pages/match-details";
 import { PlayerDetails } from "./pages/player-details";
 import { Players } from "./pages/players";
 import { Stats } from "./pages/stats";
+import { Devtools } from "./pages/devtools";
+import { isLocalHost } from "./utils/is-local-host";
 
 function ScrollToTop() {
     const [location] = useLocation();
@@ -18,6 +20,8 @@ function ScrollToTop() {
 }
 
 export const App = () => {
+    const showDevtools = isLocalHost();
+
     return <>
         <ScrollToTop />
         <Route path="/" component={Home} />
@@ -26,5 +30,6 @@ export const App = () => {
         <Route path="/players" component={Players} />
         <Route path="/players/:id" component={PlayerDetails} />
         <Route path="/stats" component={Stats} />
+        {showDevtools && <Route path="/devtools" component={Devtools} />}
     </>
 };

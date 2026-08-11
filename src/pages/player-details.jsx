@@ -1,6 +1,7 @@
 import { useLocation, useRoute } from "wouter";
 import data from "../data.json";
 import SafeImage from "../components/safe-image";
+import { hasMatchResult } from "../utils/date.util";
 
 function BackIcon() {
     return (
@@ -23,8 +24,8 @@ export const PlayerDetails = () => {
     }, 0);
 
     const matchesPlayed = data.matches.filter((match) =>
-        !match.isUpcoming && match.lineup?.some((entry) =>
-            (entry.players ?? entry.playerIds ?? []).includes(player?.id),
+        hasMatchResult(match) && match.lineup?.some((entry) =>
+            (entry.playerIds ?? []).includes(player?.id),
         ),
     ).length;
 

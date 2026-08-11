@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useRoute } from "wouter";
+import ManOfTheMatchVote from "../components/man-of-the-match-vote";
 import MatchCard from "../components/match.card";
+import MotmVotes from "../components/motm-votes";
 import SafeImage from "../components/safe-image";
 import data from "../data.json";
+import { getMatchVotingStatus } from "../utils/date.util";
 
 const teamsById = new Map(data.teams.map((team) => [team.id, team]));
 const playersById = new Map(data.players.map((player) => [player.id, player]));
@@ -84,7 +87,7 @@ function Lineup({ match, teams }) {
         <div className="grid grid-cols-2 divide-x divide-white/10">
             {teams.map((team) => {
                 const teamLineup = match.lineup?.find((entry) => entry.teamId === team.id);
-                const playerIds = teamLineup?.players ?? teamLineup?.playerIds ?? [];
+                const playerIds = teamLineup?.playerIds ?? [];
 
                 return (
                     <section className="min-w-0 px-3 first:pl-0 last:pr-0" key={team.id}>
@@ -128,7 +131,44 @@ export const MatchDetails = () => {
     const [, params] = useRoute("/matches/:id");
     const [, navigate] = useLocation();
     const [activeTab, setActiveTab] = useState("facts");
+    const [now] = useState(() => new Date());
     const match = data.matches.find((item) => String(item.id) === params?.id);
+    const [hasVoted, setHasVoted] = useState(() => (
+        params?.id ? localStorage.getItem(`voted_match_${params.id}`) === "true" : false
+    ));
+
+    useEffect(() => {
+        setHasVoted(params?.id
+            ? localStorage.getItem(`voted_match_${params.id}`) === "true"
+            : false);
+        const handleVote = (event) => {
+            if (event.detail?.matchId !== String(params?.id)) return;
+            setHasVoted(true);
+            setActiveTab("votes");
+        };
+        window.addEventListener("motm-voted", handleVote);
+        return () => window.removeEventListener("motm-voted", handleVote);
+    }, [params?.id]);
+
+    const votingStatus = match ? getMatchVotingStatus(match.date, now) : "closed";
+    const canShowVoting = votingStatus === "open" && !hasVoted;
+    const canShowVotes = votingStatus === "open" && hasVoted;
+    const canShowMotmTab = canShowVoting || canShowVotes;
+
+    useEffect(() => {
+        if (activeTab === "vote" && !canShowVoting) {
+            setActiveTab(canShowVotes ? "votes" : "facts");
+        }
+        if (activeTab === "votes" && !canShowVotes) {
+            setActiveTab(canShowVoting ? "vote" : "facts");
+        }
+    }, [activeTab, canShowVotes, canShowVoting]);
+
+    useEffect(() => {
+        const requestedTab = new URLSearchParams(window.location.search).get("tab");
+        if (requestedTab === "vote" && canShowVoting) setActiveTab("vote");
+        if (requestedTab === "votes" && canShowVotes) setActiveTab("votes");
+    }, [canShowVotes, canShowVoting, params?.id]);
 
     const goBack = () => {
         if (window.history.length > 1) {
@@ -138,7 +178,7 @@ export const MatchDetails = () => {
         }
     };
 
-    if (!match || match.isUpcoming) {
+    if (!match) {
         return (
             <main className="min-h-dvh bg-zinc-950 px-4 py-6 text-white">
                 <div className="mx-auto max-w-3xl">
@@ -155,6 +195,7 @@ export const MatchDetails = () => {
     const homeTeam = teamsById.get(homeResult.teamId);
     const awayTeam = teamsById.get(awayResult.teamId);
     const teams = [homeTeam, awayTeam];
+    const motm = votingStatus === "closed" ? playersById.get(match.motmPlayerId) : null;
 
     return (
         <main className="min-h-dvh bg-zinc-950 px-4 py-[calc(1.5rem+env(safe-area-inset-top))] text-white">
@@ -174,10 +215,12 @@ export const MatchDetails = () => {
                     teamB={awayTeam}
                     scoreA={homeResult.score}
                     scoreB={awayResult.score}
+                    motm={motm}
+                    matchdayCount={match.id}
                 />
 
                 <section className="mt-5">
-                    <div className="grid grid-cols-2 border-b border-white/10" role="tablist" aria-label="Match details">
+                    <div className={`grid ${canShowMotmTab ? "grid-cols-3" : "grid-cols-2"} border-b border-white/10`} role="tablist" aria-label="Match details">
                         <button
                             className={`border-b-2 px-3 py-3 text-sm font-semibold transition-colors ${activeTab === "facts" ? "border-amber-400 text-amber-400" : "border-transparent text-zinc-500"}`}
                             type="button"
@@ -196,12 +239,35 @@ export const MatchDetails = () => {
                         >
                             Lineup
                         </button>
+                        {canShowMotmTab && (
+                            <button
+                                className={`border-b-2 px-2 py-3 text-sm font-semibold transition-colors ${(activeTab === "vote" || activeTab === "votes") ? "border-amber-400 text-amber-400" : "border-transparent text-zinc-500"}`}
+                                type="button"
+                                role="tab"
+                                aria-selected={activeTab === "vote" || activeTab === "votes"}
+                                onClick={() => setActiveTab(canShowVoting ? "vote" : "votes")}
+                            >
+                                {canShowVoting ? "Vote MOTM" : "Votes"}
+                            </button>
+                        )}
                     </div>
 
                     <div className="py-4" role="tabpanel">
-                        {activeTab === "facts"
-                            ? <MatchFacts match={match} teams={teams} />
-                            : <Lineup match={match} teams={teams} />}
+                        {activeTab === "facts" && <MatchFacts match={match} teams={teams} />}
+                        {activeTab === "lineup" && <Lineup match={match} teams={teams} />}
+                        {activeTab === "vote" && canShowVoting && (
+                            <ManOfTheMatchVote
+                                matchId={String(match.id)}
+                                lineup={match.lineup}
+                                allPlayers={data.players}
+                            />
+                        )}
+                        {activeTab === "votes" && canShowVotes && (
+                            <MotmVotes
+                                matchId={String(match.id)}
+                                allPlayers={data.players}
+                            />
+                        )}
                     </div>
                 </section>
             </div>

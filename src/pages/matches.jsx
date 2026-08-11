@@ -1,16 +1,13 @@
+import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "wouter";
 import MatchCard from "../components/match.card";
 import data from "../data.json";
 import { PageLayout } from "../layout";
+import { getMatchVotingStatus, hasMatchStarted } from "../utils/date.util";
 
 const ALL_TIME = "all";
 const teamsById = new Map(data.teams.map((team) => [team.id, team]));
-const completedMatches = data.matches
-    .filter(
-        (match) => !match.isUpcoming && match.teams.every((team) => Number.isFinite(team.score)),
-    )
-    .sort((a, b) => b.date.localeCompare(a.date));
-
+const playersById = new Map(data.players.map((player) => [player.id, player]));
 const monthKeyFormatter = new Intl.DateTimeFormat("en-CA", {
     year: "numeric",
     month: "2-digit",
@@ -24,8 +21,6 @@ const getMonthKey = (date) => {
     return `${parts.year}-${parts.month}`;
 };
 
-const availableMonths = [...new Set(completedMatches.map((match) => getMonthKey(match.date)))];
-
 function formatMonth(month) {
     return new Intl.DateTimeFormat("en-IN", {
         month: "long",
@@ -35,8 +30,13 @@ function formatMonth(month) {
 }
 
 export const Matches = () => {
+    const [now, setNow] = useState(() => new Date());
     const [searchParams, setSearchParams] = useSearchParams();
     const requestedPeriod = searchParams.get("period");
+    const startedMatches = data.matches
+        .filter((match) => hasMatchStarted(match, now))
+        .sort((a, b) => b.date.localeCompare(a.date));
+    const availableMonths = [...new Set(startedMatches.map((match) => getMonthKey(match.date)))];
     const period = availableMonths.includes(requestedPeriod) ? requestedPeriod : ALL_TIME;
 
     const setPeriod = (nextPeriod) => {
@@ -54,8 +54,13 @@ export const Matches = () => {
     };
 
     const visibleMatches = period === ALL_TIME
-        ? completedMatches
-        : completedMatches.filter((match) => getMonthKey(match.date) === period);
+        ? startedMatches
+        : startedMatches.filter((match) => getMonthKey(match.date) === period);
+
+    useEffect(() => {
+        const timer = window.setInterval(() => setNow(new Date()), 1000);
+        return () => window.clearInterval(timer);
+    }, []);
 
     return (
         <PageLayout>
@@ -97,6 +102,10 @@ export const Matches = () => {
                                     teamB={teamsById.get(awayResult.teamId)}
                                     scoreA={homeResult.score}
                                     scoreB={awayResult.score}
+                                    motm={getMatchVotingStatus(match.date, now) === "closed"
+                                        ? playersById.get(match.motmPlayerId)
+                                        : null}
+                                    matchdayCount={match.id}
                                 />
                             </Link>
                         );

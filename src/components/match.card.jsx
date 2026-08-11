@@ -16,7 +16,16 @@ function Team({ team }) {
     );
 }
 
-export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title }) {
+function StarIcon() {
+    return (
+        <svg className="size-4 shrink-0 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="m12 2.75 2.73 5.53 6.1.89-4.42 4.3 1.04 6.08L12 16.68l-5.45 2.87 1.04-6.08-4.42-4.3 6.1-.89L12 2.75Z" />
+        </svg>
+    );
+}
+
+export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title, motm, matchdayCount, hideMatchdayCount }) {
+    const hasResult = Number.isFinite(scoreA) && Number.isFinite(scoreB);
     const scoreColor = (score, opponentScore) => {
         if (score > opponentScore) {
             return "text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.45)]";
@@ -36,6 +45,7 @@ export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title })
                         {title}
                     </h2>
                 }
+                {!hideMatchdayCount && <h4 className="text-xs text-zinc-500 sm:text-sm">Match {matchdayCount}</h4>}
                 <time className="text-xs text-zinc-400 sm:text-sm" dateTime={date}>
                     {formatDate(date)}
                 </time>
@@ -45,16 +55,31 @@ export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title })
                 <Team team={teamA} />
 
                 <div
-                    className="flex shrink-0 items-center gap-6 text-4xl font-bold tracking-tight text-white sm:gap-4 sm:text-6xl"
-                    aria-label={`${teamA.name} ${scoreA}, ${teamB.name} ${scoreB}`}
+                    className={`flex shrink-0 items-center font-bold tracking-tight text-white ${hasResult ? "gap-6 text-4xl sm:gap-4 sm:text-6xl" : "text-center text-sm sm:text-base"}`}
+                    aria-label={hasResult
+                        ? `${teamA.name} ${scoreA}, ${teamB.name} ${scoreB}`
+                        : "Match result awaiting update"}
                 >
-                    <span className={scoreColor(scoreA, scoreB)}>{scoreA}</span>
-                    <span className="text-4xl text-zinc-400 font-bold">–</span>
-                    <span className={scoreColor(scoreB, scoreA)}>{scoreB}</span>
+                    {hasResult ? (
+                        <>
+                            <span className={scoreColor(scoreA, scoreB)}>{scoreA}</span>
+                            <span className="text-4xl font-bold text-zinc-400">–</span>
+                            <span className={scoreColor(scoreB, scoreA)}>{scoreB}</span>
+                        </>
+                    ) : (
+                        <span className="max-w-20 text-zinc-500">Awaiting result</span>
+                    )}
                 </div>
 
                 <Team team={teamB} />
             </div>
+
+            {motm && (
+                <div className="mx-auto mt-3 flex max-w-sm items-center justify-center gap-2 border-t border-white/10 pt-3 text-xs text-zinc-300 sm:text-sm">
+                    <StarIcon />
+                    <span><span className="font-semibold text-amber-400">MOTM:</span> {motm.name ?? motm}</span>
+                </div>
+            )}
         </section>
     );
 }

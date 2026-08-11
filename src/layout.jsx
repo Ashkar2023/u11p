@@ -1,10 +1,12 @@
 import { Link, useLocation } from "wouter";
+import { isLocalHost } from "./utils/is-local-host";
 
 const navItems = [
     { label: "Home", icon: "home", path: "/" },
     { label: "Matches", icon: "matches", path: "/matches" },
     { label: "Players", icon: "players", path: "/players" },
     { label: "Stats", icon: "stats", path: "/stats" },
+    { label: "Devtools", icon: "devtools", path: "/devtools", localOnly: true },
 ];
 
 function NavIcon({ name }) {
@@ -44,12 +46,19 @@ function NavIcon({ name }) {
                     <path d="M2 20h20" />
                 </>
             )}
+            {name === "devtools" && (
+                <>
+                    <path d="M14.7 6.3a4 4 0 0 0-5 5L3.5 17.5a2.1 2.1 0 0 0 3 3l6.2-6.2a4 4 0 0 0 5-5l-2.4 2.4-3-3 2.4-2.4Z" />
+                    <path d="m5 19 1-1" />
+                </>
+            )}
         </svg>
     );
 }
 
 function Navigation() {
     const [location] = useLocation();
+    const visibleNavItems = navItems.filter(({ localOnly }) => !localOnly || isLocalHost());
 
     return (
         <footer className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-black/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md">
@@ -57,7 +66,7 @@ function Navigation() {
                 className="mx-auto flex h-16 max-w-xl items-stretch justify-around px-2"
                 aria-label="Primary navigation"
             >
-                {navItems.map(({ label, icon, path }) => {
+                {visibleNavItems.map(({ label, icon, path }) => {
                     const className = `flex min-w-0 flex-1 flex-col items-center justify-center rounded-md text-[11px] font-medium transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-amber-400 ${location === path ? "text-amber-400" : "text-zinc-400"}`;
                     const content = (
                         <>

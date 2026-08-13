@@ -76,7 +76,8 @@
         },
         {
             "id": 13,
-            "name": "Shukoor"
+            "name": "Shukoor",
+            "image": "/players/shukoor.png"
         },
         {
             "id": 14,

@@ -5,6 +5,7 @@ import data from "../data.json";
 import Layout from "../layout";
 import { Link } from "wouter";
 import { formatDate, getMatchVotingStatus, hasMatchResult } from "../utils/date.util";
+import { calculateGoalScorers } from "./stats";
 
 const completedMatches = [...data.matches]
     .filter(hasMatchResult)
@@ -24,28 +25,16 @@ const getMonthKey = (date) => {
     );
     return `${parts.year}-${parts.month}`;
 };
-const currentMonth = getMonthKey(new Date());
-const currentMonthLabel = new Intl.DateTimeFormat("en-IN", {
+const lastMatchMonth = getMonthKey(recentMatch.date);
+const monthLabel = new Intl.DateTimeFormat("en-IN", {
     month: "long",
     timeZone: "Asia/Kolkata",
-}).format(new Date());
-const currentMonthMatches = completedMatches.filter(
-    (match) => getMonthKey(match.date) === currentMonth,
+}).format(new Date(recentMatch.date));
+const lastMonthMatches = completedMatches.filter(
+    (match) => getMonthKey(match.date) === lastMatchMonth,
 );
 
-const topScorers = [...currentMonthMatches.reduce((totals, match) => {
-    match.goals?.forEach((goal) => {
-        if (!goal.ownGoal) {
-            totals.set(goal.playerId, (totals.get(goal.playerId) ?? 0) + goal.count);
-        }
-    });
-    return totals;
-}, new Map())]
-    .map(([playerId, goals]) => ({ ...playersById.get(playerId), goals }))
-    .sort((a, b) => b.goals - a.goals || a.name.localeCompare(b.name))
-    .slice(0, 5);
-
-
+const topScorers = calculateGoalScorers(lastMonthMatches);
 
 function NextMatchCard({ match }) {
     return (
@@ -74,7 +63,7 @@ function TopScorersPreview() {
         <section className="rounded-lg border border-white/10 bg-zinc-900/75 p-3 shadow-2xl shadow-black/25">
             <div className="mb-1 flex items-center justify-between gap-4">
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-amber-400 sm:text-lg">
-                    Top scorers ({currentMonthLabel})
+                    Top scorers ({monthLabel})
                 </h2>
                 <Link
                     className="flex items-center gap-1 font-light text-zinc-400 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
@@ -93,8 +82,9 @@ function TopScorersPreview() {
                     </svg>
                 </Link>
             </div>
-            <ol>
-                {topScorers.map((player, index) => (
+            {topScorers.length > 0 ? (topScorers.map((player, index) => (
+                <ol>
+
                     <li
                         className="border-b border-white/10 last:border-b-0"
                         key={player.id}
@@ -119,8 +109,12 @@ function TopScorersPreview() {
                             </span>
                         </Link>
                     </li>
-                ))}
-            </ol>
+                </ol>
+            ))) : (
+                <>
+                    <p className="py-5 text-center text-sm text-zinc-500">No goal records for this period.</p>
+                </>
+            )}
         </section>
     );
 }

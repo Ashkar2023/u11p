@@ -1,0 +1,314 @@
+{
+    "teams": [
+        {
+            "id": 1,
+            "name": "Team A"
+        },
+        {
+            "id": 2,
+            "name": "Team B"
+        }
+    ],
+    "players": [
+        {
+            "id": 1,
+            "name": "Lionel Messi"
+        },
+        {
+            "id": 2,
+            "name": "Cristiano Ronaldo"
+        },
+        {
+            "id": 3,
+            "name": "Kylian Mbappe"
+        },
+        {
+            "id": 4,
+            "name": "Erling Haaland"
+        },
+        {
+            "id": 5,
+            "name": "Neymar Jr"
+        }
+    ],
+    "matches": [
+        {
+            "id": 1,
+            "date": "2026-06-01T14:30:00.000Z",
+            "motmPlayerId": 1,
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 4
+                },
+                {
+                    "teamId": 2,
+                    "score": 2
+                }
+            ],
+            "goals": [
+                {
+                    "playerId": 1,
+                    "teamId": 1,
+                    "count": 3
+                },
+                {
+                    "playerId": 2,
+                    "teamId": 1,
+                    "count": 1
+                },
+                {
+                    "playerId": 3,
+                    "teamId": 2,
+                    "count": 2
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "date": "2026-06-08T14:30:00.000Z",
+            "motmPlayerId": 4,
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 3
+                },
+                {
+                    "teamId": 2,
+                    "score": 3
+                }
+            ],
+            "goals": [
+                {
+                    "playerId": 1,
+                    "teamId": 1,
+                    "count": 1
+                },
+                {
+                    "playerId": 4,
+                    "teamId": 1,
+                    "count": 3
+                },
+                {
+                    "playerId": 2,
+                    "teamId": 2,
+                    "count": 2
+                },
+                {
+                    "playerId": 5,
+                    "teamId": 2,
+                    "count": 1
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "date": "2026-06-15T14:30:00.000Z",
+            "motmPlayerId": 2,
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 2
+                },
+                {
+                    "teamId": 2,
+                    "score": 4
+                }
+            ],
+            "goals": [
+                {
+                    "playerId": 2,
+                    "teamId": 2,
+                    "count": 3
+                },
+                {
+                    "playerId": 1,
+                    "teamId": 1,
+                    "count": 2
+                },
+                {
+                    "playerId": 5,
+                    "teamId": 2,
+                    "count": 1
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "date": "2026-06-22T14:30:00.000Z",
+            "motmPlayerId": 3,
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 5
+                },
+                {
+                    "teamId": 2,
+                    "score": 3
+                }
+            ],
+            "goals": [
+                {
+                    "playerId": 3,
+                    "teamId": 1,
+                    "count": 3
+                },
+                {
+                    "playerId": 4,
+                    "teamId": 1,
+                    "count": 3
+                },
+                {
+                    "playerId": 5,
+                    "teamId": 2,
+                    "count": 2
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "date": "2026-07-06T14:30:00.000Z",
+            "motmPlayerId": 1,
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 4
+                },
+                {
+                    "teamId": 2,
+                    "score": 2
+                }
+            ],
+            "goals": [
+                {
+                    "playerId": 1,
+                    "teamId": 1,
+                    "count": 2
+                },
+                {
+                    "playerId": 2,
+                    "teamId": 1,
+                    "count": 2
+                },
+                {
+                    "playerId": 3,
+                    "teamId": 2,
+                    "count": 2
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "date": "2026-07-13T14:30:00.000Z",
+            "motmPlayerId": 4,
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 3
+                },
+                {
+                    "teamId": 2,
+                    "score": 2
+                }
+            ],
+            "goals": [
+                {
+                    "playerId": 4,
+                    "teamId": 1,
+                    "count": 1
+                },
+                {
+                    "playerId": 5,
+                    "teamId": 1,
+                    "count": 3
+                },
+                {
+                    "playerId": 2,
+                    "teamId": 2,
+                    "count": 2
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "date": "2026-07-20T14:30:00.000Z",
+            "motmPlayerId": 3,
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 3
+                },
+                {
+                    "teamId": 2,
+                    "score": 3
+                }
+            ],
+            "goals": [
+                {
+                    "playerId": 3,
+                    "teamId": 1,
+                    "count": 2
+                },
+                {
+                    "playerId": 4,
+                    "teamId": 2,
+                    "count": 2
+                },
+                {
+                    "playerId": 1,
+                    "teamId": 2,
+                    "count": 2
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "date": "2026-07-27T14:30:00.000Z",
+            "motmPlayerId": 2,
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 2
+                },
+                {
+                    "teamId": 2,
+                    "score": 4
+                }
+            ],
+            "goals": [
+                {
+                    "playerId": 2,
+                    "teamId": 2,
+                    "count": 2
+                },
+                {
+                    "playerId": 5,
+                    "teamId": 2,
+                    "count": 2
+                },
+                {
+                    "playerId": 1,
+                    "teamId": 1,
+                    "count": 2
+                }
+            ]
+        },
+        {
+
+            "id": 9,
+            "date": "2026-08-12T14:30:00.000Z",
+            "motmPlayerId": 2,
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 0
+                },
+                {
+                    "teamId": 2,
+                    "score": 0
+                }
+            ],
+            "goals": []
+        }
+    ]
+}

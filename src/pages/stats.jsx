@@ -3,6 +3,7 @@ import SafeImage from "../components/safe-image";
 import data from "../data.json";
 import { PageLayout } from "../layout";
 import { hasMatchResult } from "../utils/date.util";
+import { useState } from "react";
 
 const ALL_TIME = "all";
 const completedMatches = data.matches.filter(hasMatchResult);
@@ -107,17 +108,37 @@ function calculateTeamStats(matches) {
     });
 }
 
-function calculateGoalScorers(matches) {
+const compareGoalsByMatch = (a, b) => {
+    for (let i = 0; i < a.goalsByMatch.length; i++) {
+        const diff = b.goalsByMatch[i] - a.goalsByMatch[i]
+        if (diff !== 0) return diff;
+    }
+    return 0;
+}
+
+export function calculateGoalScorers(matches) {
     return [...matches.reduce((totals, match) => {
+        const appearances = new Set();
         match.goals?.forEach((goal) => {
             if (!goal.ownGoal) {
-                totals.set(goal.playerId, (totals.get(goal.playerId) ?? 0) + goal.count);
+                const existing = totals.get(goal.playerId) ?? { goals: 0, matchesPlayed: 0, goalsByMatch: [], GPM: 0 };
+                const isNew = !appearances.has(goal.playerId);
+                if (isNew) appearances.add(goal.playerId);
+
+                totals.set(goal.playerId, {
+                    goals: existing.goals + goal.count,
+                    matchesPlayed: existing.matchesPlayed + (isNew ? 1 : 0),
+                    goalsByMatch: [...existing.goalsByMatch, goal.count].sort((a, b) => b - a)
+                });
             }
         });
         return totals;
     }, new Map())]
-        .map(([playerId, goals]) => ({ ...playersById.get(playerId), goals }))
-        .sort((a, b) => b.goals - a.goals || a.name.localeCompare(b.name));
+        .map(([playerId, data]) => ({ ...playersById.get(playerId), ...data, GPM: (data.goals / data.matchesPlayed) }))
+        .sort((a, b) => b.goals - a.goals ||
+            b.GPM - a.GPM ||
+            compareGoalsByMatch(a, b) ||
+            a.name?.localeCompare(b.name));
 }
 
 function TeamStats() {
@@ -162,6 +183,7 @@ function TeamStats() {
 function GoalScorers() {
     const [period, setPeriod] = usePeriodFilter("scorersPeriod");
     const goalScorers = calculateGoalScorers(matchesForPeriod(period));
+    const [showGBM, setShowGBM] = useState(false);
 
     return (
         <section className="rounded-lg border border-white/10 bg-zinc-900/75 p-3 shadow-2xl shadow-black/25">
@@ -169,16 +191,27 @@ function GoalScorers() {
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-amber-400 sm:text-lg">
                     Top scorers
                 </h2>
-                <PeriodSelect value={period} onChange={setPeriod} label="Goal scorers period" />
+                <div className="flex items-center gap-3">
+                    <label className="flex cursor-pointer items-center gap-2">
+                        <span className="text-xs text-zinc-400 text-end">Match breakdown</span>
+                        <button
+                            type="button"
+                            role="switch"
+                            aria-checked={showGBM}
+                            onClick={() => setShowGBM(v => !v)}
+                            className={`relative h-5 w-9 rounded-full transition-colors duration-200 ${showGBM ? "bg-amber-400" : "bg-zinc-700"}`}
+                        >
+                            <span className={`absolute top-0.5 left-0.5 size-4 rounded-full bg-white shadow transition-transform duration-200 ${showGBM ? "translate-x-4" : "translate-x-0"}`} />
+                        </button>
+                    </label>
+                    <PeriodSelect value={period} onChange={setPeriod} label="Goal scorers period" />
+                </div>
             </div>
 
             {goalScorers.length > 0 ? (
                 <ol>
                     {goalScorers.map((player, index) => (
-                        <li
-                            className="border-b border-white/10 last:border-b-0"
-                            key={player.id}
-                        >
+                        <li className="border-b border-white/10 last:border-b-0" key={player.id}>
                             <Link
                                 className="grid grid-cols-[1rem_2.5rem_1fr_auto] items-center gap-2 rounded-md py-1.5 transition-colors hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-amber-400"
                                 href={`/players/${player.id}`}
@@ -191,12 +224,22 @@ function GoalScorers() {
                                     fallbackSrc="/user.png"
                                     alt=""
                                 />
-                                <span className="truncate text-base font-medium text-zinc-100">
-                                    {player.name}
-                                </span>
-                                <span className="text-base text-white" aria-label={`${player.goals} goals`}>
-                                    {player.goals}
-                                </span>
+                                <div className="min-w-0">
+                                    <span className="truncate text-base font-medium text-zinc-100">{player.name}</span>
+                                    {showGBM && (
+                                        <div className="mt-0.5 flex gap-1">
+                                            {player.goalsByMatch.map((g, i) => (
+                                                <span key={i} className="rounded bg-zinc-800 px-1.5 py-0.5 text-[10px] font-semibold text-amber-300">
+                                                    {g}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="text-right">
+                                    <span className="text-base font-bold text-white">{player.goals}</span>
+                                    <p className="text-[10px] text-zinc-500">{player.GPM.toFixed(2)} GPM</p>
+                                </div>
                             </Link>
                         </li>
                     ))}

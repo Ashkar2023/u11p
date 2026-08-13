@@ -35,7 +35,8 @@
         },
         {
             "id": 4,
-            "name": "Athar"
+            "name": "Athar",
+            "image": "/players/athar.png"
         },
         {
             "id": 5,
@@ -72,7 +73,8 @@
         },
         {
             "id": 12,
-            "name": "Siddique"
+            "name": "Siddique",
+            "image": "/players/siddi.png"
         },
         {
             "id": 13,

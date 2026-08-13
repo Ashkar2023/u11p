@@ -104,7 +104,7 @@ function Lineup({ match, teams }) {
                                                 aria-label={`View ${player?.name ?? `Player ${playerId}`}`}
                                             >
                                                 <SafeImage
-                                                    className="size-10 shrink-0 rounded-full bg-zinc-600 object-cover object-top"
+                                                    className="size-10 shrink-0 rounded-full bg-motm object-cover object-top"
                                                     src={player?.image}
                                                     fallbackSrc="/user.png"
                                                     alt=""

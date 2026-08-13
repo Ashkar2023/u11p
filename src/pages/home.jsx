@@ -96,7 +96,7 @@ function TopScorersPreview() {
                         >
                             <span className="text-xs font-semibold text-amber-400">{index + 1}</span>
                             <SafeImage
-                                className="size-10 rounded-full border border-white/10 bg-zinc-600 object-cover object-top"
+                                className="size-10 rounded-full border border-white/10 bg-motm object-cover object-top"
                                 src={player.image}
                                 fallbackSrc="/user.png"
                                 alt=""

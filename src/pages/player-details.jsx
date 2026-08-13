@@ -66,9 +66,9 @@ export const PlayerDetails = () => {
                 </button>
 
                 <section>
-                    <div className="aspect-5/6 overflow-hidden rounded-lg border border-white/10 bg-zinc-600">
+                    <div className="aspect-5/6 overflow-hidden rounded-lg border border-white/10 bg-motm">
                         <SafeImage
-                            className="size-full bg-zinc-600 object-cover object-top"
+                            className="size-full bg-motm object-cover object-top"
                             src={player.image}
                             fallbackSrc="/user.png"
                             alt={`${player.name} profile`}

@@ -109,7 +109,7 @@ export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title, m
                         </div>
                     </div>
                     <SafeImage
-                        className="absolute right-3 top-1/2 size-16 -translate-y-1/2 rounded-full border-2 border-amber-300/70 bg-zinc-800 object-cover object-top shadow-lg shadow-black/40 sm:right-5 sm:size-20"
+                        className="absolute right-3 top-1/2 size-16 -translate-y-1/2 rounded-full border-2 border-amber-300/70 bg-motm object-cover object-top shadow-lg shadow-black/40 sm:right-5 sm:size-20"
                         src={motm.image}
                         fallbackSrc="/user.png"
                         alt={motm.name ?? String(motm)}

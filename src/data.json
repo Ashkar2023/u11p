@@ -30,7 +30,8 @@
         },
         {
             "id": 3,
-            "name": "Miqu"
+            "name": "Miqu",
+            "image": "/players/miqu.png"
         },
         {
             "id": 4,
@@ -168,7 +169,8 @@
         },
         {
             "id": 34,
-            "name": "Muhsin Moosi"
+            "name": "Muhsin Moosi",
+            "image": "/players/moosi.png"
         },
         {
             "id": 35,

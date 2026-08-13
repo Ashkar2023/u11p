@@ -22,3 +22,7 @@ textarea,
 select {
     font: inherit;
 }
+
+.bg-motm {
+    background: radial-gradient(circle at 50% 20%, #f7f3ff 0%, #d9d5e8 42%, #8b879f 100%);
+}

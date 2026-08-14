@@ -82,7 +82,7 @@ export const PlayerDetails = () => {
                     <div className="mt-6 border-y border-white/10 py-4">
                         <dl className="space-y-3">
                             <div className="flex items-center justify-between gap-4">
-                                <dt className="text-sm text-zinc-400 sm:text-base">Matches played</dt>
+                                <dt className="text-sm text-zinc-400 sm:text-base">Appearances</dt>
                                 <dd className="text-xl font-semibold text-amber-400 sm:text-2xl">
                                     {matchesPlayed}
                                 </dd>

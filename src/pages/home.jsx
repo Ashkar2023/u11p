@@ -82,40 +82,35 @@ function TopScorersPreview() {
                     </svg>
                 </Link>
             </div>
-            {topScorers.length > 0 ? (topScorers.map((player, index) => (
+            {topScorers.length > 0 ? (
                 <ol>
-
-                    <li
-                        className="border-b border-white/10 last:border-b-0"
-                        key={player.id}
-                    >
-                        <Link
-                            className="grid grid-cols-[1rem_2.5rem_1fr_auto] items-center gap-2 rounded-md py-1.5 transition-colors hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-amber-400"
-                            href={`/players/${player.id}`}
-                            aria-label={`View ${player.name}`}
-                        >
-                            <span className="text-xs font-semibold text-amber-400">{index + 1}</span>
-                            <SafeImage
-                                className="size-10 rounded-full border border-white/10 bg-motm object-cover object-top"
-                                src={player.image}
-                                fallbackSrc="/user.png"
-                                alt=""
-                            />
-                            <span className="truncate text-base font-medium text-zinc-100">
-                                {player.name}
-                            </span>
-                            <span className="text-base font-normal text-white" aria-label={`${player.goals} goals`}>
-                                {player.goals}
-                            </span>
-                        </Link>
-                    </li>
+                    {topScorers.map((player, index) => (
+                        <li className="border-b border-white/10 last:border-b-0" key={player.id}>
+                            <Link
+                                className="grid grid-cols-[1rem_2.5rem_1fr_auto] items-center gap-2 rounded-md py-1.5 transition-colors hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-amber-400"
+                                href={`/players/${player.id}`}
+                                aria-label={`View ${player.name}`}
+                            >
+                                <span className="text-xs font-semibold text-amber-400">{index + 1}</span>
+                                <SafeImage
+                                    className="size-10 rounded-full border border-white/10 bg-motm object-cover object-top"
+                                    src={player.image}
+                                    fallbackSrc="/user.png"
+                                    alt=""
+                                />
+                                <span className="truncate text-base font-medium text-zinc-100">
+                                    {player.name}
+                                </span>
+                                <span className="text-base font-normal text-white" aria-label={`${player.goals} goals`}>
+                                    {player.goals}
+                                </span>
+                            </Link>
+                        </li>
+                    ))}
                 </ol>
-            ))) : (
-                <>
-                    <p className="py-5 text-center text-sm text-zinc-500">No goal records for this period.</p>
-                </>
-            )}
-        </section>
+            ) : (
+                <p className="py-5 text-center text-sm text-zinc-500">No goal records for this period.</p>
+            )}        </section>
     );
 }
 

@@ -249,9 +249,9 @@ function GoalScorers() {
                                 <div className="text-right">
                                     <span className="text-base font-bold text-white">{player.goals}</span>
                                     <p className="text-[10px] text-zinc-500">
-                                        <span>{player.matchesPlayed} apps</span>
-                                        <span className="mx-1 text-zinc-700">·</span>
-                                        <span>{player.GPM.toFixed(2)} per game</span>
+                                        <span className="text-zinc-400">{player.matchesPlayed}</span> apps
+                                        <span className="mx-1 text-zinc-300">·</span>
+                                        <span className="text-zinc-400">{player.GPM.toFixed(2)}</span> avg
                                     </p>
                                 </div>
                             </Link>

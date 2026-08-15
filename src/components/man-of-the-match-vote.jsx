@@ -494,7 +494,7 @@ export default function ManOfTheMatchVote({
                                 >
                                     <span className={`relative block aspect-square w-full max-w-36 rounded-full overflow-hidden border-2 p-1.5 transition-colors ${isSelected && !isMoving ? "border-amber-300 bg-amber-400/10 shadow-[0_0_32px_rgba(251,191,36,.28)]" : "border-white/10 bg-zinc-800"}`}>
                                         <SafeImage
-                                            className="size-full rounded-full bg-zinc-800 object-cover object-top"
+                                            className="size-full rounded-full object-cover object-top bg-motm"
                                             src={player.image}
                                             fallbackSrc="/user.png"
                                             alt={player.name}

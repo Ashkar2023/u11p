@@ -50,17 +50,21 @@
         },
         {
             "id": 7,
-            "name": "Abdullah"
+            "name": "Abdullah",
+            "image": "/players/abdullah.png"
         },
         {
             "id": 8,
             "name": "Manu Paappan",
             "image": "/players/manu.png",
-            "topScorerMonths": ["July 2026"]
+            "topScorerMonths": [
+                "July 2026"
+            ]
         },
         {
             "id": 9,
-            "name": "Milan"
+            "name": "Milan",
+            "image": "/players/milan.png"
         },
         {
             "id": 10,
@@ -112,7 +116,8 @@
         },
         {
             "id": 20,
-            "name": "Sabith"
+            "name": "Sabith",
+            "image": "/players/sabith.png"
         },
         {
             "id": 21,
@@ -125,7 +130,8 @@
         },
         {
             "id": 23,
-            "name": "Aideed"
+            "name": "Aideed",
+            "image": "/players/aideed.png"
         },
         {
             "id": 24,
@@ -138,7 +144,8 @@
         },
         {
             "id": 26,
-            "name": "Noushad mama"
+            "name": "Noushad mama",
+            "image": "/players/mama.png"
         },
         {
             "id": 27,
@@ -799,7 +806,40 @@
                     "teamId": 2
                 }
             ],
-            "lineup": [],
+            "lineup": [
+                {
+                    "teamId": 1,
+                    "playerIds": [
+                        2,
+                        29,
+                        8,
+                        26,
+                        3,
+                        1,
+                        27,
+                        14,
+                        33,
+                        25,
+                        22
+                    ]
+                },
+                {
+                    "teamId": 2,
+                    "playerIds": [
+                        10,
+                        15,
+                        17,
+                        19,
+                        12,
+                        5,
+                        6,
+                        9,
+                        11,
+                        20,
+                        23
+                    ]
+                }
+            ],
             "goals": [],
             "motmPlayerId": null
         }

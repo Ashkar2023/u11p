@@ -800,10 +800,12 @@
             "date": "2026-08-15T15:30:00.000Z",
             "teams": [
                 {
-                    "teamId": 1
+                    "teamId": 1,
+                    "score": 3
                 },
                 {
-                    "teamId": 2
+                    "teamId": 2,
+                    "score": 5
                 }
             ],
             "lineup": [
@@ -840,8 +842,45 @@
                     ]
                 }
             ],
-            "goals": [],
-            "motmPlayerId": null
+            "goals": [
+                {
+                    "playerId": 6,
+                    "teamId": 2,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 11,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 19,
+                    "teamId": 2,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 27,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 1,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 1
+                },
+                {
+                    "playerId": 8,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                }
+            ],
+            "motmPlayerId": 10
         }
     ]
 }

@@ -847,7 +847,7 @@
                     "playerId": 6,
                     "teamId": 2,
                     "count": 2,
-                    "penaltiesCount": 0
+                    "penaltiesCount": 1
                 },
                 {
                     "playerId": 11,
@@ -871,13 +871,13 @@
                     "playerId": 1,
                     "teamId": 1,
                     "count": 1,
-                    "penaltiesCount": 1
+                    "penaltiesCount": 0
                 },
                 {
                     "playerId": 8,
                     "teamId": 1,
                     "count": 1,
-                    "penaltiesCount": 0
+                    "penaltiesCount": 1
                 }
             ],
             "motmPlayerId": 10

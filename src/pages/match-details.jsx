@@ -144,6 +144,12 @@ export const MatchDetails = () => {
         params?.id ? localStorage.getItem(`voted_match_${params.id}`) === "true" : false
     ));
     const [isVoteFeedbackVisible, setIsVoteFeedbackVisible] = useState(false);
+    const setTab = (tab) => {
+        const url = new URL(window.location.href);
+        url.searchParams.set("tab", tab);
+        window.history.replaceState(null, "", url.toString());
+        setActiveTab(tab);
+    };
 
     useEffect(() => {
         const timer = window.setInterval(() => setNow(new Date()), 1000);
@@ -159,7 +165,7 @@ export const MatchDetails = () => {
             if (event.detail?.matchId !== String(params?.id)) return;
             setIsVoteFeedbackVisible(false);
             setHasVoted(true);
-            setActiveTab("votes");
+            setTab("votes");
         };
         window.addEventListener("motm-voted", handleVote);
         return () => window.removeEventListener("motm-voted", handleVote);
@@ -177,17 +183,19 @@ export const MatchDetails = () => {
 
     useEffect(() => {
         if (activeTab === "vote" && !canShowVoting) {
-            setActiveTab(canShowVotes ? "votes" : "facts");
+            setTab(canShowVotes ? "votes" : "facts");
         }
         if (activeTab === "votes" && !canShowVotes) {
-            setActiveTab(canShowVoting ? "vote" : "facts");
+            setTab(canShowVoting ? "vote" : "facts");
         }
     }, [activeTab, canShowVotes, canShowVoting]);
 
     useEffect(() => {
         const requestedTab = new URLSearchParams(window.location.search).get("tab");
         if (requestedTab === "vote" && canShowVoting) setActiveTab("vote");
-        if (requestedTab === "votes" && canShowVotes) setActiveTab("votes");
+        else if (requestedTab === "votes" && canShowVotes) setActiveTab("votes");
+        else if (requestedTab === "lineup") setActiveTab("lineup");
+        else setActiveTab("facts"); // default
     }, [canShowVotes, canShowVoting, params?.id]);
 
     const goBack = () => {
@@ -202,10 +210,10 @@ export const MatchDetails = () => {
         return (
             <main className="min-h-dvh bg-zinc-950 px-4 py-6 text-white">
                 <div className="mx-auto max-w-3xl">
-                    <button className="flex items-center gap-1 text-sm text-zinc-300" type="button" onClick={goBack}>
+                    <p className="mt-10 text-center text-zinc-100 text-lg mb-2">Match not found.</p>
+                    <button className="mx-auto flex items-center gap-1 text-sm text-zinc-400" type="button" onClick={goBack}>
                         <BackIcon /> Back
                     </button>
-                    <p className="mt-10 text-center text-zinc-500">Match not found.</p>
                 </div>
             </main>
         );
@@ -220,15 +228,6 @@ export const MatchDetails = () => {
     return (
         <main className="min-h-dvh bg-zinc-950 px-4 py-[calc(1.5rem+env(safe-area-inset-top))] text-white">
             <div className="mx-auto w-full max-w-3xl">
-                <button
-                    className="mb-5 flex items-center gap-1 rounded-md py-1 pr-2 text-sm text-zinc-300 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-amber-400"
-                    type="button"
-                    onClick={goBack}
-                >
-                    <BackIcon />
-                    <span>Back</span>
-                </button>
-
                 <MatchCard
                     date={match.date}
                     teamA={homeTeam}
@@ -248,7 +247,7 @@ export const MatchDetails = () => {
                             disabled={isVoteFeedbackVisible}
                             role="tab"
                             aria-selected={activeTab === "facts"}
-                            onClick={() => setActiveTab("facts")}
+                            onClick={() => setTab("facts")}
                         >
                             Match facts
                         </button>
@@ -258,7 +257,7 @@ export const MatchDetails = () => {
                             disabled={isVoteFeedbackVisible}
                             role="tab"
                             aria-selected={activeTab === "lineup"}
-                            onClick={() => setActiveTab("lineup")}
+                            onClick={() => setTab("lineup")}
                         >
                             Lineup
                         </button>
@@ -269,7 +268,7 @@ export const MatchDetails = () => {
                                 disabled={isVoteFeedbackVisible}
                                 role="tab"
                                 aria-selected={activeTab === "vote"}
-                                onClick={() => setActiveTab("vote")}
+                                onClick={() => setTab("vote")}
                             >
                                 Vote MOTM
                             </button>
@@ -281,7 +280,7 @@ export const MatchDetails = () => {
                                 disabled={isVoteFeedbackVisible}
                                 role="tab"
                                 aria-selected={activeTab === "votes"}
-                                onClick={() => setActiveTab("votes")}
+                                onClick={() => setTab("votes")}
                             >
                                 Votes
                             </button>

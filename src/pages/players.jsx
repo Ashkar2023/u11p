@@ -28,11 +28,11 @@ export const Players = () => {
                     </p>
                 </div>
 
-                <ul className="grid grid-cols-3 gap-2 sm:gap-3">
+                <ul className="grid grid-cols-3 gap-px gap-y-1 bg-white/10">
                     {visiblePlayers.map((player) => (
                         <li key={player.id}>
                             <Link
-                                className="flex h-36 flex-col overflow-hidden rounded-lg border border-white/10 bg-black/20 transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 sm:h-48"
+                                className="flex h-36 flex-col overflow-hidden bg-zinc-950 transition-opacity active:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 sm:h-48"
                                 href={`/players/${player.id}`}
                                 aria-label={`View ${player.name}`}
                             >

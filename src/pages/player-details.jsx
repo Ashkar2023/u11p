@@ -32,14 +32,6 @@ export const PlayerDetails = () => {
         (match) => hasMatchResult(match) && match.motmPlayerId === player?.id,
     ).length;
 
-    const goBack = () => {
-        if (window.history.length > 1) {
-            window.history.back();
-        } else {
-            navigate("/players");
-        }
-    };
-
     if (!player || player.hidden) {
         return (
             <main className="min-h-dvh bg-zinc-950 px-4 py-6 text-white">
@@ -54,19 +46,10 @@ export const PlayerDetails = () => {
     }
 
     return (
-        <main className="min-h-dvh bg-zinc-950 px-4 py-[calc(1.5rem+env(safe-area-inset-top))] text-white">
-            <div className="mx-auto w-full max-w-3xl">
-                <button
-                    className="mb-5 flex items-center gap-1 rounded-md py-1 pr-2 text-sm text-zinc-300 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-amber-400"
-                    type="button"
-                    onClick={goBack}
-                >
-                    <BackIcon />
-                    <span>Back</span>
-                </button>
-
+        <main className="min-h-dvh bg-zinc-950 text-white">
+            <div className="w-full">
                 <section>
-                    <div className="aspect-5/6 overflow-hidden rounded-lg border border-white/10 bg-motm">
+                    <div className="aspect-5/6 overflow-hidden bg-motm pt-4">
                         <SafeImage
                             className="size-full bg-motm object-cover object-top"
                             src={player.image}
@@ -80,7 +63,7 @@ export const PlayerDetails = () => {
                     </h1>
 
                     <div className="mt-6 border-y border-white/10 py-4">
-                        <dl className="space-y-3">
+                        <dl className="space-y-3 px-4">
                             <div className="flex items-center justify-between gap-4">
                                 <dt className="text-sm text-zinc-400 sm:text-base">Appearances</dt>
                                 <dd className="text-xl font-semibold text-amber-400 sm:text-2xl">

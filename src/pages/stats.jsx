@@ -223,23 +223,35 @@ function GoalScorers() {
                     {goalScorers.map((player, index) => (
                         <li className="border-b border-white/10 last:border-b-0" key={player.id}>
                             <Link
-                                className="grid grid-cols-[1rem_2.5rem_1fr_auto] items-center gap-2 rounded-md py-1.5 transition-colors hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-amber-400"
+                                className="grid h-16 grid-cols-[1rem_4rem_1fr_auto] items-center gap-2 rounded-md transition-colors hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-amber-400"
                                 href={`/players/${player.id}`}
                                 aria-label={`View ${player.name}`}
                             >
-                                <span className="text-xs font-semibold text-amber-400">{index + 1}</span>
-                                <SafeImage
-                                    className="size-10 rounded-full border border-white/10 bg-motm object-cover object-top"
-                                    src={player.image}
-                                    fallbackSrc="/user.png"
-                                    alt=""
-                                />
+                                <span className="text-xs font-semibold text-amber-400">
+                                    {index + 1}
+                                </span>
+
+                                <div className="flex h-16 shrink-0 items-start justify-center overflow-clip">
+                                    <SafeImage
+                                        className="h-20 pt-1.5 w-auto max-w-full object-contain object-top"
+                                        src={player.image}
+                                        fallbackSrc="/user.png"
+                                        alt=""
+                                    />
+                                </div>
+
                                 <div className="min-w-0">
-                                    <span className="truncate text-base font-medium text-zinc-100">{player.name}</span>
+                                    <span className="truncate text-base font-medium text-zinc-100">
+                                        {player.name}
+                                    </span>
+
                                     {showGBM && (
                                         <div className="mt-0.5 flex gap-1">
                                             {player.goalsByMatch.map((g, i) => (
-                                                <span key={i} className="rounded bg-zinc-800 px-1.5 py-0.5 text-[10px] font-semibold text-amber-300">
+                                                <span
+                                                    key={i}
+                                                    className="rounded bg-zinc-800 px-1.5 py-0.5 text-[10px] font-semibold text-amber-300"
+                                                >
                                                     {g}
                                                 </span>
                                             ))}

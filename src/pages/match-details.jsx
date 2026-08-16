@@ -83,46 +83,53 @@ function MatchFacts({ match, teams }) {
 }
 
 function Lineup({ match, teams }) {
+    const lineups = teams.map((team) => ({
+        team,
+        playerIds: match.lineup?.find((e) => e.teamId === team.id)?.playerIds ?? [],
+    }));
+
+    if (lineups.every((l) => !l.playerIds.length)) {
+        return <p className="py-5 text-center text-xs text-zinc-500">Lineup not yet available</p>;
+    }
+
     return (
         <div className="grid grid-cols-2 divide-x divide-white/10">
-            {teams.map((team) => {
-                const teamLineup = match.lineup?.find((entry) => entry.teamId === team.id);
-                const playerIds = teamLineup?.playerIds ?? [];
-
-                return (
-                    <section className="min-w-0 px-3 first:pl-0 last:pr-0" key={team.id}>
-                        <TeamHeading team={team} />
-                        {playerIds.length > 0 ? (
-                            <ul className="mt-2">
-                                {playerIds.map((playerId) => {
-                                    const player = playersById.get(playerId);
-                                    return (
-                                        <li className="border-b border-white/10 last:border-b-0" key={playerId}>
-                                            <Link
-                                                className="flex min-w-0 items-center gap-2 rounded-md py-2 transition-colors hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-amber-400"
-                                                href={`/players/${playerId}`}
-                                                aria-label={`View ${player?.name ?? `Player ${playerId}`}`}
-                                            >
-                                                <SafeImage
-                                                    className="size-10 shrink-0 rounded-full bg-motm object-cover object-top"
-                                                    src={player?.image}
-                                                    fallbackSrc="/user.png"
-                                                    alt=""
-                                                />
-                                                <span className="min-w-0 truncate text-sm text-zinc-200">
-                                                    {player?.name ?? `Player ${playerId}`}
-                                                </span>
-                                            </Link>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        ) : (
-                            <p className="py-5 text-center text-xs text-zinc-500">No lineup recorded</p>
-                        )}
-                    </section>
-                );
-            })}
+            {lineups.map(({ team, playerIds }) => (
+                <section className="min-w-0 first:pl-0 last:pr-0" key={team.id}>
+                    <TeamHeading team={team} />
+                    {playerIds.length > 0 ? (
+                        <ul>
+                            {playerIds.map((playerId) => {
+                                const player = playersById.get(playerId);
+                                return (
+                                    <li
+                                        className={`relative h-16 overflow-hidden border-b border-white/10 bg-gradient-to-r ${team.id === 1 ? "from-blue-500/60 via-blue-700/30" : "from-yellow-400/80 via-yellow-600/50"} to-transparent last:border-b-0`}
+                                        key={playerId}
+                                    >
+                                        <Link
+                                            className="relative z-10 flex h-full items-center px-3 transition-colors hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-amber-400"
+                                            href={`/players/${playerId}`}
+                                            aria-label={`View ${player?.name ?? `Player ${playerId}`}`}
+                                        >
+                                            <span className="min-w-0 text-sm max-w-7/12 truncate font-medium text-zinc-100">
+                                                {player?.name ?? `Player ${playerId}`}
+                                            </span>
+                                        </Link>
+                                        <SafeImage
+                                            className="pointer-events-none absolute right-0 top-0 h-28 w-auto max-w-none object-contain object-top"
+                                            src={player?.image}
+                                            fallbackSrc="/user.png"
+                                            alt=""
+                                        />
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    ) : (
+                        <p className="py-5 text-center text-xs text-zinc-500">No lineup recorded</p>
+                    )}
+                </section>
+            ))}
         </div>
     );
 }

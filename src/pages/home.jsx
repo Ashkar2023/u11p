@@ -3,7 +3,7 @@ import MatchCard from "../components/match.card";
 import SafeImage from "../components/safe-image";
 import data from "../data.json";
 import Layout from "../layout";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { formatDate, getMatchVotingStatus, hasMatchResult } from "../utils/date.util";
 import { calculateGoalScorers } from "./stats";
 
@@ -37,6 +37,7 @@ const lastMonthMatches = completedMatches.filter(
 const topScorers = calculateGoalScorers(lastMonthMatches);
 
 function NextMatchCard({ match }) {
+    const [,navigate] = useLocation();
     return (
         <section className="flex items-center gap-4 rounded-lg border border-white/10 bg-zinc-900/75 p-3 shadow-2xl shadow-black/25 sm:p-6">
             <div className="flex size-14 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-100 sm:size-16">
@@ -54,6 +55,24 @@ function NextMatchCard({ match }) {
                 </time>
                 <p className="text-zinc-500 text-sm">Thavalam turf</p>
             </div>
+            {
+                match.lineup.length !== 0 && 
+                <div className="flex-1">
+                    <button className="flex items-center text-zinc-300 py-1 px-2 rounded-md border border-white/30 ml-auto cursor-pointer" onClick={()=>navigate(`/matches/${match.id}`)}>
+                        <span className="text-sm">View lineup</span>
+                        <svg
+                            className="size-4"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            aria-hidden="true"
+                        >
+                            <path d="m9 18 6-6-6-6" />
+                        </svg>
+                    </button>
+                </div>
+            }
         </section>
     );
 }
@@ -87,17 +106,19 @@ function TopScorersPreview() {
                     {topScorers.map((player, index) => (
                         <li className="border-b border-white/10 last:border-b-0" key={player.id}>
                             <Link
-                                className="grid grid-cols-[1rem_2.5rem_1fr_auto] items-center gap-2 rounded-md py-1.5 transition-colors hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-amber-400"
+                                className="grid h-16 grid-cols-[1rem_4rem_1fr_auto] items-center gap-2 rounded-md transition-colors hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-amber-400"
                                 href={`/players/${player.id}`}
                                 aria-label={`View ${player.name}`}
                             >
                                 <span className="text-xs font-semibold text-amber-400">{index + 1}</span>
-                                <SafeImage
-                                    className="size-10 rounded-full border border-white/10 bg-motm object-cover object-top"
-                                    src={player.image}
-                                    fallbackSrc="/user.png"
-                                    alt=""
-                                />
+                                <div className="flex h-16 shrink-0 items-start justify-center overflow-clip">
+                                    <SafeImage
+                                        className="h-20 pt-1.5 w-auto max-w-full object-contain object-top"
+                                        src={player.image}
+                                        fallbackSrc="/user.png"
+                                        alt=""
+                                    />
+                                </div>
                                 <span className="truncate text-base font-medium text-zinc-100">
                                     {player.name}
                                 </span>

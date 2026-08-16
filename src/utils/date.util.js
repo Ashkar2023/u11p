@@ -4,6 +4,7 @@ export const formatDate = (d) => {
         day: "numeric",
         month: "short",
         year: "numeric",
+        weekday:"short",
         timeZone: "Asia/Kolkata",
     });
     const startTime = date.toLocaleTimeString("en-IN", {

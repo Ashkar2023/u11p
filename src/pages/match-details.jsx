@@ -237,6 +237,7 @@ export const MatchDetails = () => {
                     scoreB={awayResult.score}
                     motm={motm}
                     matchdayCount={match.id}
+                    posterFilename={match.poster_filename}
                 />
 
                 <section className="mt-5">

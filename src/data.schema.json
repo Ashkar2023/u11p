@@ -83,6 +83,15 @@
                         "type": "string",
                         "format": "date-time"
                     },
+                    "poster_filename": {
+                        "type": "string",
+                        "description": "Filename of the matchday poster stored in the R2 matchday-posters directory.",
+                        "examples": [
+                            "august-15.png",
+                            "august-8.png",
+                            "july-25.png"
+                        ]
+                    },
                     "motmPlayerId": {
                         "description": "Man of the Match player ID",
                         "oneOf": [

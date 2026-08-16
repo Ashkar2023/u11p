@@ -222,6 +222,7 @@ export const Home = () => {
                     matchdayCount={recentMatch.id}
                     hideMatchdayCount
                     matchHref={`/matches/${recentMatch.id}`}
+                    posterFilename={recentMatch.poster_filename}
                 />
                 <TopScorersPreview />
             </div>

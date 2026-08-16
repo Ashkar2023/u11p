@@ -214,6 +214,7 @@
         {
             "id": 2,
             "date": "2026-06-27T14:30:00.000Z",
+            "poster_filename": "june-27.png",
             "teams": [
                 {
                     "teamId": 1,
@@ -257,6 +258,7 @@
         {
             "id": 3,
             "date": "2026-07-04T16:30:00.000Z",
+            "poster_filename": "july-4.png",
             "teams": [
                 {
                     "teamId": 1,
@@ -300,6 +302,7 @@
         {
             "id": 4,
             "date": "2026-07-11T14:30:00.000Z",
+            "poster_filename": "july-11.png",
             "teams": [
                 {
                     "teamId": 1,
@@ -345,6 +348,7 @@
         {
             "id": 5,
             "date": "2026-07-18T14:30:00.000Z",
+            "poster_filename": "july-18.png",
             "teams": [
                 {
                     "teamId": 1,
@@ -441,6 +445,7 @@
         {
             "id": 6,
             "date": "2026-07-25T14:30:00.000Z",
+            "poster_filename": "july-25.png",
             "teams": [
                 {
                     "teamId": 1,
@@ -528,6 +533,7 @@
         {
             "id": 7,
             "date": "2026-08-01T15:30:00.000Z",
+            "poster_filename": "august-1.png",
             "teams": [
                 {
                     "teamId": 1,
@@ -626,6 +632,7 @@
         {
             "id": 8,
             "date": "2026-08-08T15:30:00.000Z",
+            "poster_filename": "august-8.png",
             "teams": [
                 {
                     "teamId": 1,
@@ -798,6 +805,7 @@
         {
             "id": 10,
             "date": "2026-08-15T15:30:00.000Z",
+            "poster_filename": "august-15.png",
             "teams": [
                 {
                     "teamId": 1,

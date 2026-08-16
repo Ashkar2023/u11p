@@ -1,6 +1,7 @@
 import { formatDate } from "../utils/date.util";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import SafeImage from "./safe-image";
+import MatchdayPoster from "./matchday-poster";
 
 function Team({ team }) {
     return (
@@ -25,9 +26,9 @@ function StarIcon() {
     );
 }
 
-export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title, motm, matchdayCount, hideMatchdayCount, matchHref }) {
+export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title, motm, matchdayCount, hideMatchdayCount, matchHref, posterFilename }) {
+    const [, navigate] = useLocation();
     const hasResult = Number.isFinite(scoreA) && Number.isFinite(scoreB);
-    const MotmWrapper = motm?.id ? Link : "div";
     const scoreColor = (score, opponentScore) => {
         if (score > opponentScore) {
             return "text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.45)]";
@@ -39,15 +40,8 @@ export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title, m
     };
 
     return (
-        <section className="relative rounded-lg border border-white/10 bg-zinc-900/75 p-3 shadow-2xl shadow-black/25">
-            {matchHref && (
-                <Link
-                    className="absolute inset-0 z-0 rounded-lg transition-transform active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
-                    href={matchHref}
-                    aria-label={`View match from ${date}`}
-                />
-            )}
-            <div className={matchHref ? "pointer-events-none relative z-[1]" : undefined}>
+        <section className="relative rounded-lg border border-white/10 bg-zinc-900/75 p-3 shadow-2xl shadow-black/25" onClick={() => matchHref && navigate(matchHref)}>
+            <div className={matchHref ? "relative z-[1]" : undefined}>
                 <div className="mb-2 flex items-center justify-between gap-4">
                     {
                         title &&
@@ -56,8 +50,9 @@ export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title, m
                         </h2>
                     }
                     {!hideMatchdayCount && <h4 className="text-xs text-zinc-500 sm:text-sm">Match {matchdayCount}</h4>}
-                    <time className="text-xs text-zinc-400 sm:text-sm" dateTime={date}>
+                    <time className="flex items-center gap-2 text-xs text-zinc-400 sm:text-sm" dateTime={date}>
                         {formatDate(date)}
+                        {posterFilename && <MatchdayPoster filename={posterFilename} />}
                     </time>
                 </div>
 
@@ -86,12 +81,13 @@ export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title, m
             </div>
 
             {motm && (
-                <MotmWrapper
+                <Link
                     className="relative z-10 mt-4 block overflow-hidden rounded-xl border border-amber-300/20 bg-gradient-to-r from-amber-400/10 via-zinc-950 to-zinc-950 transition-transform active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
                     {...(motm?.id ? {
                         href: `/players/${motm.id}`,
                         "aria-label": `View ${motm.name} player profile`,
                     } : {})}
+                    onClick={(e) => e.stopPropagation()}
                 >
                     <span className="absolute -left-8 -top-12 size-28 rounded-full bg-amber-400/10 blur-3xl" aria-hidden="true" />
                     <span className="absolute -bottom-10 right-2 size-24 rounded-full bg-amber-300/10 blur-2xl" aria-hidden="true" />
@@ -114,7 +110,7 @@ export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title, m
                         fallbackSrc="/user.png"
                         alt={motm.name ?? String(motm)}
                     />
-                </MotmWrapper>
+                </Link>
             )}
         </section>
     );

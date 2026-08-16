@@ -102,6 +102,7 @@ export const Matches = () => {
                                 matchdayCount={match.id}
                                 matchHref={`/matches/${match.id}`}
                                 key={match.id}
+                                posterFilename={match.poster_filename}
                             />
                         );
                     })}

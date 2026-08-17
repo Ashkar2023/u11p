@@ -4,7 +4,7 @@ import SafeImage from "../components/safe-image";
 import data from "../data.json";
 import Layout from "../layout";
 import { Link, useLocation } from "wouter";
-import { formatDate, getMatchVotingStatus, hasMatchResult } from "../utils/date.util";
+import { formatDate, getMatchVotingPeriodStatus, hasMatchResult } from "../utils/date.util";
 import { calculateGoalScorers } from "./stats";
 
 const completedMatches = [...data.matches]
@@ -139,7 +139,7 @@ export const Home = () => {
     const [now, setNow] = useState(() => new Date());
     const votingMatch = [...data.matches]
         .sort((a, b) => b.date.localeCompare(a.date))
-        .find((match) => getMatchVotingStatus(match.date, now) === "open");
+        .find((match) => getMatchVotingPeriodStatus(match.date, now) === "open");
     const nextMatch = [...data.matches]
         .filter((match) => new Date(match.date) > now)
         .sort((a, b) => a.date.localeCompare(b.date))[0];
@@ -147,7 +147,7 @@ export const Home = () => {
     const [homeResult, awayResult] = recentMatch.teams;
     const homeTeam = teamsById.get(homeResult.teamId);
     const awayTeam = teamsById.get(awayResult.teamId);
-    const recentMotm = getMatchVotingStatus(recentMatch.date, now) === "closed"
+    const recentMotm = getMatchVotingPeriodStatus(recentMatch.date, now) === "closed"
         ? playersById.get(recentMatch.motmPlayerId)
         : null;
 

@@ -46,7 +46,7 @@ export function getMatchVotingWindow(date) {
     };
 }
 
-export function getMatchVotingStatus(date, now = new Date()) {
+export function getMatchVotingPeriodStatus(date, now = new Date()) {
     const { opensAt, closesAt } = getMatchVotingWindow(date);
     const currentTime = now.getTime();
 

@@ -1,41 +1,204 @@
 {
+    "$schema": "./data.schema.json",
     "teams": [
         {
             "id": 1,
-            "name": "Team A"
+            "name": "Paappan FC",
+            "logo": "/pfc.png"
         },
         {
             "id": 2,
-            "name": "Team B"
+            "name": "Cheppu Fighters",
+            "logo": "/cf.png"
         }
     ],
     "players": [
         {
+            "id": 0,
+            "name": "Unknown",
+            "hidden": true
+        },
+        {
             "id": 1,
-            "name": "Lionel Messi"
+            "name": "Lionel Messi",
+            "image": "/players/ashkar.png"
         },
         {
             "id": 2,
-            "name": "Cristiano Ronaldo"
+            "name": "Cristiano Ronaldo",
+            "image": "/players/sulaiman.png"
         },
         {
             "id": 3,
-            "name": "Kylian Mbappe"
+            "name": "Kylian Mbappé",
+            "image": "/players/miqu.png"
         },
         {
             "id": 4,
-            "name": "Erling Haaland"
+            "name": "Erling Haaland",
+            "image": "/players/athar.png"
         },
         {
             "id": 5,
-            "name": "Neymar Jr"
+            "name": "Mohamed Salah",
+            "image": "/players/haseem.png"
+        },
+        {
+            "id": 6,
+            "name": "Neymar Jr",
+            "image": "/players/huzain.png"
+        },
+        {
+            "id": 7,
+            "name": "Virgil van Dijk",
+            "image": "/players/abdullah.png"
+        },
+        {
+            "id": 8,
+            "name": "Robert Lewandowski",
+            "image": "/players/manu.png",
+            "topScorerMonths": [
+                "July 2026"
+            ]
+        },
+        {
+            "id": 9,
+            "name": "Vinícius Júnior",
+            "image": "/players/milan.png"
+        },
+        {
+            "id": 10,
+            "name": "Thibaut Courtois",
+            "image": "/players/saleem.png"
+        },
+        {
+            "id": 11,
+            "name": "Jude Bellingham",
+            "image": "/players/bablu.png"
+        },
+        {
+            "id": 12,
+            "name": "Kevin De Bruyne",
+            "image": "/players/siddi.png"
+        },
+        {
+            "id": 13,
+            "name": "Luka Modrić",
+            "image": "/players/shukoor.png"
+        },
+        {
+            "id": 14,
+            "name": "Harry Kane",
+            "image": "/players/aju.png"
+        },
+        {
+            "id": 15,
+            "name": "Trent Alexander-Arnold",
+            "image": "/players/jaleel.png"
+        },
+        {
+            "id": 16,
+            "name": "Toni Kroos"
+        },
+        {
+            "id": 17,
+            "name": "Sergio Ramos",
+            "image": "/players/sajeer.png"
+        },
+        {
+            "id": 18,
+            "name": "Karim Benzema"
+        },
+        {
+            "id": 19,
+            "name": "Rodri",
+            "image": "/players/shafeeq.png"
+        },
+        {
+            "id": 20,
+            "name": "Bernardo Silva",
+            "image": "/players/sabith.png"
+        },
+        {
+            "id": 21,
+            "name": "Antoine Griezmann"
+        },
+        {
+            "id": 22,
+            "name": "Son Heung-min",
+            "image": "/players/nazmel.png"
+        },
+        {
+            "id": 23,
+            "name": "Bukayo Saka",
+            "image": "/players/aideed.png"
+        },
+        {
+            "id": 24,
+            "name": "Pedri"
+        },
+        {
+            "id": 25,
+            "name": "Jamal Musiala",
+            "image": "/players/adhil.png"
+        },
+        {
+            "id": 26,
+            "name": "Zlatan Ibrahimović",
+            "image": "/players/mama.png"
+        },
+        {
+            "id": 27,
+            "name": "Lamine Yamal",
+            "image": "/players/akku.png"
+        },
+        {
+            "id": 28,
+            "name": "Sadio Mané",
+            "image": "/players/faruq.png"
+        },
+        {
+            "id": 29,
+            "name": "N'Golo Kanté",
+            "image": "/players/kavu.png"
+        },
+        {
+            "id": 30,
+            "name": "Ederson",
+            "image": "/players/rashid.png"
+        },
+        {
+            "id": 31,
+            "name": "Rúben Dias",
+            "image": "/players/shabab.png"
+        },
+        {
+            "id": 32,
+            "name": "Frenkie de Jong"
+        },
+        {
+            "id": 33,
+            "name": "Declan Rice",
+            "image": "/players/almas.png"
+        },
+        {
+            "id": 34,
+            "name": "Thierry Henry",
+            "image": "/players/moosi.png"
+        },
+        {
+            "id": 35,
+            "name": "Xavi Hernández"
+        },
+        {
+            "id": 36,
+            "name": "Andrés Iniesta"
         }
     ],
     "matches": [
         {
             "id": 1,
-            "date": "2026-06-01T14:30:00.000Z",
-            "motmPlayerId": 1,
+            "date": "2026-06-13T14:30:00.000Z",
             "teams": [
                 {
                     "teamId": 1,
@@ -43,100 +206,149 @@
                 },
                 {
                     "teamId": 2,
-                    "score": 2
+                    "score": 6
                 }
             ],
-            "goals": [
-                {
-                    "playerId": 1,
-                    "teamId": 1,
-                    "count": 3
-                },
-                {
-                    "playerId": 2,
-                    "teamId": 1,
-                    "count": 1
-                },
-                {
-                    "playerId": 3,
-                    "teamId": 2,
-                    "count": 2
-                }
-            ]
+            "goals": null
         },
         {
             "id": 2,
-            "date": "2026-06-08T14:30:00.000Z",
-            "motmPlayerId": 4,
+            "date": "2026-06-27T14:30:00.000Z",
+            "poster_filename": "june-27.png",
             "teams": [
                 {
                     "teamId": 1,
-                    "score": 3
+                    "score": 7
                 },
                 {
                     "teamId": 2,
-                    "score": 3
+                    "score": 5
                 }
             ],
-            "goals": [
+            "goals": null,
+            "lineup": [
                 {
-                    "playerId": 1,
-                    "teamId": 1,
-                    "count": 1
-                },
-                {
-                    "playerId": 4,
-                    "teamId": 1,
-                    "count": 3
-                },
-                {
-                    "playerId": 2,
                     "teamId": 2,
-                    "count": 2
+                    "playerIds": [
+                        11,
+                        31,
+                        15,
+                        19,
+                        10,
+                        18,
+                        6,
+                        20
+                    ]
                 },
                 {
-                    "playerId": 5,
-                    "teamId": 2,
-                    "count": 1
+                    "teamId": 1,
+                    "playerIds": [
+                        26,
+                        2,
+                        8,
+                        1,
+                        30,
+                        7,
+                        14,
+                        22
+                    ]
                 }
             ]
         },
         {
             "id": 3,
-            "date": "2026-06-15T14:30:00.000Z",
-            "motmPlayerId": 2,
+            "date": "2026-07-04T16:30:00.000Z",
+            "poster_filename": "july-4.png",
             "teams": [
                 {
                     "teamId": 1,
-                    "score": 2
+                    "score": 9
                 },
                 {
                     "teamId": 2,
-                    "score": 4
+                    "score": 5
                 }
             ],
-            "goals": [
+            "goals": null,
+            "lineup": [
                 {
-                    "playerId": 2,
                     "teamId": 2,
-                    "count": 3
+                    "playerIds": [
+                        11,
+                        19,
+                        15,
+                        31,
+                        17,
+                        18,
+                        10,
+                        20
+                    ]
                 },
                 {
-                    "playerId": 1,
                     "teamId": 1,
-                    "count": 2
-                },
-                {
-                    "playerId": 5,
-                    "teamId": 2,
-                    "count": 1
+                    "playerIds": [
+                        6,
+                        26,
+                        8,
+                        14,
+                        1,
+                        7,
+                        2,
+                        22
+                    ]
                 }
             ]
         },
         {
             "id": 4,
-            "date": "2026-06-22T14:30:00.000Z",
-            "motmPlayerId": 3,
+            "date": "2026-07-11T14:30:00.000Z",
+            "poster_filename": "july-11.png",
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 5
+                },
+                {
+                    "teamId": 2,
+                    "score": 6
+                }
+            ],
+            "goals": null,
+            "lineup": [
+                {
+                    "teamId": 2,
+                    "playerIds": [
+                        11,
+                        16,
+                        20,
+                        19,
+                        15,
+                        31,
+                        17,
+                        18,
+                        27
+                    ]
+                },
+                {
+                    "teamId": 1,
+                    "playerIds": [
+                        26,
+                        8,
+                        25,
+                        22,
+                        30,
+                        14,
+                        1,
+                        2,
+                        10
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "date": "2026-07-18T14:30:00.000Z",
+            "poster_filename": "july-18.png",
             "teams": [
                 {
                     "teamId": 1,
@@ -149,126 +361,95 @@
             ],
             "goals": [
                 {
-                    "playerId": 3,
+                    "playerId": 8,
                     "teamId": 1,
-                    "count": 3
+                    "count": 1,
+                    "penaltiesCount": 1
                 },
                 {
-                    "playerId": 4,
+                    "playerId": 14,
                     "teamId": 1,
-                    "count": 3
+                    "count": 2,
+                    "penaltiesCount": 0
                 },
-                {
-                    "playerId": 5,
-                    "teamId": 2,
-                    "count": 2
-                }
-            ]
-        },
-        {
-            "id": 5,
-            "date": "2026-07-06T14:30:00.000Z",
-            "motmPlayerId": 1,
-            "teams": [
-                {
-                    "teamId": 1,
-                    "score": 4
-                },
-                {
-                    "teamId": 2,
-                    "score": 2
-                }
-            ],
-            "goals": [
                 {
                     "playerId": 1,
                     "teamId": 1,
-                    "count": 2
+                    "count": 1,
+                    "penaltiesCount": 0
                 },
                 {
-                    "playerId": 2,
+                    "playerId": 5,
                     "teamId": 1,
-                    "count": 2
+                    "count": 1,
+                    "penaltiesCount": 0
                 },
                 {
-                    "playerId": 3,
+                    "playerId": 17,
                     "teamId": 2,
-                    "count": 2
+                    "count": 1,
+                    "penaltiesCount": 1
+                },
+                {
+                    "playerId": 6,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 11,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                }
+            ],
+            "lineup": [
+                {
+                    "teamId": 2,
+                    "playerIds": [
+                        18,
+                        12,
+                        17,
+                        15,
+                        19,
+                        13,
+                        20,
+                        6,
+                        11,
+                        9,
+                        34,
+                        31,
+                        35
+                    ]
+                },
+                {
+                    "teamId": 1,
+                    "playerIds": [
+                        7,
+                        23,
+                        8,
+                        30,
+                        5,
+                        25,
+                        29,
+                        1,
+                        2,
+                        14,
+                        22,
+                        26,
+                        33
+                    ]
                 }
             ]
         },
         {
             "id": 6,
-            "date": "2026-07-13T14:30:00.000Z",
-            "motmPlayerId": 4,
+            "date": "2026-07-25T14:30:00.000Z",
+            "poster_filename": "july-25.png",
             "teams": [
                 {
                     "teamId": 1,
-                    "score": 3
-                },
-                {
-                    "teamId": 2,
-                    "score": 2
-                }
-            ],
-            "goals": [
-                {
-                    "playerId": 4,
-                    "teamId": 1,
-                    "count": 1
-                },
-                {
-                    "playerId": 5,
-                    "teamId": 1,
-                    "count": 3
-                },
-                {
-                    "playerId": 2,
-                    "teamId": 2,
-                    "count": 2
-                }
-            ]
-        },
-        {
-            "id": 7,
-            "date": "2026-07-20T14:30:00.000Z",
-            "motmPlayerId": 3,
-            "teams": [
-                {
-                    "teamId": 1,
-                    "score": 3
-                },
-                {
-                    "teamId": 2,
-                    "score": 3
-                }
-            ],
-            "goals": [
-                {
-                    "playerId": 3,
-                    "teamId": 1,
-                    "count": 2
-                },
-                {
-                    "playerId": 4,
-                    "teamId": 2,
-                    "count": 2
-                },
-                {
-                    "playerId": 1,
-                    "teamId": 2,
-                    "count": 2
-                }
-            ]
-        },
-        {
-            "id": 8,
-            "date": "2026-07-27T14:30:00.000Z",
-            "motmPlayerId": 2,
-            "teams": [
-                {
-                    "teamId": 1,
-                    "score": 2
+                    "score": 5
                 },
                 {
                     "teamId": 2,
@@ -277,38 +458,485 @@
             ],
             "goals": [
                 {
-                    "playerId": 2,
-                    "teamId": 2,
-                    "count": 2
-                },
-                {
-                    "playerId": 5,
-                    "teamId": 2,
-                    "count": 2
-                },
-                {
-                    "playerId": 1,
+                    "playerId": 8,
                     "teamId": 1,
-                    "count": 2
+                    "count": 3,
+                    "penaltiesCount": 2
+                },
+                {
+                    "playerId": 25,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 4,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 17,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 6,
+                    "teamId": 2,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 28,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                }
+            ],
+            "lineup": [
+                {
+                    "teamId": 2,
+                    "playerIds": [
+                        18,
+                        12,
+                        17,
+                        15,
+                        19,
+                        13,
+                        20,
+                        21,
+                        6,
+                        11,
+                        9
+                    ]
+                },
+                {
+                    "teamId": 1,
+                    "playerIds": [
+                        7,
+                        23,
+                        8,
+                        33,
+                        3,
+                        22,
+                        1,
+                        14,
+                        5,
+                        10,
+                        4,
+                        24
+                    ]
                 }
             ]
         },
         {
-
-            "id": 9,
-            "date": "2026-08-12T14:30:00.000Z",
-            "motmPlayerId": 2,
+            "id": 7,
+            "date": "2026-08-01T15:30:00.000Z",
+            "poster_filename": "august-1.png",
             "teams": [
                 {
                     "teamId": 1,
-                    "score": 0
+                    "score": 4
                 },
                 {
                     "teamId": 2,
-                    "score": 0
+                    "score": 10
                 }
             ],
-            "goals": []
+            "goals": [
+                {
+                    "playerId": 1,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 14,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 22,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 19,
+                    "teamId": 1,
+                    "count": 1,
+                    "ownGoal": true
+                },
+                {
+                    "playerId": 15,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 6,
+                    "teamId": 2,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 9,
+                    "teamId": 2,
+                    "count": 5,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 20,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                }
+            ],
+            "lineup": [
+                {
+                    "teamId": 2,
+                    "playerIds": [
+                        18,
+                        12,
+                        17,
+                        15,
+                        4,
+                        11,
+                        13,
+                        20,
+                        6,
+                        9,
+                        19
+                    ]
+                },
+                {
+                    "teamId": 1,
+                    "playerIds": [
+                        7,
+                        23,
+                        8,
+                        33,
+                        3,
+                        22,
+                        21,
+                        1,
+                        14,
+                        5,
+                        10
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "date": "2026-08-08T15:30:00.000Z",
+            "poster_filename": "august-8.png",
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 7
+                },
+                {
+                    "teamId": 2,
+                    "score": 4
+                }
+            ],
+            "goals": [
+                {
+                    "playerId": 27,
+                    "teamId": 1,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 25,
+                    "teamId": 1,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 14,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 1,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 8,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 1
+                },
+                {
+                    "playerId": 9,
+                    "teamId": 2,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 20,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 11,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                }
+            ],
+            "lineup": [
+                {
+                    "teamId": 1,
+                    "playerIds": [
+                        7,
+                        29,
+                        8,
+                        26,
+                        3,
+                        5,
+                        1,
+                        27,
+                        14,
+                        33,
+                        25,
+                        10
+                    ]
+                },
+                {
+                    "teamId": 2,
+                    "playerIds": [
+                        18,
+                        15,
+                        17,
+                        19,
+                        12,
+                        4,
+                        6,
+                        9,
+                        11,
+                        22,
+                        20,
+                        23
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "date": "2026-08-11T14:30:00.000Z",
+            "motmPlayerId": 1,
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 7
+                },
+                {
+                    "teamId": 2,
+                    "score": 5
+                }
+            ],
+            "lineup": [
+                {
+                    "teamId": 2,
+                    "playerIds": [
+                        28,
+                        6,
+                        20,
+                        12,
+                        23,
+                        22
+                    ]
+                },
+                {
+                    "teamId": 1,
+                    "playerIds": [
+                        27,
+                        1,
+                        3,
+                        25,
+                        33,
+                        5,
+                        14
+                    ]
+                }
+            ],
+            "goals": [
+                {
+                    "playerId": 6,
+                    "teamId": 2,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 28,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 20,
+                    "teamId": 2,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 27,
+                    "teamId": 1,
+                    "count": 4,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 14,
+                    "teamId": 1,
+                    "count": 3,
+                    "penaltiesCount": 0
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "date": "2026-08-15T15:30:00.000Z",
+            "poster_filename": "august-15.png",
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 3
+                },
+                {
+                    "teamId": 2,
+                    "score": 5
+                }
+            ],
+            "lineup": [
+                {
+                    "teamId": 1,
+                    "playerIds": [
+                        2,
+                        29,
+                        8,
+                        26,
+                        3,
+                        1,
+                        27,
+                        14,
+                        33,
+                        25,
+                        22
+                    ]
+                },
+                {
+                    "teamId": 2,
+                    "playerIds": [
+                        10,
+                        15,
+                        17,
+                        19,
+                        12,
+                        5,
+                        6,
+                        9,
+                        11,
+                        20,
+                        23
+                    ]
+                }
+            ],
+            "goals": [
+                {
+                    "playerId": 6,
+                    "teamId": 2,
+                    "count": 2,
+                    "penaltiesCount": 1
+                },
+                {
+                    "playerId": 11,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 19,
+                    "teamId": 2,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 27,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 1,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 8,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 1
+                }
+            ],
+            "motmPlayerId": 10
+        },
+        {
+            "id": 11,
+            "date": "2026-08-17T05:30:00.000Z",
+            "teams": [
+                {
+                    "teamId": 1,
+                    "score": 3
+                },
+                {
+                    "teamId": 2,
+                    "score": 5
+                }
+            ],
+            "lineup": [
+                {
+                    "teamId": 1,
+                    "playerIds": [
+                        2,
+                        29,
+                        8,
+                        26,
+                        3,
+                        1,
+                        27,
+                        14,
+                        33,
+                        25,
+                        22
+                    ]
+                },
+                {
+                    "teamId": 2,
+                    "playerIds": [
+                        10,
+                        15,
+                        17,
+                        19,
+                        12,
+                        5,
+                        6,
+                        9,
+                        11,
+                        20,
+                        23
+                    ]
+                }
+            ]
         }
     ]
 }

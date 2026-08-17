@@ -5,7 +5,7 @@ import MatchCard from "../components/match.card";
 import MotmVotes from "../components/motm-votes";
 import SafeImage from "../components/safe-image";
 import data from "../data.json";
-import { getMatchVotingStatus } from "../utils/date.util";
+import { getMatchVotingPeriodStatus } from "../utils/date.util";
 
 const teamsById = new Map(data.teams.map((team) => [team.id, team]));
 const playersById = new Map(data.players.map((player) => [player.id, player]));
@@ -143,6 +143,9 @@ export const MatchDetails = () => {
     const [hasVoted, setHasVoted] = useState(() => (
         params?.id ? localStorage.getItem(`voted_match_${params.id}`) === "true" : false
     ));
+    const [hasRevoted, setHasRevoted] = useState(() => {
+        return params?.id ? localStorage.getItem(`revoted_match_${params.id}`) === "true" : false
+    })
     const [isVoteFeedbackVisible, setIsVoteFeedbackVisible] = useState(false);
     const setTab = (tab) => {
         const url = new URL(window.location.href);
@@ -161,19 +164,24 @@ export const MatchDetails = () => {
         setHasVoted(params?.id
             ? localStorage.getItem(`voted_match_${params.id}`) === "true"
             : false);
+        setHasRevoted(params?.id
+            ? localStorage.getItem(`revoted_match_${params.id}`) === "true"
+            : false);
         const handleVote = (event) => {
             if (event.detail?.matchId !== String(params?.id)) return;
             setIsVoteFeedbackVisible(false);
+            if (hasVoted) {
+                setHasRevoted(true);
+            }
             setHasVoted(true);
             setTab("votes");
-        };
-        window.addEventListener("motm-voted", handleVote);
+        }; window.addEventListener("motm-voted", handleVote);
         return () => window.removeEventListener("motm-voted", handleVote);
-    }, [params?.id]);
+    }, [params?.id, hasVoted]);
 
-    const votingStatus = match ? getMatchVotingStatus(match.date, now) : "closed";
-    const canShowVoting = votingStatus === "open" && !hasVoted;
-    const canShowVotes = votingStatus === "open" || votingStatus === "closed";
+    const votingPeriodStatus = match ? getMatchVotingPeriodStatus(match.date, now) : "closed";
+    const canShowVoting = votingPeriodStatus === "open" && !(hasVoted && hasRevoted);
+    const canShowVotes = votingPeriodStatus === "open" || votingPeriodStatus === "closed";
     const canShowMotmTab = canShowVoting || canShowVotes;
     const tabColumnClass = canShowVoting && canShowVotes
         ? "grid-cols-4"
@@ -223,7 +231,7 @@ export const MatchDetails = () => {
     const homeTeam = teamsById.get(homeResult.teamId);
     const awayTeam = teamsById.get(awayResult.teamId);
     const teams = [homeTeam, awayTeam];
-    const motm = votingStatus === "closed" ? playersById.get(match.motmPlayerId) : null;
+    const motm = votingPeriodStatus === "closed" ? playersById.get(match.motmPlayerId) : null;
 
     return (
         <main className="min-h-dvh bg-zinc-950 px-4 py-[calc(1.5rem+env(safe-area-inset-top))] text-white">
@@ -296,13 +304,17 @@ export const MatchDetails = () => {
                                 lineup={match.lineup}
                                 allPlayers={data.players}
                                 onFeedbackShown={() => setIsVoteFeedbackVisible(true)}
+                                hasVoted={hasVoted}
+                                hasRevoted={hasRevoted}
+                                setHasVoted={setHasVoted}
+                                setHasRevoted={setHasRevoted}
                             />
                         )}
                         {activeTab === "votes" && canShowVotes && (
                             <MotmVotes
                                 matchId={String(match.id)}
                                 allPlayers={data.players}
-                                isFinal={votingStatus === "closed"}
+                                isFinal={votingPeriodStatus === "closed"}
                             />
                         )}
                     </div>

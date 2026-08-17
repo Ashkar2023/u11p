@@ -46,9 +46,22 @@ export default function ManOfTheMatchVote({
     lineup,
     allPlayers = data.players,
     onFeedbackShown,
+    hasVoted,
+    hasRevoted,
+    setHasVoted,
+    setHasRevoted,
 }) {
     const [votedPlayerIds, setVotedPlayerIds] = useState([]);
     const [fetchVotedError, setFetchVotedError] = useState("");
+    const [voteDetails, setVoteDetails] = useState(() => {
+        if (!matchId) return null;
+        try {
+            const raw = localStorage.getItem(`match_${matchId}_vote_info`);
+            return raw ? JSON.parse(raw) : null;
+        } catch {
+            return null;
+        }
+    });
 
     useEffect(() => {
         const controller = new AbortController();
@@ -105,7 +118,7 @@ export default function ManOfTheMatchVote({
 
     const initialIndex = 0;
     const [selectedIndex, setSelectedIndex] = useState(initialIndex);
-    const [selectedVoter, setSelectedVoter] = useState("");
+    const [selectedVoter, setSelectedVoter] = useState(() => hasVoted ? voteDetails?.voterId ?? "" : "");
     const [offset, setOffset] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
     const [isMoving, setIsMoving] = useState(true);
@@ -257,18 +270,39 @@ export default function ManOfTheMatchVote({
     const handleKeyDown = (event) => {
         if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
         event.preventDefault();
-        snapTo(selectedIndex + (event.key === "ArrowRight" ? 1 : -1));
+        const direction = event.key === "ArrowRight" ? 1 : -1;
+        let next = selectedIndex + direction;
+        // skip the locked candidate
+        while (
+            next >= 0 && next < candidates.length &&
+            voteDetails && hasVoted && !hasRevoted &&
+            String(candidates[next]?.id) === String(voteDetails.candidateId)
+        ) next += direction;
+        snapTo(clamp(next, 0, candidates.length - 1));
     };
 
     const candidate = candidates[selectedIndex];
     const selectedVoterPlayer = allPlayers.find(
         (player) => String(player.id) === String(selectedVoter),
     );
+
+    const isSameAsLastVote = hasVoted && !hasRevoted
+        && voteDetails
+        && String(candidate?.id) === String(voteDetails.candidateId);
+
     const canVote = isUnlocked && !isMoving && !isDragging && !isSubmitting
-        && Boolean(selectedVoterPlayer) && Boolean(candidate);
+        && Boolean(selectedVoterPlayer) && Boolean(candidate)
+        && !isSameAsLastVote;
 
     const submitVote = async () => {
         if (!canVote) return;
+        const wasAlreadyVoted = hasVoted;
+
+        if (isSameAsLastVote) {
+            setVoteError("You cannot vote for the same player again.");
+            return;
+        }
+
         setIsSubmitting(true);
         setVoteError("");
 
@@ -293,6 +327,7 @@ export default function ManOfTheMatchVote({
                     voterName: voter.name,
                     candidateId: candidate.id,
                     candidateName: candidate.name,
+                    isRevote: hasVoted
                 }),
             });
             const result = await readJsonResponse(response);
@@ -306,7 +341,25 @@ export default function ManOfTheMatchVote({
                 throw new Error(result.reason || result.error || "Vote could not be saved.");
             }
 
+            const _voteDetails = {
+                matchId,
+                voterId: voter.id,
+                voterName: voter.name,
+                candidateId: candidate.id,
+                candidateName: candidate.name
+            };
             localStorage.setItem(`voted_match_${matchId}`, "true");
+            localStorage.setItem(`match_${matchId}_vote_info`,
+                JSON.stringify(_voteDetails)
+            );
+
+            if (hasVoted) {
+                localStorage.setItem(`revoted_match_${matchId}`, "true");
+            }
+
+            if (wasAlreadyVoted) setHasRevoted(true);
+            setVoteDetails(_voteDetails);
+            setHasVoted(true);
             setSuccessfulVote({ voter, candidate });
             onFeedbackShown?.();
             setIsConfirmationOpen(false);
@@ -354,7 +407,7 @@ export default function ManOfTheMatchVote({
     const buttonLabel = isSubmitting
         ? "Submitting vote…"
         : isUnlocked
-            ? candidate ? `Vote for ${candidate.name}` : "No players available"
+            ? candidate ? `${hasVoted ? "Revote" : "Vote"} for ${candidate.name}` : "No players available"
             : `Unlocking · ${Math.ceil((1 - unlockProgress) * 5)}s`;
 
     if (successfulVote) {
@@ -386,6 +439,16 @@ export default function ManOfTheMatchVote({
                 />
                 <h2 className="mt-4 text-2xl font-black text-white">{votedFor.name}</h2>
                 <p className="mt-1 text-sm font-semibold text-zinc-400">Player ID #{votedFor.id}</p>
+
+                {!hasRevoted && (
+                    <button
+                        className="mt-6 rounded-xl border border-white/10 bg-zinc-800 px-5 py-2.5 text-sm font-bold text-zinc-200 transition-colors hover:bg-zinc-700"
+                        type="button"
+                        onClick={() => setSuccessfulVote(null)}
+                    >
+                        Change vote
+                    </button>
+                )}
             </section>
         );
     }
@@ -421,6 +484,28 @@ export default function ManOfTheMatchVote({
                     </span>
                 </button>
 
+                {hasVoted && !hasRevoted && voteDetails && candidate && (
+                    <div className="mt-3 flex items-center justify-center gap-2 text-xs text-zinc-500">
+                        <SafeImage
+                            className="size-6 shrink-0 rounded-full bg-zinc-800 object-cover object-top"
+                            src={allPlayers.find(p => String(p.id) === String(voteDetails.candidateId))?.image}
+                            fallbackSrc="/user.png"
+                            alt={voteDetails.candidateName}
+                        />
+                        <span className="truncate font-medium text-zinc-400">{voteDetails.candidateName}</span>
+                        <svg className="size-3 shrink-0 text-zinc-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                            <path d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                        <SafeImage
+                            className="size-6 shrink-0 rounded-full bg-zinc-800 object-cover object-top"
+                            src={candidate.image}
+                            fallbackSrc="/user.png"
+                            alt={candidate.name}
+                        />
+                        <span className="truncate font-medium text-zinc-400">{candidate.name}</span>
+                    </div>
+                )}
+
                 <label className="mt-4 block text-left text-xs font-semibold uppercase tracking-widest text-zinc-400" htmlFor={`voter-${matchId}`}>
                     Who are you?
                 </label>
@@ -429,9 +514,9 @@ export default function ManOfTheMatchVote({
                         ref={voterSelectRef}
                         id={`voter-${matchId}`}
                         className="h-12 w-full appearance-none rounded-xl border border-white/10 bg-zinc-950 px-4 pr-10 text-sm text-white outline-none transition focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 disabled:text-zinc-600"
-                        value={selectedVoter}
+                        value={hasVoted ? voteDetails?.voterId : selectedVoter}
                         onChange={(event) => setSelectedVoter(event.target.value)}
-                        disabled={!isUnlocked || eligibleVoterCount === 0 || isSubmitting}
+                        disabled={hasVoted || !isUnlocked || eligibleVoterCount === 0 || isSubmitting}
                     >
                         <option value="">{eligibleVoterCount ? "Select your name" : "Everyone has voted"}</option>
                         {voters.map((player) => (
@@ -472,6 +557,10 @@ export default function ManOfTheMatchVote({
                         const centerDistance = Math.min(1, Math.abs((offset + (index - 1) * step) / step));
                         const scale = 1 - centerDistance * 0.18;
                         const isSelected = index === selectedIndex;
+                        const isPreviousVote = hasVoted && !hasRevoted
+                            && voteDetails
+                            && String(player.id) === String(voteDetails.candidateId);
+
                         return (
                             <div
                                 id={`candidate-${player.id}`}
@@ -480,6 +569,7 @@ export default function ManOfTheMatchVote({
                                 role="option"
                                 aria-selected={isSelected}
                                 key={player.id}
+                                onClick={() => !draggedRef.current && snapTo(index)}
                             >
                                 <button
                                     className="flex w-full flex-col items-center outline-none"
@@ -493,6 +583,14 @@ export default function ManOfTheMatchVote({
                                     onClick={() => !draggedRef.current && snapTo(index)}
                                 >
                                     <span className={`relative block aspect-square w-full max-w-36 rounded-full overflow-hidden border-2 p-1.5 transition-colors ${isSelected && !isMoving ? "border-amber-300 bg-amber-400/10 shadow-[0_0_32px_rgba(251,191,36,.28)]" : "border-white/10 bg-zinc-800"}`}>
+                                        {isPreviousVote && (
+                                            <span className="absolute inset-0 flex items-center justify-center rounded-full bg-black/60 z-10">
+                                                <svg className="size-6 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <rect x="5" y="10" width="14" height="11" rx="2" />
+                                                    <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                                                </svg>
+                                            </span>
+                                        )}
                                         <SafeImage
                                             className="size-full rounded-full object-cover object-top bg-motm"
                                             src={player.image}
@@ -511,14 +609,6 @@ export default function ManOfTheMatchVote({
                 </div>
             </div>
 
-            {/* <div className="flex items-center justify-center gap-2 px-5" aria-hidden="true">
-                <span className="h-px w-8 bg-zinc-700" />
-                <span className={`size-1.5 rounded-full ${isMoving ? "bg-zinc-600" : "bg-amber-400"}`} />
-                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-500">
-                    {isMoving ? "Choosing..." : "Locked In"}
-                </span>
-                <span className="h-px w-8 bg-zinc-700" />
-            </div> */}
             <p className="flex items-center justify-center gap-2 text-[10px] uppercase tracking-[0.16em] text-zinc-500">
                 <svg className="size-4 text-zinc-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M5 12h14M8 9l-3 3 3 3m8-6 3 3-3 3" />
@@ -552,7 +642,7 @@ export default function ManOfTheMatchVote({
                             <p className="mt-3 text-lg font-black text-amber-300">{candidate.name}</p>
                             <p className="mt-1 text-xs font-semibold text-zinc-500">Player ID #{candidate.id}</p>
                         </div>
-                        <p className="mt-5 text-sm text-zinc-400">A submitted vote cannot be changed.</p>
+                        {hasVoted && <p className="mt-5 text-sm text-zinc-400">You are revoting. You cannot change your vote after submitting.</p>}
                         <div className="mt-5 grid grid-cols-2 gap-3">
                             <button
                                 className="h-11 rounded-xl border border-white/10 bg-zinc-800 text-sm font-bold text-zinc-200 transition-colors hover:bg-zinc-700 disabled:opacity-50"

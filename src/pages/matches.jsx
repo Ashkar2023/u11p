@@ -3,7 +3,7 @@ import { useSearchParams } from "wouter";
 import MatchCard from "../components/match.card";
 import data from "../data.json";
 import { PageLayout } from "../layout";
-import { getMatchVotingStatus, hasMatchStarted } from "../utils/date.util";
+import { getMatchVotingPeriodStatus, hasMatchStarted } from "../utils/date.util";
 
 const ALL_TIME = "all";
 const teamsById = new Map(data.teams.map((team) => [team.id, team]));
@@ -96,7 +96,7 @@ export const Matches = () => {
                                 teamB={teamsById.get(awayResult.teamId)}
                                 scoreA={homeResult.score}
                                 scoreB={awayResult.score}
-                                motm={getMatchVotingStatus(match.date, now) === "closed"
+                                motm={getMatchVotingPeriodStatus(match.date, now) === "closed"
                                     ? playersById.get(match.motmPlayerId)
                                     : null}
                                 matchdayCount={match.id}

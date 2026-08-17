@@ -98,7 +98,8 @@
         },
         {
             "id": 16,
-            "name": "Latheef"
+            "name": "Latheef",
+            "image": "/players/latheef.png"
         },
         {
             "id": 17,
@@ -107,7 +108,8 @@
         },
         {
             "id": 18,
-            "name": "Bavakunj"
+            "name": "Bavakunj",
+            "image": "/players/bavakunj.png"
         },
         {
             "id": 19,

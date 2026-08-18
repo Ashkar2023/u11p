@@ -21,37 +21,125 @@
         {
             "id": 1,
             "name": "Ashkar",
-            "image": "/players/ashkar.png"
+            "image": "/players/ashkar.png",
+            "teamId": 1,
+            "attributes": {
+                "pace": 81,
+                "shooting": 79,
+                "passing": 82,
+                "dribbling": 87,
+                "defending": 80,
+                "physical": 73,
+                "goalkeeping": 34,
+                "position": "MID",
+                "secondaryPosition": "DEF",
+                "overall": 83
+            }
         },
         {
             "id": 2,
             "name": "Sulaiman",
-            "image": "/players/sulaiman.png"
+            "image": "/players/sulaiman.png",
+            "teamId": 1,
+            "attributes": {
+                "pace": 68,
+                "shooting": 74,
+                "passing": 73,
+                "dribbling": 69,
+                "defending": 39,
+                "physical": 64,
+                "goalkeeping": 84,
+                "position": "ST",
+                "secondaryPosition": "GK",
+                "overall": 77
+            }
         },
         {
             "id": 3,
             "name": "Miqu",
-            "image": "/players/miqu.png"
+            "image": "/players/miqu.png",
+            "teamId": 1,
+            "attributes": {
+                "pace": 67,
+                "shooting": 60,
+                "passing": 71,
+                "dribbling": 70,
+                "defending": 79,
+                "physical": 75,
+                "position": "DEF",
+                "secondaryPosition": "MID",
+                "overall": 75
+            }
         },
         {
             "id": 4,
             "name": "Athar",
-            "image": "/players/athar.png"
+            "image": "/players/athar.png",
+            "teamId": 2,
+            "attributes": {
+                "pace": 85,
+                "shooting": 70,
+                "passing": 73,
+                "dribbling": 78,
+                "defending": 50,
+                "physical": 73,
+                "position": "FWD",
+                "overall": 76
+            }
         },
         {
             "id": 5,
             "name": "Haseem",
-            "image": "/players/haseem.png"
+            "image": "/players/haseem.png",
+            "teamId": 1,
+            "attributes": {
+                "pace": 82,
+                "shooting": 81,
+                "passing": 62,
+                "dribbling": 76,
+                "defending": 30,
+                "physical": 72,
+                "goalkeeping": 8,
+                "position": "ST",
+                "secondaryPosition": "FWD",
+                "overall": 77
+            }
         },
         {
             "id": 6,
             "name": "Huzain",
-            "image": "/players/huzain.png"
+            "image": "/players/huzain.png",
+            "teamId": 2,
+            "attributes": {
+                "pace": 72,
+                "shooting": 70,
+                "passing": 80,
+                "dribbling": 77,
+                "defending": 58,
+                "physical": 68,
+                "goalkeeping": 8,
+                "position": "MID",
+                "secondaryPosition": "FWD",
+                "overall": 76
+            }
         },
         {
             "id": 7,
             "name": "Abdulla",
-            "image": "/players/abdullah.png"
+            "image": "/players/abdullah.png",
+            "teamId": 1,
+            "attributes": {
+                "pace": 58,
+                "shooting": 35,
+                "passing": 55,
+                "dribbling": 42,
+                "defending": 78,
+                "physical": 76,
+                "goalkeeping": 8,
+                "position": "DEF",
+                "secondaryPosition": "MID",
+                "overall": 68
+            }
         },
         {
             "id": 8,
@@ -59,142 +147,517 @@
             "image": "/players/manu.png",
             "topScorerMonths": [
                 "July 2026"
-            ]
+            ],
+            "teamId": 1,
+            "attributes": {
+                "pace": 82,
+                "shooting": 90,
+                "passing": 68,
+                "dribbling": 82,
+                "defending": 28,
+                "physical": 80,
+                "goalkeeping": 8,
+                "position": "ST",
+                "secondaryPosition": "FWD",
+                "overall": 84
+            }
         },
         {
             "id": 9,
             "name": "Milan",
-            "image": "/players/milan.png"
+            "image": "/players/milan.png",
+            "teamId": 2,
+            "attributes": {
+                "pace": 88,
+                "shooting": 70,
+                "passing": 62,
+                "dribbling": 82,
+                "defending": 25,
+                "physical": 60,
+                "goalkeeping": 8,
+                "position": "FWD",
+                "secondaryPosition": "ST",
+                "overall": 75
+            }
         },
         {
             "id": 10,
             "name": "Saleem",
-            "image": "/players/saleem.png"
+            "image": "/players/saleem.png",
+            "teamId": 2,
+            "attributes": {
+                "pace": 42,
+                "shooting": 18,
+                "passing": 58,
+                "dribbling": 28,
+                "defending": 32,
+                "physical": 75,
+                "goalkeeping": 84,
+                "position": "GK",
+                "secondaryPosition": null,
+                "overall": 78
+            }
         },
         {
             "id": 11,
             "name": "Bablu",
-            "image": "/players/bablu.png"
+            "image": "/players/bablu.png",
+            "teamId": 2,
+            "attributes": {
+                "pace": 76,
+                "shooting": 62,
+                "passing": 68,
+                "dribbling": 70,
+                "defending": 48,
+                "physical": 66,
+                "goalkeeping": 8,
+                "position": "MID",
+                "secondaryPosition": "FWD",
+                "overall": 70
+            }
         },
         {
             "id": 12,
             "name": "Siddique",
-            "image": "/players/siddi.png"
+            "image": "/players/siddi.png",
+            "teamId": 2,
+            "attributes": {
+                "pace": 60,
+                "shooting": 30,
+                "passing": 58,
+                "dribbling": 45,
+                "defending": 80,
+                "physical": 74,
+                "goalkeeping": 8,
+                "position": "DEF",
+                "secondaryPosition": null,
+                "overall": 69
+            }
         },
         {
             "id": 13,
             "name": "Shukoor",
-            "image": "/players/shukoor.png"
+            "image": "/players/shukoor.png",
+            "teamId": 2,
+            "attributes": {
+                "pace": 58,
+                "shooting": 52,
+                "passing": 70,
+                "dribbling": 58,
+                "defending": 64,
+                "physical": 70,
+                "goalkeeping": 8,
+                "position": "MID",
+                "secondaryPosition": "DEF",
+                "overall": 67
+            }
         },
         {
             "id": 14,
             "name": "Ajmal",
-            "image": "/players/aju.png"
+            "image": "/players/aju.png",
+            "teamId": 1,
+            "attributes": {
+                "pace": 78,
+                "shooting": 76,
+                "passing": 55,
+                "dribbling": 74,
+                "defending": 22,
+                "physical": 68,
+                "goalkeeping": 8,
+                "position": "ST",
+                "secondaryPosition": "FWD",
+                "overall": 73
+            }
         },
         {
             "id": 15,
             "name": "Jaleel",
-            "image": "/players/jaleel.png"
+            "image": "/players/jaleel.png",
+            "teamId": 2,
+            "attributes": {
+                "pace": 62,
+                "shooting": 48,
+                "passing": 76,
+                "dribbling": 62,
+                "defending": 70,
+                "physical": 72,
+                "goalkeeping": 8,
+                "position": "MID",
+                "secondaryPosition": "DEF",
+                "overall": 71
+            }
         },
         {
             "id": 16,
             "name": "Latheef",
-            "image": "/players/latheef.png"
+            "image": "/players/latheef.png",
+            "teamId": 2,
+            "attributes": {
+                "pace": 50,
+                "shooting": 28,
+                "passing": 52,
+                "dribbling": 38,
+                "defending": 76,
+                "physical": 78,
+                "goalkeeping": 8,
+                "position": "DEF",
+                "secondaryPosition": null,
+                "overall": 65
+            }
         },
         {
             "id": 17,
             "name": "Sajeer",
-            "image": "/players/sajeer.png"
+            "image": "/players/sajeer.png",
+            "teamId": 2,
+            "attributes": {
+                "pace": 68,
+                "shooting": 35,
+                "passing": 62,
+                "dribbling": 48,
+                "defending": 84,
+                "physical": 78,
+                "goalkeeping": 8,
+                "position": "DEF",
+                "secondaryPosition": "MID",
+                "overall": 74
+            }
         },
         {
             "id": 18,
             "name": "Bavakunj",
-            "image": "/players/bavakunj.png"
+            "image": "/players/bavakunj.png",
+            "teamId": 2,
+            "attributes": {
+                "pace": 65,
+                "shooting": 72,
+                "passing": 48,
+                "dribbling": 58,
+                "defending": 20,
+                "physical": 82,
+                "goalkeeping": 8,
+                "position": "ST",
+                "secondaryPosition": "FWD",
+                "overall": 69
+            }
         },
         {
             "id": 19,
             "name": "Shafeeq Cheppu",
-            "image": "/players/shafeeq.png"
+            "image": "/players/shafeeq.png",
+            "teamId": 2,
+            "attributes": {
+                "pace": 64,
+                "shooting": 35,
+                "passing": 65,
+                "dribbling": 48,
+                "defending": 86,
+                "physical": 82,
+                "goalkeeping": 8,
+                "position": "DEF",
+                "secondaryPosition": "MID",
+                "overall": 76
+            }
         },
         {
             "id": 20,
             "name": "Sabith",
-            "image": "/players/sabith.png"
+            "image": "/players/sabith.png",
+            "teamId": 2,
+            "attributes": {
+                "pace": 82,
+                "shooting": 62,
+                "passing": 64,
+                "dribbling": 78,
+                "defending": 30,
+                "physical": 58,
+                "goalkeeping": 8,
+                "position": "FWD",
+                "secondaryPosition": "MID",
+                "overall": 72
+            }
         },
         {
             "id": 21,
-            "name": "Ameen"
+            "name": "Ameen",
+            "teamId": 1,
+            "attributes": {
+                "pace": 60,
+                "shooting": 50,
+                "passing": 65,
+                "dribbling": 55,
+                "defending": 52,
+                "physical": 62,
+                "goalkeeping": 8,
+                "position": "MID",
+                "secondaryPosition": null,
+                "overall": 65
+            }
         },
         {
             "id": 22,
             "name": "Nazmel",
-            "image": "/players/nazmel.png"
+            "image": "/players/nazmel.png",
+            "teamId": 1,
+            "attributes": {
+                "pace": 80,
+                "shooting": 55,
+                "passing": 58,
+                "dribbling": 72,
+                "defending": 30,
+                "physical": 55,
+                "goalkeeping": 8,
+                "position": "MID",
+                "secondaryPosition": "FWD",
+                "overall": 68
+            }
         },
         {
             "id": 23,
             "name": "Aideed",
-            "image": "/players/aideed.png"
+            "image": "/players/aideed.png",
+            "teamId": 2,
+            "attributes": {
+                "pace": 76,
+                "shooting": 38,
+                "passing": 60,
+                "dribbling": 55,
+                "defending": 72,
+                "physical": 68,
+                "goalkeeping": 8,
+                "position": "DEF",
+                "secondaryPosition": "MID",
+                "overall": 70
+            }
         },
         {
             "id": 24,
-            "name": "Ansar"
+            "name": "Ansar",
+            "teamId": 1,
+            "attributes": {
+                "pace": 58,
+                "shooting": 48,
+                "passing": 64,
+                "dribbling": 52,
+                "defending": 50,
+                "physical": 64,
+                "goalkeeping": 8,
+                "position": "MID",
+                "secondaryPosition": null,
+                "overall": 64
+            }
         },
         {
             "id": 25,
             "name": "Adhil",
-            "image": "/players/adhil.png"
+            "image": "/players/adhil.png",
+            "teamId": 1,
+            "attributes": {
+                "pace": 80,
+                "shooting": 78,
+                "passing": 62,
+                "dribbling": 76,
+                "defending": 25,
+                "physical": 70,
+                "goalkeeping": 8,
+                "position": "ST",
+                "secondaryPosition": "FWD",
+                "overall": 75
+            }
         },
         {
             "id": 26,
             "name": "Noushad mama",
-            "image": "/players/mama.png"
+            "image": "/players/mama.png",
+            "teamId": 1,
+            "attributes": {
+                "pace": 48,
+                "shooting": 30,
+                "passing": 58,
+                "dribbling": 40,
+                "defending": 78,
+                "physical": 85,
+                "goalkeeping": 8,
+                "position": "DEF",
+                "secondaryPosition": "MID",
+                "overall": 70
+            }
         },
         {
             "id": 27,
             "name": "Akku",
-            "image": "/players/akku.png"
+            "image": "/players/akku.png",
+            "teamId": 1,
+            "attributes": {
+                "pace": 74,
+                "shooting": 68,
+                "passing": 84,
+                "dribbling": 78,
+                "defending": 58,
+                "physical": 72,
+                "goalkeeping": 8,
+                "position": "MID",
+                "secondaryPosition": "FWD",
+                "overall": 78
+            }
         },
         {
             "id": 28,
             "name": "Faruq",
-            "image": "/players/faruq.png"
+            "image": "/players/faruq.png",
+            "teamId": 2,
+            "attributes": {
+                "pace": 84,
+                "shooting": 73,
+                "passing": 50,
+                "dribbling": 72,
+                "defending": 20,
+                "physical": 65,
+                "goalkeeping": 8,
+                "position": "FWD",
+                "secondaryPosition": "ST",
+                "overall": 72
+            }
         },
         {
             "id": 29,
             "name": "Vahab Kavu",
-            "image": "/players/kavu.png"
+            "image": "/players/kavu.png",
+            "teamId": 1,
+            "attributes": {
+                "pace": 55,
+                "shooting": 35,
+                "passing": 68,
+                "dribbling": 48,
+                "defending": 82,
+                "physical": 84,
+                "goalkeeping": 8,
+                "position": "MID",
+                "secondaryPosition": "DEF",
+                "overall": 74
+            }
         },
         {
             "id": 30,
             "name": "Rashid",
-            "image": "/players/rashid.png"
+            "image": "/players/rashid.png",
+            "teamId": 1,
+            "attributes": {
+                "pace": 72,
+                "shooting": 35,
+                "passing": 58,
+                "dribbling": 55,
+                "defending": 68,
+                "physical": 62,
+                "goalkeeping": 8,
+                "position": "DEF",
+                "secondaryPosition": "MID",
+                "overall": 67
+            }
         },
         {
             "id": 31,
             "name": "Shabab",
-            "image": "/players/shabab.png"
+            "image": "/players/shabab.png",
+            "teamId": 2,
+            "attributes": {
+                "pace": 78,
+                "shooting": 68,
+                "passing": 52,
+                "dribbling": 70,
+                "defending": 22,
+                "physical": 62,
+                "goalkeeping": 8,
+                "position": "FWD",
+                "secondaryPosition": "ST",
+                "overall": 69
+            }
         },
         {
             "id": 32,
-            "name": "Riyas"
+            "name": "Riyas",
+            "attributes": {
+                "pace": 55,
+                "shooting": 45,
+                "passing": 62,
+                "dribbling": 50,
+                "defending": 55,
+                "physical": 60,
+                "goalkeeping": 8,
+                "position": "MID",
+                "secondaryPosition": null,
+                "overall": 63
+            }
         },
         {
             "id": 33,
             "name": "Almas",
-            "image": "/players/almas.png"
+            "image": "/players/almas.png",
+            "teamId": 1,
+            "attributes": {
+                "pace": 65,
+                "shooting": 32,
+                "passing": 60,
+                "dribbling": 45,
+                "defending": 82,
+                "physical": 76,
+                "goalkeeping": 8,
+                "position": "DEF",
+                "secondaryPosition": "MID",
+                "overall": 72
+            }
         },
         {
             "id": 34,
             "name": "Muhsin Moosi",
-            "image": "/players/moosi.png"
+            "teamId": 2,
+            "image": "/players/moosi.png",
+            "attributes": {
+                "pace": 52,
+                "shooting": 42,
+                "passing": 68,
+                "dribbling": 48,
+                "defending": 62,
+                "physical": 70,
+                "goalkeeping": 8,
+                "position": "MID",
+                "secondaryPosition": "DEF",
+                "overall": 66
+            }
         },
         {
             "id": 35,
-            "name": "Yasir"
+            "name": "Yasir",
+            "teamId": 2,
+            "attributes": {
+                "pace": 72,
+                "shooting": 65,
+                "passing": 45,
+                "dribbling": 58,
+                "defending": 18,
+                "physical": 68,
+                "goalkeeping": 8,
+                "position": "ST",
+                "secondaryPosition": "FWD",
+                "overall": 65
+            }
         },
         {
             "id": 36,
-            "name": "Jabir"
+            "name": "Jabir",
+            "attributes": {
+                "pace": 48,
+                "shooting": 25,
+                "passing": 50,
+                "dribbling": 38,
+                "defending": 72,
+                "physical": 74,
+                "goalkeeping": 8,
+                "position": "DEF",
+                "secondaryPosition": null,
+                "overall": 64
+            }
         }
     ],
     "matches": [

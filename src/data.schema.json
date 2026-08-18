@@ -46,6 +46,10 @@
                     "name": {
                         "type": "string"
                     },
+                    "teamId": {
+                        "type": "integer",
+                        "description": "ID of the team the player belongs to"
+                    },
                     "image": {
                         "type": "string",
                         "description": "Path to player image"
@@ -61,6 +65,79 @@
                             "type": "string"
                         },
                         "uniqueItems": true
+                    },
+                    "attributes": {
+                        "type": "object",
+                        "properties": {
+                            "pace": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 99
+                            },
+                            "shooting": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 99
+                            },
+                            "passing": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 99
+                            },
+                            "dribbling": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 99
+                            },
+                            "defending": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 99
+                            },
+                            "physical": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 99
+                            },
+                            "goalkeeping": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 99
+                            },
+                            "position": {
+                                "type": "string",
+                                "enum": [
+                                    "GK",
+                                    "DEF",
+                                    "MID",
+                                    "FWD",
+                                    "ST"
+                                ]
+                            },
+                            "secondaryPosition": {
+                                "oneOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "GK",
+                                            "DEF",
+                                            "MID",
+                                            "FWD",
+                                            "ST"
+                                        ]
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
+                            },
+                            "overall": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 99
+                            }
+                        },
+                        "additionalProperties": false
                     }
                 },
                 "additionalProperties": false

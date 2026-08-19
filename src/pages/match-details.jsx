@@ -29,7 +29,7 @@ function GoalIcon() {
 
 function TeamHeading({ team }) {
     return (
-        <header className="flex items-center justify-center gap-2 border-b border-white/10 pb-3 text-center">
+        <header className="flex items-center justify-center gap-2 border-b border-white/10 pb-3 pt-2 text-center">
             <SafeImage className="size-9 object-contain" src={team.logo} alt="" />
             <h3 className="text-sm font-semibold text-zinc-100">{team.name}</h3>
         </header>
@@ -82,7 +82,29 @@ function MatchFacts({ match, teams }) {
     );
 }
 
+// 4-3-3: index 0 = GK, 1-4 = DEF, 5-7 = MID, 8-10 = FWD
+// positions as [top%, left%] from top of pitch
+const positionMap = [
+    [90, 50],
+    // DEF (4)
+    [68, 15],
+    [71, 38],
+    [71, 62],
+    [68, 85],
+    // MID (3)
+    [44, 22],
+    [46, 50],
+    [44, 78],
+    // FWD (3)
+    [20, 22],
+    [16, 50],
+    [20, 78],
+];
+
 function Lineup({ match, teams }) {
+    const [selectedTeamId, setSelectedTeamId] = useState(teams[0]?.id);
+    const [isListView, setIsListView] = useState(false);
+
     const lineups = teams.map((team) => ({
         team,
         playerIds: match.lineup?.find((e) => e.teamId === team.id)?.playerIds ?? [],
@@ -92,45 +114,148 @@ function Lineup({ match, teams }) {
         return <p className="py-5 text-center text-xs text-zinc-500">Lineup not yet available</p>;
     }
 
+    const selectedLineup = lineups.find((l) => l.team.id === selectedTeamId) ?? lineups[0];
+
     return (
-        <div className="grid grid-cols-2 divide-x divide-white/10">
-            {lineups.map(({ team, playerIds }) => (
-                <section className="min-w-0 first:pl-0 last:pr-0" key={team.id}>
-                    <TeamHeading team={team} />
-                    {playerIds.length > 0 ? (
-                        <ul>
-                            {playerIds.map((playerId) => {
-                                const player = playersById.get(playerId);
-                                return (
-                                    <li
-                                        className={`relative h-16 overflow-hidden border-b border-white/10 bg-gradient-to-r ${team.id === 1 ? "from-blue-500/60 via-blue-700/30" : "from-yellow-400/80 via-yellow-600/50"} to-transparent last:border-b-0`}
-                                        key={playerId}
+        <>
+            <div className={`flex ${isListView && "border-b border-white/30"} `}>
+                {/* Team A tab */}
+                <button
+                    type="button"
+                    disabled={isListView}
+                    onClick={() => setSelectedTeamId(teams[0]?.id)}
+                    className={`flex flex-1 items-center justify-center gap-2 px-3 py-2.5 transition-colors
+                        ${isListView ? "cursor-not-allowed opacity-90" : ""}
+                        ${!isListView && selectedTeamId === teams[0]?.id ? "border-b-2 border-amber-400" : "border-b-2 border-transparent"}`}
+                >
+                    <SafeImage className="size-9 object-contain" src={teams[0]?.logo} alt="" />
+                    <h3 className="text-sm font-semibold text-zinc-100">{teams[0]?.name}</h3>
+                </button>
+
+                {/* Center toggle */}
+                <div className="flex flex-col items-center justify-center px-3 gap-0.5">
+                    <label className="flex cursor-pointer flex-col items-center gap-1">
+                        <span className="text-[10px] text-zinc-500">List view</span>
+                        <button
+                            type="button"
+                            role="switch"
+                            aria-checked={isListView}
+                            onClick={() => setIsListView((v) => !v)}
+                            className={`relative h-5 w-9 rounded-full transition-colors duration-200 ${isListView ? "bg-amber-400" : "bg-zinc-700"}`}
+                        >
+                            <span
+                                className={`absolute top-0.5 left-0.5 size-4 rounded-full bg-white shadow transition-transform duration-200 ${isListView ? "translate-x-4" : "translate-x-0"}`}
+                            />
+                        </button>
+                    </label>
+                </div>
+
+                {/* Team B tab */}
+                <button
+                    type="button"
+                    disabled={isListView}
+                    onClick={() => setSelectedTeamId(teams[1]?.id)}
+                    className={`flex flex-1 items-center justify-center gap-2 px-3 py-2.5 transition-colors
+                        ${isListView ? "cursor-not-allowed opacity-90" : ""}
+                        ${!isListView && selectedTeamId === teams[1]?.id ? "border-b-2 border-amber-400" : "border-b-2 border-transparent"}`}
+                >
+                    <SafeImage className="size-9 object-contain" src={teams[1]?.logo} alt="" />
+                    <h3 className="text-sm font-semibold text-zinc-100">{teams[1]?.name}</h3>
+                </button>
+            </div>
+
+            {isListView ? (
+                /* ── LIST VIEW (unchanged) ── */
+                <div className="grid grid-cols-2 divide-x divide-white/10">
+                    {lineups.map(({ team, playerIds }) => (
+                        <section className="min-w-0 first:pl-0 last:pr-0" key={team.id}>
+                            {playerIds.length > 0 ? (
+                                <ul>
+                                    {playerIds.map((playerId) => {
+                                        const player = playersById.get(playerId);
+                                        return (
+                                            <li
+                                                className={`relative h-16 overflow-hidden border-b border-white/10 bg-gradient-to-r ${team.id === 1 ? "from-blue-500/60 via-blue-700/30" : "from-yellow-400/80 via-yellow-600/50"} to-transparent last:border-b-0`}
+                                                key={playerId}
+                                            >
+                                                <Link
+                                                    className="relative z-10 flex h-full items-center px-3 transition-colors hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-amber-400"
+                                                    href={`/players/${playerId}`}
+                                                    aria-label={`View ${player?.name ?? `Player ${playerId}`}`}
+                                                >
+                                                    <span className="min-w-0 text-sm max-w-7/12 truncate font-medium text-zinc-100">
+                                                        {player?.name ?? `Player ${playerId}`}
+                                                    </span>
+                                                </Link>
+                                                <SafeImage
+                                                    className="pointer-events-none absolute right-0 top-0 h-28 w-auto max-w-none object-contain object-top"
+                                                    src={player?.image}
+                                                    fallbackSrc="/user.png"
+                                                    alt=""
+                                                />
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            ) : (
+                                <p className="py-5 text-center text-xs text-zinc-500">No lineup recorded</p>
+                            )}
+                        </section>
+                    ))}
+                </div>
+            ) : (
+                /* ── PITCH VIEW ── */
+                selectedLineup.playerIds.length > 0 ? (
+                    <div className="relative w-full select-none aspect-3/4">
+                        {/* Ground image */}
+                        <img
+                            src="/lineup-ground.png"
+                            alt="Football pitch"
+                            className="absolute inset-0 w-full object-contain object-center"
+                            draggable={false}
+                        />
+
+                        {/* Players */}
+                        {selectedLineup.playerIds.slice(0, 11).map((playerId, idx) => {
+                            const player = playersById.get(playerId);
+                            const [top, left] = positionMap[idx] ?? [50, 50];
+                            const isHomeTeam = selectedLineup.team.id === teams[0]?.id;
+
+                            return (
+                                <Link
+                                    key={playerId}
+                                    href={`/players/${playerId}`}
+                                    aria-label={`View ${player?.name ?? `Player ${playerId}`}`}
+                                    className="absolute flex flex-col items-center -translate-x-1/2 -translate-y-1/2"
+                                    style={{ top: `${top}%`, left: `${left}%` }}
+                                >
+                                    {/* Avatar */}
+                                    <div
+                                        className='relative size-16 sm:size-24 md:size-32 overflow-hidden drop-shadow-md drop-shadow-gray-800'
                                     >
-                                        <Link
-                                            className="relative z-10 flex h-full items-center px-3 transition-colors hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-amber-400"
-                                            href={`/players/${playerId}`}
-                                            aria-label={`View ${player?.name ?? `Player ${playerId}`}`}
-                                        >
-                                            <span className="min-w-0 text-sm max-w-7/12 truncate font-medium text-zinc-100">
-                                                {player?.name ?? `Player ${playerId}`}
-                                            </span>
-                                        </Link>
                                         <SafeImage
-                                            className="pointer-events-none absolute right-0 top-0 h-28 w-auto max-w-none object-contain object-top"
+                                            className="h-full w-full object-cover object-top"
                                             src={player?.image}
                                             fallbackSrc="/user.png"
                                             alt=""
                                         />
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    ) : (
-                        <p className="py-5 text-center text-xs text-zinc-500">No lineup recorded</p>
-                    )}
-                </section>
-            ))}
-        </div>
+                                    </div>
+                                    {/* Name pill */}
+                                    <span
+                                        className={`w-16 text-center z-1 truncate rounded px-1 py-px text-xs font-semibold leading-tight text-white shadow
+                                            ${isHomeTeam ? "bg-blue-600/80" : "bg-yellow-600/80"}`}
+                                    >
+                                        {player?.name?.split(" ").at(-1) ?? `#${playerId}`}
+                                    </span>
+                                </Link>
+                            );
+                        })}
+                    </div>
+                ) : (
+                    <p className="py-5 text-center text-xs text-zinc-500">No lineup recorded</p>
+                )
+            )}
+        </>
     );
 }
 
@@ -295,7 +420,7 @@ export const MatchDetails = () => {
                         )}
                     </div>
 
-                    <div className="py-4" role="tabpanel">
+                    <div className="pb-4" role="tabpanel">
                         {activeTab === "facts" && <MatchFacts match={match} teams={teams} />}
                         {activeTab === "lineup" && <Lineup match={match} teams={teams} />}
                         {activeTab === "vote" && canShowVoting && (

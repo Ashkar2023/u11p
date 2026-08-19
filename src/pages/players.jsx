@@ -28,7 +28,7 @@ export const Players = () => {
                     </p>
                 </div>
 
-                <ul className="grid grid-cols-3 gap-px gap-y-1 bg-white/10">
+                <ul className="grid grid-cols-3 gap-x-px">
                     {visiblePlayers.map((player) => (
                         <li key={player.id}>
                             <Link

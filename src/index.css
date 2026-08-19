@@ -29,17 +29,17 @@ select {
 
 @font-face {
     font-family: 'DDIN';
-    src: url('/fonts/ddin/D-DIN.woff2') format('woff2');
+    src: url('./assets/fonts/ddin/D-DIN.woff2') format('woff2');
     font-weight: 400;
 }
 @font-face {
     font-family: 'DDIN';
-    src: url('/fonts/ddin/D-DIN-Bold.woff2') format('woff2');
+    src: url('./assets/fonts/ddin/D-DIN-Bold.woff2') format('woff2');
     font-weight: 700;
 }
 @font-face {
     font-family: 'DDINCondensed';
-    src: url('/fonts/ddin/D-DINCondensed-Bold.woff2') format('woff2');
+    src: url('./assets/fonts/ddin/D-DINCondensed-Bold.woff2') format('woff2');
     font-weight: 700;
 }
 

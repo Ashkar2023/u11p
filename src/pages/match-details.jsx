@@ -6,6 +6,8 @@ import MotmVotes from "../components/motm-votes";
 import SafeImage from "../components/safe-image";
 import data from "../data.json";
 import { getMatchVotingPeriodStatus } from "../utils/date.util";
+import user_png from "../assets/user.png";
+import lineup_ground_png from "../assets/lineup-ground.png"
 
 const teamsById = new Map(data.teams.map((team) => [team.id, team]));
 const playersById = new Map(data.players.map((player) => [player.id, player]));
@@ -192,7 +194,7 @@ function Lineup({ match, teams }) {
                                                 <SafeImage
                                                     className="pointer-events-none absolute right-0 top-0 h-28 w-auto max-w-none object-contain object-top"
                                                     src={player?.image}
-                                                    fallbackSrc="/user.png"
+                                                    fallbackSrc={user_png}
                                                     alt=""
                                                 />
                                             </li>
@@ -211,7 +213,7 @@ function Lineup({ match, teams }) {
                     <div className="relative w-full select-none aspect-3/4">
                         {/* Ground image */}
                         <img
-                            src="/lineup-ground.png"
+                            src={lineup_ground_png}
                             alt="Football pitch"
                             className="absolute inset-0 w-full object-contain object-center"
                             draggable={false}
@@ -238,7 +240,7 @@ function Lineup({ match, teams }) {
                                         <SafeImage
                                             className="h-full w-full object-cover object-top"
                                             src={player?.image}
-                                            fallbackSrc="/user.png"
+                                            fallbackSrc={user_png}
                                             alt=""
                                         />
                                     </div>

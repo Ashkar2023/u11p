@@ -1,5 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { isLocalHost } from "./utils/is-local-host";
+import u11p_logo from "./assets/u11p-logo.png";
+import stadium_png from './assets/stadium.png'
 
 const navItems = [
     { label: "Home", icon: "home", path: "/" },
@@ -99,10 +101,13 @@ function Shell({ children, showHero }) {
     return (
         <div className="min-h-dvh bg-zinc-950 text-white">
             {showHero && (
-                <header className="h-64 bg-[url('/stadium.png')] bg-cover bg-center px-4 pt-8 sm:h-72">
+                <header
+                    className="h-64 bg-cover bg-center px-4 pt-8 sm:h-72"
+                    style={{ backgroundImage: `url(${stadium_png})` }}
+                >
                     <img
                         className="mx-auto h-44 w-auto object-contain sm:h-52"
-                        src="/u11p-logo.png"
+                        src={u11p_logo}
                         alt="United XI Pallilamkara"
                     />
                 </header>

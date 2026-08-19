@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import data from "../data.json";
 import SafeImage from "./safe-image";
+import user_png from "../assets/user.png";
 
 const UNLOCK_DELAY = 5_000;
 const APPSCRIPT_URL = import.meta.env.VITE_APPSCRIPT_URL;
@@ -434,7 +435,7 @@ export default function ManOfTheMatchVote({
                 <SafeImage
                     className="mt-6 size-32 rounded-full border-2 border-amber-300 bg-zinc-800 object-cover object-top shadow-xl shadow-amber-500/15"
                     src={votedFor.image}
-                    fallbackSrc="/user.png"
+                    fallbackSrc={user_png}
                     alt={votedFor.name}
                 />
                 <h2 className="mt-4 text-2xl font-black text-white">{votedFor.name}</h2>
@@ -489,7 +490,7 @@ export default function ManOfTheMatchVote({
                         <SafeImage
                             className="size-6 shrink-0 rounded-full bg-zinc-800 object-cover object-top"
                             src={allPlayers.find(p => String(p.id) === String(voteDetails.candidateId))?.image}
-                            fallbackSrc="/user.png"
+                            fallbackSrc={user_png}
                             alt={voteDetails.candidateName}
                         />
                         <span className="truncate font-medium text-zinc-400">{voteDetails.candidateName}</span>
@@ -499,7 +500,7 @@ export default function ManOfTheMatchVote({
                         <SafeImage
                             className="size-6 shrink-0 rounded-full bg-zinc-800 object-cover object-top"
                             src={candidate.image}
-                            fallbackSrc="/user.png"
+                            fallbackSrc={user_png}
                             alt={candidate.name}
                         />
                         <span className="truncate font-medium text-zinc-400">{candidate.name}</span>
@@ -594,7 +595,7 @@ export default function ManOfTheMatchVote({
                                         <SafeImage
                                             className="size-full rounded-full object-cover object-top bg-motm"
                                             src={player.image}
-                                            fallbackSrc="/user.png"
+                                            fallbackSrc={user_png}
                                             alt={player.name}
                                             draggable="false"
                                         />
@@ -636,7 +637,7 @@ export default function ManOfTheMatchVote({
                             <SafeImage
                                 className="mx-auto mt-3 size-28 rounded-full border-2 border-amber-300 bg-zinc-800 object-cover object-top shadow-lg shadow-amber-500/15"
                                 src={candidate.image}
-                                fallbackSrc="/user.png"
+                                fallbackSrc={user_png}
                                 alt={candidate.name}
                             />
                             <p className="mt-3 text-lg font-black text-amber-300">{candidate.name}</p>

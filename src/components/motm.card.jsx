@@ -1,5 +1,6 @@
 import { formatDate } from "../utils/date.util";
 import SafeImage from "./safe-image";
+import user_png from "../assets/user.png";
 
 function StarIcon() {
     return (
@@ -21,7 +22,7 @@ export default function MotmCard({ player, matchDate }) {
                     <SafeImage
                         className="relative size-20 rounded-full border-2 border-amber-300/70 bg-zinc-800 object-cover object-top sm:size-24"
                         src={player.image}
-                        fallbackSrc="/user.png"
+                        fallbackSrc={user_png}
                         alt={player.name}
                     />
                 </div>

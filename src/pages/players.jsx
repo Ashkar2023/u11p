@@ -2,6 +2,7 @@ import data from "../data.json";
 import { PageLayout } from "../layout";
 import { Link } from "wouter";
 import SafeImage from "../components/safe-image";
+import user_png from "../assets/user.png";
 
 const visiblePlayers = data.players.filter((player) => !player.hidden);
 
@@ -10,7 +11,7 @@ function PlayerAvatar({ player }) {
         <SafeImage
             className="h-[70%] w-full shrink-0 bg-motm object-cover object-top"
             src={player.image}
-            fallbackSrc="/user.png"
+            fallbackSrc={user_png}
             alt={`${player.name} profile`}
             loading="lazy"
         />

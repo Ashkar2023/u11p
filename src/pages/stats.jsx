@@ -4,6 +4,7 @@ import data from "../data.json";
 import { PageLayout } from "../layout";
 import { hasMatchResult } from "../utils/date.util";
 import { useState } from "react";
+import user_png from "../assets/user.png";
 
 const ALL_TIME = "all";
 const completedMatches = data.matches.filter(hasMatchResult);
@@ -235,7 +236,7 @@ function GoalScorers() {
                                     <SafeImage
                                         className="h-20 pt-1.5 w-auto max-w-full object-contain object-top"
                                         src={player.image}
-                                        fallbackSrc="/user.png"
+                                        fallbackSrc={user_png}
                                         alt=""
                                     />
                                 </div>

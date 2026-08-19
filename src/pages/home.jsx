@@ -6,6 +6,7 @@ import Layout from "../layout";
 import { Link, useLocation } from "wouter";
 import { formatDate, getMatchVotingPeriodStatus, hasMatchResult } from "../utils/date.util";
 import { calculateGoalScorers } from "./stats";
+import user_png from "../assets/user.png";
 
 const completedMatches = [...data.matches]
     .filter(hasMatchResult)
@@ -115,7 +116,7 @@ function TopScorersPreview() {
                                     <SafeImage
                                         className="h-20 pt-1.5 w-auto max-w-full object-contain object-top"
                                         src={player.image}
-                                        fallbackSrc="/user.png"
+                                        fallbackSrc={user_png}
                                         alt=""
                                     />
                                 </div>

@@ -2,6 +2,9 @@ import { useLocation, useRoute } from "wouter";
 import data from "../data.json";
 import SafeImage from "../components/safe-image";
 import { hasMatchResult } from "../utils/date.util";
+import user_png from "../assets/user.png";
+
+import fifa_shield from "../assets/fifa-player-shield.png";
 
 function BackIcon() {
     return (
@@ -105,7 +108,7 @@ export const PlayerDetails = () => {
                     {/* The shield image as base */}
                     <div className="relative" style={{ height: "100%", aspectRatio: "2/3" }}>
                         <img
-                            src="/fifa-player-shield.png"
+                            src={fifa_shield}
                             alt=""
                             className="absolute inset-0 w-full h-full object-contain drop-shadow-[0_0_20px_rgba(234,179,8,0.6)]"
                             aria-hidden="true"
@@ -149,7 +152,7 @@ export const PlayerDetails = () => {
                                     <SafeImage
                                         className="h-[115%] object-cover object-top"
                                         src={player.image}
-                                        fallbackSrc="/user.png"
+                                        fallbackSrc={user_png}
                                         alt={`${player.name}`}
                                     />
                                 </div>

@@ -43,10 +43,10 @@ function MatchFacts({ match, teams }) {
                 const goals = match.goals?.filter((goal) => goal.teamId === team.id) ?? [];
 
                 return (
-                    <section className="min-w-0 px-3 first:pl-0 last:pr-0" key={team.id}>
+                    <section className="min-w-0 first:pl-0 last:pr-0" key={team.id}>
                         <TeamHeading team={team} />
                         {goals.length > 0 ? (
-                            <ul className="mt-2 space-y-1">
+                            <ul className="mt-2 space-y-1 px-2">
                                 {goals.map((goal, index) => {
                                     const player = playersById.get(goal.playerId);
                                     return (
@@ -103,12 +103,14 @@ const positionMap = [
 
 function Lineup({ match, teams }) {
     const [selectedTeamId, setSelectedTeamId] = useState(teams[0]?.id);
-    const [isListView, setIsListView] = useState(false);
 
     const lineups = teams.map((team) => ({
         team,
         playerIds: match.lineup?.find((e) => e.teamId === team.id)?.playerIds ?? [],
     }));
+
+    const hideToggle = lineups.some((l) => l.playerIds.length < 11);
+    const [isListView, setIsListView] = useState(hideToggle);
 
     if (lineups.every((l) => !l.playerIds.length)) {
         return <p className="py-5 text-center text-xs text-zinc-500">Lineup not yet available</p>;
@@ -118,57 +120,57 @@ function Lineup({ match, teams }) {
 
     return (
         <>
-            <div className={`flex ${isListView && "border-b border-white/30"} `}>
-                {/* Team A tab */}
-                <button
-                    type="button"
-                    disabled={isListView}
-                    onClick={() => setSelectedTeamId(teams[0]?.id)}
-                    className={`flex flex-1 items-center justify-center gap-2 px-3 py-2.5 transition-colors
+            {
+
+                !hideToggle &&
+                <div className={`flex ${isListView && "border-b border-white/30"} `}>
+                    <button
+                        type="button"
+                        disabled={isListView}
+                        onClick={() => setSelectedTeamId(teams[0]?.id)}
+                        className={`flex flex-1 items-center justify-center gap-2 px-3 py-2.5 transition-colors
                         ${isListView ? "cursor-not-allowed opacity-90" : ""}
                         ${!isListView && selectedTeamId === teams[0]?.id ? "border-b-2 border-amber-400" : "border-b-2 border-transparent"}`}
-                >
-                    <SafeImage className="size-9 object-contain" src={teams[0]?.logo} alt="" />
-                    <h3 className="text-sm font-semibold text-zinc-100">{teams[0]?.name}</h3>
-                </button>
-
-                {/* Center toggle */}
-                <div className="flex flex-col items-center justify-center px-3 gap-0.5">
-                    <label className="flex cursor-pointer flex-col items-center gap-1">
-                        <span className="text-[10px] text-zinc-500">List view</span>
-                        <button
-                            type="button"
-                            role="switch"
-                            aria-checked={isListView}
-                            onClick={() => setIsListView((v) => !v)}
-                            className={`relative h-5 w-9 rounded-full transition-colors duration-200 ${isListView ? "bg-amber-400" : "bg-zinc-700"}`}
-                        >
-                            <span
-                                className={`absolute top-0.5 left-0.5 size-4 rounded-full bg-white shadow transition-transform duration-200 ${isListView ? "translate-x-4" : "translate-x-0"}`}
-                            />
-                        </button>
-                    </label>
-                </div>
-
-                {/* Team B tab */}
-                <button
-                    type="button"
-                    disabled={isListView}
-                    onClick={() => setSelectedTeamId(teams[1]?.id)}
-                    className={`flex flex-1 items-center justify-center gap-2 px-3 py-2.5 transition-colors
+                    >
+                        <SafeImage className="size-9 object-contain" src={teams[0]?.logo} alt="" />
+                        <h3 className="text-sm font-semibold text-zinc-100">{teams[0]?.name}</h3>
+                    </button>
+                    <div className="flex flex-col items-center justify-center px-3 gap-0.5">
+                        <label className="flex cursor-pointer flex-col items-center gap-1">
+                            <span className="text-[10px] text-zinc-500">List view</span>
+                            <button
+                                type="button"
+                                role="switch"
+                                aria-checked={isListView}
+                                onClick={() => setIsListView((v) => !v)}
+                                className={`relative h-5 w-9 rounded-full transition-colors duration-200 ${isListView ? "bg-amber-400" : "bg-zinc-700"}`}
+                            >
+                                <span
+                                    className={`absolute top-0.5 left-0.5 size-4 rounded-full bg-white shadow transition-transform duration-200 ${isListView ? "translate-x-4" : "translate-x-0"}`}
+                                />
+                            </button>
+                        </label>
+                    </div>
+                    <button
+                        type="button"
+                        disabled={isListView}
+                        onClick={() => setSelectedTeamId(teams[1]?.id)}
+                        className={`flex flex-1 items-center justify-center gap-2 px-3 py-2.5 transition-colors
                         ${isListView ? "cursor-not-allowed opacity-90" : ""}
                         ${!isListView && selectedTeamId === teams[1]?.id ? "border-b-2 border-amber-400" : "border-b-2 border-transparent"}`}
-                >
-                    <SafeImage className="size-9 object-contain" src={teams[1]?.logo} alt="" />
-                    <h3 className="text-sm font-semibold text-zinc-100">{teams[1]?.name}</h3>
-                </button>
-            </div>
+                    >
+                        <SafeImage className="size-9 object-contain" src={teams[1]?.logo} alt="" />
+                        <h3 className="text-sm font-semibold text-zinc-100">{teams[1]?.name}</h3>
+                    </button>
+                </div>
+            }
 
             {isListView ? (
                 /* ── LIST VIEW (unchanged) ── */
                 <div className="grid grid-cols-2 divide-x divide-white/10">
                     {lineups.map(({ team, playerIds }) => (
                         <section className="min-w-0 first:pl-0 last:pr-0" key={team.id}>
+                            {hideToggle && <TeamHeading team={team} />}
                             {playerIds.length > 0 ? (
                                 <ul>
                                     {playerIds.map((playerId) => {

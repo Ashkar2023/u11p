@@ -8,6 +8,7 @@ import data from "../data.json";
 import { getMatchVotingPeriodStatus } from "../utils/date.util";
 import user_png from "../assets/user.png";
 import lineup_ground_png from "../assets/lineup-ground.png"
+import fifa_shield from "../assets/fifa-player-shield.png";
 
 const teamsById = new Map(data.teams.map((team) => [team.id, team]));
 const playersById = new Map(data.players.map((player) => [player.id, player]));
@@ -230,27 +231,53 @@ function Lineup({ match, teams }) {
                                     key={playerId}
                                     href={`/players/${playerId}`}
                                     aria-label={`View ${player?.name ?? `Player ${playerId}`}`}
-                                    className="absolute flex flex-col items-center -translate-x-1/2 -translate-y-1/2"
-                                    style={{ top: `${top}%`, left: `${left}%` }}
+                                    className="absolute flex flex-col items-center -translate-x-1/2 -translate-y-1/2 animate-player-in"
+                                    style={{
+                                        top: `${top}%`,
+                                        left: `${left}%`,
+                                        animationDelay: `${idx * 80}ms`,
+                                    }}
                                 >
-                                    {/* Avatar */}
-                                    <div
-                                        className='relative size-16 sm:size-24 md:size-32 overflow-hidden drop-shadow-md drop-shadow-gray-800'
-                                    >
-                                        <SafeImage
-                                            className="h-full w-full object-cover object-top"
-                                            src={player?.image}
-                                            fallbackSrc={user_png}
+                                    <div className="relative w-16 aspect-[2/2.7] sm:w-24 md:w-32">
+                                        {/* Shield */}
+                                        <img
+                                            src={fifa_shield}
                                             alt=""
+                                            className="absolute inset-0 h-full w-full object-contain drop-shadow-md drop-shadow-gray-800"
+                                            aria-hidden="true"
                                         />
+
+                                        {/* Player image */}
+                                        <div
+                                            className="absolute overflow-hidden"
+                                            style={{
+                                                top: "5%",
+                                                left: "7%",
+                                                width: "85%",
+                                                height: "72%",
+                                            }}
+                                        >
+                                            <SafeImage
+                                                className="h-full w-full object-cover object-top"
+                                                src={player?.image}
+                                                fallbackSrc={user_png}
+                                                alt=""
+                                                style={{
+                                                    maskImage:
+                                                        "linear-gradient(to bottom, black 70%, transparent 100%)",
+                                                    WebkitMaskImage:
+                                                        "linear-gradient(to bottom, black 70%, transparent 100%)",
+                                                }}
+                                            />
+                                        </div>
+
+                                        {/* Name */}
+                                        <div className="absolute inset-x-[10%] bottom-[11%] flex justify-center">
+                                            <span className="w-full truncate text-center font-ddin text-[clamp(7px,10px,14px)] font-bold uppercase text-[#1A1A1A]">
+                                                {player?.name?.split(" ")[0]}
+                                            </span>
+                                        </div>
                                     </div>
-                                    {/* Name pill */}
-                                    <span
-                                        className={`w-16 text-center z-1 truncate rounded px-1 py-px text-xs font-semibold leading-tight text-white shadow
-                                            ${isHomeTeam ? "bg-blue-600/80" : "bg-yellow-600/80"}`}
-                                    >
-                                        {player?.name?.split(" ").at(-1) ?? `#${playerId}`}
-                                    </span>
                                 </Link>
                             );
                         })}

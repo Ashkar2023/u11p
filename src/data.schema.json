@@ -269,6 +269,39 @@
                 },
                 "additionalProperties": false
             }
+        },
+        "awards": {
+            "type": "object",
+            "description": "Monthly player awards",
+            "patternProperties": {
+                "^\\d{4}-(0[1-9]|1[0-2])$": {
+                    "type": "object",
+                    "properties": {
+                        "ultimate-team": {
+                            "type": "array",
+                            "minItems": 7,
+                            "maxItems": 7,
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "integer"
+                            }
+                        },
+                        "top-scorer": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "goals": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
         }
     },
     "additionalProperties": false

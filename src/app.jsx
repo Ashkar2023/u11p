@@ -8,6 +8,7 @@ import { Players } from "./pages/players";
 import { Stats } from "./pages/stats";
 import { Devtools } from "./pages/devtools";
 import { isLocalHost } from "./utils/is-local-host";
+import AwardDetailsPage from "./pages/award-details";
 
 function ScrollToTop() {
     const [location] = useLocation();
@@ -30,6 +31,7 @@ export const App = () => {
         <Route path="/players" component={Players} />
         <Route path="/players/:id" component={PlayerDetails} />
         <Route path="/stats" component={Stats} />
+        <Route path="/awards/:year/:month/:type" component={AwardDetailsPage}/>
         {showDevtools && <Route path="/devtools" component={Devtools} />}
     </>
 };

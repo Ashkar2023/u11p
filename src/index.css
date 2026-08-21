@@ -43,6 +43,7 @@ select {
     font-weight: 700;
 }
 
+/* THEME */
 @theme {
     --font-ddin: 'DDIN', sans-serif;
     --font-ddin-condensed: 'DDINCondensed', sans-serif;

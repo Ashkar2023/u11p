@@ -38,7 +38,7 @@ const lastMonthMatches = completedMatches.filter(
 const topScorers = calculateGoalScorers(lastMonthMatches);
 
 function NextMatchCard({ match }) {
-    const [,navigate] = useLocation();
+    const [, navigate] = useLocation();
     return (
         <section className="flex items-center gap-4 rounded-lg border border-white/10 bg-zinc-900/75 p-3 shadow-2xl shadow-black/25 sm:p-6">
             <div className="flex size-14 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-100 sm:size-16">
@@ -57,9 +57,9 @@ function NextMatchCard({ match }) {
                 <p className="text-zinc-500 text-sm">Thavalam turf</p>
             </div>
             {
-                match.lineup.length !== 0 && 
+                match.lineup.length !== 0 &&
                 <div className="flex-1">
-                    <button className="flex items-center text-zinc-300 py-1 px-2 rounded-md border border-white/30 ml-auto cursor-pointer" onClick={()=>navigate(`/matches/${match.id}`)}>
+                    <button className="flex items-center text-zinc-300 py-1 px-2 rounded-md border border-white/30 ml-auto cursor-pointer" onClick={() => navigate(`/matches/${match.id}`)}>
                         <span className="text-sm">View lineup</span>
                         <svg
                             className="size-4"
@@ -134,6 +134,11 @@ function TopScorersPreview() {
                 <p className="py-5 text-center text-sm text-zinc-500">No goal records for this period.</p>
             )}        </section>
     );
+}
+
+const awardRoutes = {
+    "Ultimate team": "awards/2026/july/ultimate-team",
+    "Top scorer": "awards/2026/july/top-scorer"
 }
 
 export const Home = () => {
@@ -211,6 +216,70 @@ export const Home = () => {
                             <path d="m9 18 6-6-6-6" />
                         </svg>
                     </Link>
+                )}
+                {true && (
+                    <div
+                        className="group relative block py-4 overflow-hidden rounded-lg border border-amber-400/25 bg-gradient-to-br from-zinc-900 via-zinc-950 to-amber-950/20"
+                        aria-label="View July Awards"
+                    >
+                        <div className="pointer-events-none absolute -right-16 -top-16 size-40 rounded-full bg-amber-400/10 blur-3xl transition-all duration-500 group-hover:bg-amber-400/20" />
+
+                        <div className="relative px-4">
+                            <div className="mb-4 flex items-center justify-between">
+                                <div>
+                                    <span className="block text-[10px] font-bold uppercase tracking-[0.2em] text-amber-400/80">
+                                        Monthly Awards
+                                    </span>
+                                    <h3 className="italic font-black uppercase tracking-tight text-white">
+                                        July
+                                    </h3>
+                                </div>
+
+                                <Link
+                                    className="flex items-center gap-1 font-light text-zinc-400 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
+                                    href="/stats"
+                                >
+                                    <span className="text-sm">View history</span>
+                                    <svg
+                                        className="size-4"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        aria-hidden="true"
+                                    >
+                                        <path d="m9 18 6-6-6-6" />
+                                    </svg>
+                                </Link>
+                            </div>
+
+                            <div className="space-y-2">
+                                {Object.entries(awardRoutes).map(([name, href]) => (
+                                    <Link
+                                        key={name}
+                                        href={href}
+                                        className="group/award flex items-center justify-between rounded-xl border border-white/5 bg-zinc-300/5 px-3.5 py-3"
+                                    >
+                                        <span className="text-sm font-bold text-zinc-200">
+                                            {name}
+                                            {name === "Ultimate team" && <span className="text-sm text-zinc-500"> (Best 7)</span>}
+                                        </span>
+
+                                        <svg
+                                            className="size-4 text-zinc-600 transition-transform group-hover/award:translate-x-0.5 group-hover/award:text-amber-400"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            aria-hidden="true"
+                                        >
+                                            <path d="m9 18 6-6-6-6" />
+                                        </svg>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
                 )}
                 <MatchCard
                     date={recentMatch.date}

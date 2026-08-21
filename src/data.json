@@ -669,6 +669,15 @@
             }
         }
     ],
+    "awards": {
+        "2026-07": {
+            "top-scorer": {
+                "id": 8,
+                "goals": 4
+            },
+            "ultimate-team": [7,17,8,3,6,14,25]
+        }
+    },
     "matches": [
         {
             "id": 1,

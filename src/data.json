@@ -667,7 +667,22 @@
                 "position": "MID",
                 "overall": "??"
             }
-        }
+        },
+{
+    "id": 38,
+    "name": "Hashim",
+    "attributes": {
+        "pace": "??",
+        "shooting": "??",
+        "passing": "??",
+        "dribbling": "??",
+        "defending": "??",
+        "physical": "??",
+        "goalkeeping": "??",
+        "position": "MID",
+        "overall": "??"
+    }
+}
     ],
     "awards": {
         "2026-07": {

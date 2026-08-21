@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link, useParams } from "wouter";
+import { Link, useLocation, useParams } from "wouter";
 import data from "../data.json";
 import lineup_ground_gold from "../assets/lineup-ground-gold.png";
 import fifa_shield_white from "../assets/fifa-player-shield-white.png";
 import SafeImage from "../components/safe-image";
 import user_png from "../assets/user.png"
+import { BackIcon } from "../icons";
 
 const POSITION_MAP = [
     [90, 50], // GK
@@ -24,7 +25,7 @@ const playersById = new Map(
 
 function UltimateTeamPitch({ players }) {
     return players.length > 0 ? (
-        <div className="relative w-full select-none aspect-3/4 perspective-midrange">
+        <div className="relative w-full select-none aspect-3/4 perspective-midrange mb-12">
             <img
                 src={lineup_ground_gold}
                 alt="Football pitch"
@@ -92,6 +93,7 @@ function UltimateTeamPitch({ players }) {
 
 export default function AwardDetailsPage() {
     const { year, month, type } = useParams();
+    const [, navigate] = useLocation();
 
     const MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
     const award_key = `${year}-${String(MONTHS.indexOf(month.toLowerCase()) + 1).padStart(2, "0")}`;
@@ -153,9 +155,12 @@ export default function AwardDetailsPage() {
                 <p className="uppercase text-yellow-400 font-semibold">
                     {subtitle}
                 </p>
-                <p className="text-xs text-zinc-500">
-                    The finest performers of the month
-                </p>
+                {
+                    isUltimateTeam &&
+                    <p className="text-xs text-zinc-500">
+                        The finest performer's of the month
+                    </p>
+                }
             </div>
 
             {
@@ -184,13 +189,14 @@ export default function AwardDetailsPage() {
                                             aria-hidden="true"
                                         />
 
+                                        {/* Player image — top ~70% */}
                                         <div
                                             className="absolute overflow-hidden"
                                             style={{
-                                                bottom: "15%",
-                                                left: "8%",
-                                                width: "85%",
-                                                height: "72%",
+                                                top: "10%",
+                                                left: "17%",
+                                                width: "66%",
+                                                height: "60%",
                                             }}
                                         >
                                             <SafeImage
@@ -200,27 +206,39 @@ export default function AwardDetailsPage() {
                                                 alt=""
                                                 style={{
                                                     maskImage:
-                                                        "linear-gradient(to bottom, black 85%, transparent 100%)",
+                                                        "linear-gradient(to bottom, black 80%, transparent 100%)",
                                                     WebkitMaskImage:
-                                                        "linear-gradient(to bottom, black 85%, transparent 100%)",
+                                                        "linear-gradient(to bottom, black 80%, transparent 100%)",
                                                 }}
                                             />
                                         </div>
+
+                                        {/* Player information — bottom section */}
+                                        <div className="absolute bottom-[15%] left-[17%] right-[17%] text-center font-ddin">
+                                            <p className="text-xl font-bold leading-tight text-[#d8a718]">
+                                                {player.name.toUpperCase()}
+                                            </p>
+
+                                            <p className="uppercase tracking-wider text-zinc-700">
+                                                {topScorer.goals} goals
+                                            </p>
+                                        </div>
                                     </div>
                                 </Link>
-
-                                <p className="mt-6 text-xl font-bold text-white">
-                                    {player.name}
-                                </p>
-
-                                <p className="mt-1 font-semibold uppercase tracking-wider text-amber-400">
-                                    {topScorer.goals} goals
-                                </p>
                             </>
                         );
                     })()}
                 </div>
             )}
+            <div className="flex w-full justify-center grow">
+                <button
+                    className="flex items-center gap-1 text-sm text-zinc-600 hover:text-white transition-colors"
+                    type="button"
+                    onClick={() => navigate("/")}
+                >
+                    <BackIcon /> Back
+                </button>
+            </div>
         </div>
     );
 }

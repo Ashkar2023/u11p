@@ -403,6 +403,15 @@ export const MatchDetails = () => {
 
     return (
         <main className="min-h-dvh bg-zinc-950 px-4 py-[calc(1.5rem+env(safe-area-inset-top))] text-white">
+            <div className="pb-3">
+                <button
+                    className="flex items-center gap-1 text-sm text-zinc-500 hover:text-white transition-colors"
+                    type="button"
+                    onClick={goBack}
+                >
+                    <BackIcon /> Back
+                </button>
+            </div>
             <div className="mx-auto w-full max-w-3xl">
                 <MatchCard
                     date={match.date}

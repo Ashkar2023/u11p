@@ -186,8 +186,8 @@
                 "defending": 32,
                 "physical": 75,
                 "goalkeeping": 84,
-                "position": "GK",
-                "secondaryPosition": null,
+                "position": "MID",
+                "secondaryPosition": "GK",
                 "overall": 78
             }
         },
@@ -240,8 +240,7 @@
                 "defending": 64,
                 "physical": 70,
                 "goalkeeping": 8,
-                "position": "MID",
-                "secondaryPosition": "DEF",
+                "position": "DEF",
                 "overall": 67
             }
         },
@@ -277,7 +276,6 @@
                 "physical": 72,
                 "goalkeeping": 8,
                 "position": "MID",
-                "secondaryPosition": "DEF",
                 "overall": 71
             }
         },
@@ -294,8 +292,7 @@
                 "defending": 76,
                 "physical": 78,
                 "goalkeeping": 8,
-                "position": "DEF",
-                "secondaryPosition": null,
+                "position": "MID",
                 "overall": 65
             }
         },
@@ -313,7 +310,6 @@
                 "physical": 78,
                 "goalkeeping": 8,
                 "position": "DEF",
-                "secondaryPosition": "MID",
                 "overall": 74
             }
         },
@@ -329,9 +325,8 @@
                 "dribbling": 58,
                 "defending": 20,
                 "physical": 82,
-                "goalkeeping": 8,
-                "position": "ST",
-                "secondaryPosition": "FWD",
+                "goalkeeping": 82,
+                "position": "GK",
                 "overall": 69
             }
         },
@@ -349,7 +344,7 @@
                 "physical": 82,
                 "goalkeeping": 8,
                 "position": "DEF",
-                "secondaryPosition": "MID",
+                "secondaryPosition": "ST",
                 "overall": 76
             }
         },
@@ -383,7 +378,7 @@
                 "defending": 52,
                 "physical": 62,
                 "goalkeeping": 8,
-                "position": "MID",
+                "position": "DEF",
                 "secondaryPosition": null,
                 "overall": 65
             }
@@ -401,8 +396,7 @@
                 "defending": 30,
                 "physical": 55,
                 "goalkeeping": 8,
-                "position": "MID",
-                "secondaryPosition": "FWD",
+                "position": "FWD",
                 "overall": 68
             }
         },
@@ -420,7 +414,6 @@
                 "physical": 68,
                 "goalkeeping": 8,
                 "position": "DEF",
-                "secondaryPosition": "MID",
                 "overall": 70
             }
         },
@@ -436,7 +429,7 @@
                 "defending": 50,
                 "physical": 64,
                 "goalkeeping": 8,
-                "position": "MID",
+                "position": "DEF",
                 "secondaryPosition": null,
                 "overall": 64
             }
@@ -454,8 +447,7 @@
                 "defending": 25,
                 "physical": 70,
                 "goalkeeping": 8,
-                "position": "ST",
-                "secondaryPosition": "FWD",
+                "position": "FWD",
                 "overall": 75
             }
         },
@@ -473,7 +465,6 @@
                 "physical": 85,
                 "goalkeeping": 8,
                 "position": "DEF",
-                "secondaryPosition": "MID",
                 "overall": 70
             }
         },
@@ -484,13 +475,13 @@
             "teamId": 1,
             "attributes": {
                 "pace": 74,
-                "shooting": 68,
+                "shooting": 86,
                 "passing": 84,
                 "dribbling": 78,
                 "defending": 58,
                 "physical": 72,
                 "goalkeeping": 8,
-                "position": "MID",
+                "position": "ST",
                 "secondaryPosition": "FWD",
                 "overall": 78
             }
@@ -509,7 +500,7 @@
                 "physical": 65,
                 "goalkeeping": 8,
                 "position": "FWD",
-                "secondaryPosition": "ST",
+                "secondaryPosition": "MID",
                 "overall": 72
             }
         },
@@ -545,7 +536,6 @@
                 "physical": 62,
                 "goalkeeping": 8,
                 "position": "DEF",
-                "secondaryPosition": "MID",
                 "overall": 67
             }
         },
@@ -562,14 +552,15 @@
                 "defending": 22,
                 "physical": 62,
                 "goalkeeping": 8,
-                "position": "FWD",
-                "secondaryPosition": "ST",
+                "position": "MID",
+                "secondaryPosition": "DEF",
                 "overall": 69
             }
         },
         {
             "id": 32,
             "name": "Riyas",
+            "hidden": true,
             "attributes": {
                 "pace": 55,
                 "shooting": 45,
@@ -597,7 +588,6 @@
                 "physical": 76,
                 "goalkeeping": 8,
                 "position": "DEF",
-                "secondaryPosition": "MID",
                 "overall": 72
             }
         },
@@ -615,7 +605,6 @@
                 "physical": 70,
                 "goalkeeping": 8,
                 "position": "MID",
-                "secondaryPosition": "DEF",
                 "overall": 66
             }
         },
@@ -631,14 +620,14 @@
                 "defending": 18,
                 "physical": 68,
                 "goalkeeping": 8,
-                "position": "ST",
-                "secondaryPosition": "FWD",
+                "position": "MID",
                 "overall": 65
             }
         },
         {
             "id": 36,
             "name": "Jabir",
+            "hidden": true,
             "attributes": {
                 "pace": 48,
                 "shooting": 25,
@@ -648,7 +637,6 @@
                 "physical": 74,
                 "goalkeeping": 8,
                 "position": "DEF",
-                "secondaryPosition": null,
                 "overall": 64
             }
         },
@@ -668,21 +656,21 @@
                 "overall": "??"
             }
         },
-{
-    "id": 38,
-    "name": "Hashim",
-    "attributes": {
-        "pace": "??",
-        "shooting": "??",
-        "passing": "??",
-        "dribbling": "??",
-        "defending": "??",
-        "physical": "??",
-        "goalkeeping": "??",
-        "position": "MID",
-        "overall": "??"
-    }
-}
+        {
+            "id": 38,
+            "name": "Hashim",
+            "attributes": {
+                "pace": "??",
+                "shooting": "??",
+                "passing": "??",
+                "dribbling": "??",
+                "defending": "??",
+                "physical": "??",
+                "goalkeeping": "??",
+                "position": "MID",
+                "overall": "??"
+            }
+        }
     ],
     "awards": {
         "2026-07": {
@@ -690,7 +678,15 @@
                 "id": 8,
                 "goals": 4
             },
-            "ultimate-team": [7,17,8,3,6,14,25]
+            "ultimate-team": [
+                7,
+                17,
+                8,
+                3,
+                6,
+                14,
+                25
+            ]
         }
     },
     "matches": [
@@ -1399,15 +1395,39 @@
                 }
             ],
             "lineup": [
-    {
-        "teamId": 1,
-        "playerIds": [7, 33, 26, 8, 23, 5, 1, 38, 2, 27, 14]
-    },
-    {
-        "teamId": 2,
-        "playerIds": [19, 15, 17, 12, 13, 16, 6, 11, 9, 22, 4]
-    }
-]
+                {
+                    "teamId": 1,
+                    "playerIds": [
+                        7,
+                        33,
+                        26,
+                        8,
+                        23,
+                        5,
+                        1,
+                        38,
+                        2,
+                        27,
+                        14
+                    ]
+                },
+                {
+                    "teamId": 2,
+                    "playerIds": [
+                        19,
+                        15,
+                        17,
+                        12,
+                        13,
+                        16,
+                        6,
+                        11,
+                        9,
+                        22,
+                        4
+                    ]
+                }
+            ]
         }
     ]
 }

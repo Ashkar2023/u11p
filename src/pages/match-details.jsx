@@ -336,31 +336,43 @@ export const MatchDetails = () => {
     }, [params?.id, hasVoted]);
 
     const votingPeriodStatus = match ? getMatchVotingPeriodStatus(match.date, now) : "closed";
-    const canShowVoting = votingPeriodStatus === "open" && !(hasVoted && hasRevoted);
+    const canShowFacts = votingPeriodStatus === "open" || votingPeriodStatus === "closed";
     const canShowVotes = votingPeriodStatus === "open" || votingPeriodStatus === "closed";
+    const isFactsDefault = votingPeriodStatus === "closed";
+    const canShowVoting = votingPeriodStatus === "open" && !(hasVoted && hasRevoted);
     const canShowMotmTab = canShowVoting || canShowVotes;
     const tabColumnClass = canShowVoting && canShowVotes
-        ? "grid-cols-4"
+        ? canShowFacts ? "grid-cols-4" : "grid-cols-3"
         : canShowMotmTab
-            ? "grid-cols-3"
-            : "grid-cols-2";
+            ? canShowFacts ? "grid-cols-3" : "grid-cols-2"
+            : canShowFacts ? "grid-cols-2" : "grid-cols-1";
+
 
     useEffect(() => {
-        if (activeTab === "vote" && !canShowVoting) {
-            setTab(canShowVotes ? "votes" : "facts");
-        }
-        if (activeTab === "votes" && !canShowVotes) {
-            setTab(canShowVoting ? "vote" : "facts");
-        }
-    }, [activeTab, canShowVotes, canShowVoting]);
+        if (activeTab === "facts" && !canShowFacts) setTab("lineup");
+        if (activeTab === "vote" && !canShowVoting) setTab(canShowVotes ? "votes" : canShowFacts ? "facts" : "lineup");
+        if (activeTab === "votes" && !canShowVotes) setTab(canShowVoting ? "vote" : canShowFacts ? "facts" : "lineup");
+    }, [activeTab, canShowVotes, canShowVoting, canShowFacts]);
 
     useEffect(() => {
         const requestedTab = new URLSearchParams(window.location.search).get("tab");
-        if (requestedTab === "vote" && canShowVoting) setActiveTab("vote");
-        else if (requestedTab === "votes" && canShowVotes) setActiveTab("votes");
-        else if (requestedTab === "lineup") setActiveTab("lineup");
-        else setActiveTab("facts"); // default
-    }, [canShowVotes, canShowVoting, params?.id]);
+
+        if (requestedTab === "vote" && canShowVoting) { setActiveTab("vote"); return; }
+        if (requestedTab === "votes" && canShowVotes) { setActiveTab("votes"); return; }
+        if (requestedTab === "lineup") { setActiveTab("lineup"); return; }
+        if (requestedTab === "facts" && canShowFacts) { setActiveTab("facts"); return; }
+
+        // Default tab logic (no ?tab= param or invalid)
+        if (isFactsDefault) {
+            setActiveTab("facts");
+        } else if (canShowVoting && !hasVoted) {
+            setActiveTab("vote");
+        } else if (canShowVotes) {
+            setActiveTab("votes");
+        } else {
+            setActiveTab("lineup"); // before match ends
+        }
+    }, [canShowVotes, canShowVoting, canShowFacts, isFactsDefault, params?.id]);
 
     const goBack = () => {
         if (window.history.length > 1) {
@@ -405,16 +417,18 @@ export const MatchDetails = () => {
 
                 <section className="mt-5">
                     <div className={`grid ${tabColumnClass} border-b border-white/10`} role="tablist" aria-label="Match details">
-                        <button
-                            className={`border-b-2 px-3 py-3 text-sm font-semibold transition-colors ${activeTab === "facts" ? "border-amber-400 text-amber-400" : "border-transparent text-zinc-500"}`}
-                            type="button"
-                            disabled={isVoteFeedbackVisible}
-                            role="tab"
-                            aria-selected={activeTab === "facts"}
-                            onClick={() => setTab("facts")}
-                        >
-                            Match facts
-                        </button>
+                        {canShowFacts && (
+                            <button
+                                className={`border-b-2 px-3 py-3 text-sm font-semibold transition-colors ${activeTab === "facts" ? "border-amber-400 text-amber-400" : "border-transparent text-zinc-500"}`}
+                                type="button"
+                                disabled={isVoteFeedbackVisible}
+                                role="tab"
+                                aria-selected={activeTab === "facts"}
+                                onClick={() => setTab("facts")}
+                            >
+                                Match facts
+                            </button>
+                        )}
                         <button
                             className={`border-b-2 px-3 py-3 text-sm font-semibold transition-colors ${activeTab === "lineup" ? "border-amber-400 text-amber-400" : "border-transparent text-zinc-500"}`}
                             type="button"
@@ -452,7 +466,7 @@ export const MatchDetails = () => {
                     </div>
 
                     <div className="pb-4" role="tabpanel">
-                        {activeTab === "facts" && <MatchFacts match={match} teams={teams} />}
+                        {activeTab === "facts" && canShowFacts && <MatchFacts match={match} teams={teams} />}
                         {activeTab === "lineup" && <Lineup match={match} teams={teams} />}
                         {activeTab === "vote" && canShowVoting && (
                             <ManOfTheMatchVote

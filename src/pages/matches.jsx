@@ -3,7 +3,7 @@ import { useSearchParams } from "wouter";
 import MatchCard from "../components/match.card";
 import data from "../data.json";
 import { PageLayout } from "../layout";
-import { getMatchVotingPeriodStatus, hasMatchStarted } from "../utils/date.util";
+import { getMatchVotingPeriodStatus, isMatchTodayOrStarted } from "../utils/date.util";
 
 const ALL_TIME = "all";
 const teamsById = new Map(data.teams.map((team) => [team.id, team]));
@@ -34,7 +34,7 @@ export const Matches = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const requestedPeriod = searchParams.get("period");
     const startedMatches = data.matches
-        .filter((match) => hasMatchStarted(match, now))
+        .filter((match) => isMatchTodayOrStarted(match, now))
         .sort((a, b) => b.date.localeCompare(a.date));
     const availableMonths = [...new Set(startedMatches.map((match) => getMonthKey(match.date)))];
     const period = availableMonths.includes(requestedPeriod) ? requestedPeriod : ALL_TIME;

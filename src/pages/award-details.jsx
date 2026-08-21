@@ -93,7 +93,8 @@ function UltimateTeamPitch({ players }) {
 export default function AwardDetailsPage() {
     const { year, month, type } = useParams();
 
-    const award_key = `${year}-${String(new Date(`${month} 1, ${year}`).getMonth() + 1).padStart(2, "0")}`;
+    const MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+    const award_key = `${year}-${String(MONTHS.indexOf(month.toLowerCase()) + 1).padStart(2, "0")}`;
 
     const award = data.awards?.[award_key];
 

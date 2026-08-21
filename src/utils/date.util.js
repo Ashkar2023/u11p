@@ -4,7 +4,7 @@ export const formatDate = (d) => {
         day: "numeric",
         month: "short",
         year: "numeric",
-        weekday:"short",
+        weekday: "short",
         timeZone: "Asia/Kolkata",
     });
     const startTime = date.toLocaleTimeString("en-IN", {
@@ -22,9 +22,17 @@ export function hasMatchResult(match) {
         && match.teams.every((team) => Number.isFinite(team.score));
 }
 
-export function hasMatchStarted(match, now = new Date()) {
-    const startsAt = new Date(match?.date).getTime();
-    return Number.isFinite(startsAt) && now.getTime() >= startsAt;
+export function isMatchTodayOrStarted(match, now = new Date()) {
+    const matchDate = new Date(match?.date);
+    if (!Number.isFinite(matchDate.getTime())) return false;
+
+    // Already started
+    if (now.getTime() >= matchDate.getTime()) return true;
+
+    // Scheduled for today (same calendar day in IST)
+    const todayIST = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(now);
+    const matchDayIST = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(matchDate);
+    return todayIST === matchDayIST;
 }
 
 const matchDayFormatter = new Intl.DateTimeFormat("en-CA", {

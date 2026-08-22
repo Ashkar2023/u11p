@@ -1387,6 +1387,7 @@
         {
             "id": 11,
             "date": "2026-08-22T15:30:00.000Z",
+            "poster_filename": "august-22.png",
             "teams": [
                 {
                     "teamId": 1

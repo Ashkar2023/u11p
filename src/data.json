@@ -420,6 +420,7 @@
         {
             "id": 24,
             "name": "Ansar",
+            "image": "/players/ansar.png",
             "teamId": 1,
             "attributes": {
                 "pace": 58,
@@ -1415,13 +1416,13 @@
                     "teamId": 2,
                     "playerIds": [
                         19,
-                        15,
+                        24,
                         17,
                         12,
                         13,
-                        16,
+                        15,
                         6,
-                        11,
+                        16,
                         9,
                         22,
                         4

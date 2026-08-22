@@ -1390,10 +1390,12 @@
             "poster_filename": "august-22.png",
             "teams": [
                 {
-                    "teamId": 1
+                    "teamId": 1,
+                    "score": 11
                 },
                 {
-                    "teamId": 2
+                    "teamId": 2,
+                    "score": 5
                 }
             ],
             "lineup": [
@@ -1407,7 +1409,6 @@
                         23,
                         5,
                         1,
-                        38,
                         2,
                         27,
                         14
@@ -1416,9 +1417,9 @@
                 {
                     "teamId": 2,
                     "playerIds": [
+                        34,
                         19,
-                        24,
-                        17,
+                        38,
                         12,
                         13,
                         15,
@@ -1428,6 +1429,57 @@
                         22,
                         4
                     ]
+                }
+            ],
+            "motmPlayerId": 27,
+            "goals": [
+                {
+                    "playerId": 1,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 27,
+                    "teamId": 1,
+                    "count": 4,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 14,
+                    "teamId": 1,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 2,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 5,
+                    "teamId": 1,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 8,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 1
+                },
+                {
+                    "playerId": 4,
+                    "teamId": 2,
+                    "count": 3,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 9,
+                    "teamId": 2,
+                    "count": 2,
+                    "penaltiesCount": 0
                 }
             ]
         }

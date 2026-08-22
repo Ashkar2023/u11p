@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import data from "../data.json";
 import SafeImage from "./safe-image";
 import user_png from "../assets/user.png";
+import fifa_shield_white from "../assets/fifa-player-shield-white.png";
 
 const UNLOCK_DELAY = 5_000;
 const APPSCRIPT_URL = import.meta.env.VITE_APPSCRIPT_URL;
@@ -408,7 +409,7 @@ export default function ManOfTheMatchVote({
     const buttonLabel = isSubmitting
         ? "Submitting vote…"
         : isUnlocked
-            ? candidate ? `${hasVoted ? "Revote" : "Vote"} for ${candidate.name}` : "No players available"
+            ? candidate ? `${hasVoted ? "Revote" : "Vote"} for ${candidate.name.split(" ")[0]}` : "No players available"
             : `Unlocking · ${Math.ceil((1 - unlockProgress) * 5)}s`;
 
     if (successfulVote) {
@@ -432,12 +433,26 @@ export default function ManOfTheMatchVote({
                 <p className="mt-2 text-sm text-zinc-300">
                     <span className="font-bold text-white">{successfulVote.voter.name}</span> voted for
                 </p>
-                <SafeImage
-                    className="mt-6 size-32 rounded-full border-2 border-amber-300 bg-zinc-800 object-cover object-top shadow-xl shadow-amber-500/15"
-                    src={votedFor.image}
-                    fallbackSrc={user_png}
-                    alt={votedFor.name}
-                />
+                <div className="relative mt-6 w-32 aspect-[2/2.7] drop-shadow-[0_0_14px_rgba(251,191,36,0.7)]">
+                    <img
+                        src={fifa_shield_white}
+                        alt=""
+                        className="absolute inset-0 h-full w-full object-contain"
+                        aria-hidden="true"
+                    />
+                    <div className="absolute overflow-hidden" style={{ top: "5%", left: "7%", width: "85%", height: "72%" }}>
+                        <SafeImage
+                            className="h-full w-full object-cover object-top"
+                            src={votedFor.image}
+                            fallbackSrc={user_png}
+                            alt={votedFor.name}
+                            style={{
+                                maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
+                                WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
+                            }}
+                        />
+                    </div>
+                </div>
                 <h2 className="mt-4 text-2xl font-black text-white">{votedFor.name}</h2>
                 <p className="mt-1 text-sm font-semibold text-zinc-400">Player ID #{votedFor.id}</p>
 
@@ -583,25 +598,40 @@ export default function ManOfTheMatchVote({
                                     tabIndex={-1}
                                     onClick={() => !draggedRef.current && snapTo(index)}
                                 >
-                                    <span className={`relative block aspect-square w-full max-w-36 rounded-full overflow-hidden border-2 p-1.5 transition-colors ${isSelected && !isMoving ? "border-amber-300 bg-amber-400/10 shadow-[0_0_32px_rgba(251,191,36,.28)]" : "border-white/10 bg-zinc-800"}`}>
+                                    <span className={`relative block w-full max-w-36 aspect-[2/2.7] transition-filter ${isSelected && !isMoving ? "drop-shadow-[0_0_14px_rgba(251,191,36,0.7)]" : ""}`}>
+                                        <img
+                                            src={fifa_shield_white}
+                                            alt=""
+                                            className="absolute inset-0 h-full w-full object-contain"
+                                            style={{ opacity: isPreviousVote ? "15%" : "100%" }}
+                                            aria-hidden="true"
+                                            draggable="false"
+                                        />
                                         {isPreviousVote && (
-                                            <span className="absolute inset-0 flex items-center justify-center rounded-full bg-black/60 z-10">
+                                            <span className="absolute z-10 flex items-center justify-center inset-0">
                                                 <svg className="size-6 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                     <rect x="5" y="10" width="14" height="11" rx="2" />
                                                     <path d="M8 10V7a4 4 0 0 1 8 0v3" />
                                                 </svg>
                                             </span>
                                         )}
-                                        <SafeImage
-                                            className="size-full rounded-full object-cover object-top bg-motm"
-                                            src={player.image}
-                                            fallbackSrc={user_png}
-                                            alt={player.name}
-                                            draggable="false"
-                                        />
+                                        <div className="absolute overflow-hidden" style={{ top: "5%", left: "7%", width: "85%", height: "72%" }}>
+                                            <SafeImage
+                                                className="h-full w-full object-cover object-top"
+                                                src={player.image}
+                                                fallbackSrc={user_png}
+                                                alt={player.name}
+                                                draggable="false"
+                                                style={{
+                                                    opacity: isPreviousVote ? "25%" : "100%",
+                                                    maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
+                                                    WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
+                                                }}
+                                            />
+                                        </div>
                                     </span>
-                                    <span className={`mt-3 w-full truncate text-center font-bold transition-colors ${isSelected ? "text-white" : "text-zinc-500"}`}>
-                                        {player.name}
+                                    <span className={`mt-3 w-full truncate text-center font-bold transition-colors ${isSelected ? "text-white" : "text-zinc-500"} ${isPreviousVote ? "text-zinc-700/70" : ""}`}>
+                                        {player.name.split(" ")[0]}
                                     </span>
                                 </button>
                             </div>
@@ -634,12 +664,26 @@ export default function ManOfTheMatchVote({
                         </p>
                         <div className="mt-5 border-t border-white/10 pt-5">
                             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-500">Voting for</p>
-                            <SafeImage
-                                className="mx-auto mt-3 size-28 rounded-full border-2 border-amber-300 bg-zinc-800 object-cover object-top shadow-lg shadow-amber-500/15"
-                                src={candidate.image}
-                                fallbackSrc={user_png}
-                                alt={candidate.name}
-                            />
+                            <div className="relative mx-auto mt-3 w-28 aspect-[2/2.7] drop-shadow-[0_0_14px_rgba(251,191,36,0.7)]">
+                                <img
+                                    src={fifa_shield_white}
+                                    alt=""
+                                    className="absolute inset-0 h-full w-full object-contain"
+                                    aria-hidden="true"
+                                />
+                                <div className="absolute overflow-hidden" style={{ top: "5%", left: "7%", width: "85%", height: "72%" }}>
+                                    <SafeImage
+                                        className="h-full w-full object-cover object-top"
+                                        src={candidate.image}
+                                        fallbackSrc={user_png}
+                                        alt={candidate.name}
+                                        style={{
+                                            maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
+                                            WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
+                                        }}
+                                    />
+                                </div>
+                            </div>
                             <p className="mt-3 text-lg font-black text-amber-300">{candidate.name}</p>
                             <p className="mt-1 text-xs font-semibold text-zinc-500">Player ID #{candidate.id}</p>
                         </div>

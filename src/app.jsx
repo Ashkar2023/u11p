@@ -1,5 +1,6 @@
 import { useLayoutEffect } from "react";
 import { Route, useLocation } from "wouter";
+import { Analytics } from "@vercel/analytics/react";
 import { Home } from "./pages/home";
 import { Matches } from "./pages/matches";
 import { MatchDetails } from "./pages/match-details";
@@ -33,5 +34,6 @@ export const App = () => {
         <Route path="/stats" component={Stats} />
         <Route path="/awards/:year/:month/:type" component={AwardDetailsPage}/>
         {showDevtools && <Route path="/devtools" component={Devtools} />}
+        <Analytics />
     </>
 };

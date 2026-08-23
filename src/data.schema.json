@@ -197,6 +197,10 @@
                                 "score": {
                                     "type": "integer",
                                     "minimum": 0
+                                },
+                                "captainPlayerId": {
+                                    "type": "integer",
+                                    "minimum": 1
                                 }
                             },
                             "additionalProperties": false

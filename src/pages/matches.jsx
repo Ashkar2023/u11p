@@ -96,6 +96,8 @@ export const Matches = () => {
                                 teamB={teamsById.get(awayResult.teamId)}
                                 scoreA={homeResult.score}
                                 scoreB={awayResult.score}
+                                homeCaptain={playersById.get(homeResult.captainPlayerId)}
+                                awayCaptain={playersById.get(awayResult.captainPlayerId)}
                                 motm={getMatchVotingPeriodStatus(match.date, now) === "closed"
                                     ? playersById.get(match.motmPlayerId)
                                     : null}

@@ -4,15 +4,34 @@ import SafeImage from "./safe-image";
 import MatchdayPoster from "./matchday-poster";
 import user_png from "../assets/user.png";
 
-function Team({ team }) {
+function Team({ team, captainPlayer, away }) {
     return (
         <div className="flex min-w-0 flex-1 flex-col items-center gap-1 text-center">
-            <SafeImage
-                className="size-20 object-contain sm:size-24"
-                src={team.logo}
-                alt={`${team.name} logo`}
-            />
-            <span className="text-sm font-normal text-zinc-100 whitespace-normal break-normal max-w-16">
+            <div className="relative w-16 sm:w-20">
+                <SafeImage
+                    className="w-full aspect-[3/4] object-cover overflow-visible object-top rounded-lg sm:h-28 sm:w-20"
+                    src={captainPlayer?.image}
+                    fallbackSrc={team.logo}
+                    alt={captainPlayer?.name ?? team.name}
+                    style={{
+                        maskImage:
+                            "linear-gradient(to bottom, black 90%, transparent 100%)",
+                        WebkitMaskImage:
+                            "linear-gradient(to bottom, black 90%, transparent 100%)",
+                    }}
+                />
+                {
+                    captainPlayer &&
+                    <div className={`absolute ${away ? "-left-3" : "-right-3"} -bottom-2 size-10 drop-shadow-sm drop-shadow-zinc-500`}>
+                        <SafeImage
+                            className="size-full object-contain"
+                            src={team.logo}
+                            alt={team.name}
+                        />
+                    </div>
+                }
+            </div>
+            <span className="mt-2 text-sm font-normal text-zinc-100 whitespace-normal break-normal max-w-16">
                 {team.name}
             </span>
         </div>
@@ -27,7 +46,7 @@ function StarIcon() {
     );
 }
 
-export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title, motm, matchdayCount, hideMatchdayCount, matchHref, posterFilename }) {
+export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, homeCaptain, awayCaptain, title, motm, matchdayCount, hideMatchdayCount, matchHref, posterFilename }) {
     const [, navigate] = useLocation();
     const hasResult = Number.isFinite(scoreA) && Number.isFinite(scoreB);
     const scoreColor = (score, opponentScore) => {
@@ -58,7 +77,7 @@ export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title, m
                 </div>
 
                 <div className="flex items-center justify-between gap-3 sm:gap-8">
-                    <Team team={teamA} />
+                    <Team team={teamA} captainPlayer={homeCaptain} />
 
                     <div
                         className={`flex shrink-0 items-center font-bold tracking-tight text-white ${hasResult ? "gap-6 text-4xl sm:gap-4 sm:text-6xl" : "text-center text-sm sm:text-base"}`}
@@ -77,7 +96,7 @@ export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, title, m
                         )}
                     </div>
 
-                    <Team team={teamB} />
+                    <Team team={teamB} captainPlayer={awayCaptain} away />
                 </div>
             </div>
 

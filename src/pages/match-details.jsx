@@ -85,24 +85,33 @@ function MatchFacts({ match, teams }) {
     );
 }
 
-// 4-3-3: index 0 = GK, 1-4 = DEF, 5-7 = MID, 8-10 = FWD
-// positions as [top%, left%] from top of pitch
-const positionMap = [
-    [90, 50],
-    // DEF (4)
-    [68, 15],
-    [71, 38],
-    [71, 62],
-    [68, 85],
-    // MID (3)
-    [44, 22],
-    [46, 50],
-    [44, 78],
-    // FWD (3)
-    [20, 22],
-    [16, 50],
-    [20, 78],
-];
+function getPositionMap(count) {
+    if (count >= 11) {
+        // 4-3-3
+        return [
+            [90, 50],
+            [68, 15], [71, 38], [71, 62], [68, 85],
+            [44, 22], [46, 50], [44, 78],
+            [20, 22], [16, 50], [20, 78],
+        ];
+    } else if (count === 10) {
+        // 4-3-2
+        return [
+            [90, 50],
+            [68, 15], [71, 38], [71, 62], [68, 85],
+            [45, 33], [45, 67],
+            [20, 22], [16, 50], [20, 78],
+        ];
+    } else {
+        // 9 players: 4-2-2 (GK + 4 DEF + 2 MID + 2 FWD — only first 9 slots used)
+        return [
+            [90, 50],
+            [68, 15], [71, 38], [71, 62], [68, 85],
+            [44, 33], [44, 67],
+            [20, 33], [20, 67],
+        ];
+    }
+}
 
 function Lineup({ match, teams }) {
     const [selectedTeamId, setSelectedTeamId] = useState(teams[0]?.id);
@@ -112,7 +121,7 @@ function Lineup({ match, teams }) {
         playerIds: match.lineup?.find((e) => e.teamId === team.id)?.playerIds ?? [],
     }));
 
-    const hideToggle = lineups.some((l) => l.playerIds.length < 11);
+    const hideToggle = lineups.some((l) => l.playerIds.length < 9);
     const [isListView, setIsListView] = useState(hideToggle);
 
     if (lineups.every((l) => !l.playerIds.length)) {
@@ -223,6 +232,7 @@ function Lineup({ match, teams }) {
                         {/* Players */}
                         {selectedLineup.playerIds.slice(0, 11).map((playerId, idx) => {
                             const player = playersById.get(playerId);
+                            const positionMap = getPositionMap(selectedLineup.playerIds.length);
                             const [top, left] = positionMap[idx] ?? [50, 50];
                             const isHomeTeam = selectedLineup.team.id === teams[0]?.id;
 
@@ -422,6 +432,8 @@ export const MatchDetails = () => {
                     motm={motm}
                     matchdayCount={match.id}
                     posterFilename={match.poster_filename}
+                    homeCaptain={playersById.get(homeResult.captainPlayerId)}
+                    awayCaptain={playersById.get(awayResult.captainPlayerId)}
                 />
 
                 <section className="mt-5">

@@ -713,11 +713,13 @@
             "teams": [
                 {
                     "teamId": 1,
-                    "score": 7
+                    "score": 7,
+                    "captainPlayerId": 2
                 },
                 {
                     "teamId": 2,
-                    "score": 5
+                    "score": 5,
+                    "captainPlayerId": 19
                 }
             ],
             "goals": null,
@@ -757,11 +759,13 @@
             "teams": [
                 {
                     "teamId": 1,
-                    "score": 9
+                    "score": 9,
+                    "captainPlayerId": 26
                 },
                 {
                     "teamId": 2,
-                    "score": 5
+                    "score": 5,
+                    "captainPlayerId": 15
                 }
             ],
             "goals": null,
@@ -801,11 +805,13 @@
             "teams": [
                 {
                     "teamId": 1,
-                    "score": 5
+                    "score": 5,
+                    "captainPlayerId": 10
                 },
                 {
                     "teamId": 2,
-                    "score": 6
+                    "score": 6,
+                    "captainPlayerId": 18
                 }
             ],
             "goals": null,
@@ -847,11 +853,13 @@
             "teams": [
                 {
                     "teamId": 1,
-                    "score": 5
+                    "score": 5,
+                    "captainPlayerId": 14
                 },
                 {
                     "teamId": 2,
-                    "score": 3
+                    "score": 3,
+                    "captainPlayerId": 31
                 }
             ],
             "goals": [
@@ -944,11 +952,13 @@
             "teams": [
                 {
                     "teamId": 1,
-                    "score": 5
+                    "score": 5,
+                    "captainPlayerId": 8
                 },
                 {
                     "teamId": 2,
-                    "score": 4
+                    "score": 4,
+                    "captainPlayerId": 17
                 }
             ],
             "goals": [
@@ -1032,11 +1042,13 @@
             "teams": [
                 {
                     "teamId": 1,
-                    "score": 4
+                    "score": 4,
+                    "captainPlayerId": 1
                 },
                 {
                     "teamId": 2,
-                    "score": 10
+                    "score": 10,
+                    "captainPlayerId": 6
                 }
             ],
             "goals": [
@@ -1131,11 +1143,13 @@
             "teams": [
                 {
                     "teamId": 1,
-                    "score": 7
+                    "score": 7,
+                    "captainPlayerId": 33
                 },
                 {
                     "teamId": 2,
-                    "score": 4
+                    "score": 4,
+                    "captainPlayerId": 11
                 }
             ],
             "goals": [
@@ -1303,11 +1317,13 @@
             "teams": [
                 {
                     "teamId": 1,
-                    "score": 3
+                    "score": 3,
+                    "captainPlayerId": 3
                 },
                 {
                     "teamId": 2,
-                    "score": 5
+                    "score": 5,
+                    "captainPlayerId": 12
                 }
             ],
             "lineup": [
@@ -1391,11 +1407,13 @@
             "teams": [
                 {
                     "teamId": 1,
-                    "score": 11
+                    "score": 11,
+                    "captainPlayerId": 7
                 },
                 {
                     "teamId": 2,
-                    "score": 5
+                    "score": 5,
+                    "captainPlayerId": 13
                 }
             ],
             "lineup": [

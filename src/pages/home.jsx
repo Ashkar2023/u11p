@@ -287,6 +287,8 @@ export const Home = () => {
                     teamB={awayTeam}
                     scoreA={homeResult.score}
                     scoreB={awayResult.score}
+                    homeCaptain={playersById.get(homeResult.captainPlayerId)}
+                    awayCaptain={playersById.get(awayResult.captainPlayerId)}
                     title="Recent Match"
                     motm={recentMotm}
                     matchdayCount={recentMatch.id}

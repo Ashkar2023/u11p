@@ -671,6 +671,53 @@
                 "position": "MID",
                 "overall": "??"
             }
+        },
+        {
+            "id": 39,
+            "name": "Hashim Roshan",
+            "image": "/players/hashim-roshan.png",
+            "attributes": {
+                "pace": "??",
+                "shooting": "??",
+                "passing": "??",
+                "dribbling": "??",
+                "defending": "??",
+                "physical": "??",
+                "goalkeeping": "??",
+                "position": "MID",
+                "overall": "??"
+            }
+        },
+        {
+            "id": 40,
+            "name": "Kudu",
+            "attributes": {
+                "pace": "??",
+                "shooting": "??",
+                "passing": "??",
+                "dribbling": "??",
+                "defending": "??",
+                "physical": "??",
+                "goalkeeping": "??",
+                "position": "FWD",
+                "overall": "??"
+            }
+        },
+        {
+            "id": 41,
+            "name": "Shinaz",
+            "image": "/players/shinaz.png",
+            "attributes": {
+                "pace": "??",
+                "shooting": "??",
+                "passing": "??",
+                "dribbling": "??",
+                "defending": "??",
+                "physical": "??",
+                "goalkeeping": "??",
+                "position": "MID",
+                "overall": "??"
+            }
         }
     ],
     "awards": {
@@ -1498,6 +1545,32 @@
                     "teamId": 2,
                     "count": 2,
                     "penaltiesCount": 0
+                }
+            ]
+        },
+        {
+            "id": 12,
+            "date": "2026-08-26T15:30:00.000Z",
+            "teams": [
+                {
+                    "teamId": 1
+                },
+                {
+                    "teamId": 2
+                }
+            ],
+            "lineup": [
+                {
+                    "teamId": 1,
+                    "playerIds": [
+                        40, 33, 5, 22, 1, 25, 14, 27
+                    ]
+                },
+                {
+                    "teamId": 2,
+                    "playerIds": [
+                        12, 11, 20, 41, 6, 28, 39
+                    ]
                 }
             ]
         }

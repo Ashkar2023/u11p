@@ -102,13 +102,29 @@ function getPositionMap(count) {
             [45, 33], [45, 67],
             [20, 22], [16, 50], [20, 78],
         ];
-    } else {
-        // 9 players: 4-2-2 (GK + 4 DEF + 2 MID + 2 FWD — only first 9 slots used)
+    } else if (count === 9) {
+        // 3-2-3 (GK + 3 DEF + 2 MID + 2 FWD)
         return [
             [90, 50],
             [68, 15], [71, 38], [71, 62], [68, 85],
             [44, 33], [44, 67],
             [20, 33], [20, 67],
+        ];
+    } else if (count === 8) {
+        // 3-2-2 (GK + 3 DEF + 2 MID + 2 FWD)
+        return [
+            [90, 50],
+            [65, 20], [68, 50], [65, 80],
+            [43, 33], [43, 67],
+            [20, 30], [20, 70],
+        ];
+    } else {
+        // 7 players: 2-2-2 (GK + 2 DEF + 2 MID + 2 FWD)
+        return [
+            [90, 50],
+            [65, 20], [68, 50], [65, 80],
+            [44, 50], 
+            [20, 70], [20, 30],
         ];
     }
 }
@@ -121,7 +137,7 @@ function Lineup({ match, teams }) {
         playerIds: match.lineup?.find((e) => e.teamId === team.id)?.playerIds ?? [],
     }));
 
-    const hideToggle = lineups.some((l) => l.playerIds.length < 9);
+    const hideToggle = lineups.some((l) => l.playerIds.length < 7);
     const [isListView, setIsListView] = useState(hideToggle);
 
     if (lineups.every((l) => !l.playerIds.length)) {

@@ -112,7 +112,7 @@ export default function MotmVotes({ matchId, allPlayers = data.players, isFinal 
 
     return (
         <section aria-label={isFinal ? "Final Man of the Match vote results" : "Current Man of the Match votes"}>
-            <header className="mb-4 flex items-end justify-between gap-3">
+            <header className="mb-4 px-1 flex items-end justify-between gap-3">
                 <div>
                     <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-amber-400">
                         {isFinal ? "Final ranking" : "Live ranking"}

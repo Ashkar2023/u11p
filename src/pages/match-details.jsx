@@ -123,7 +123,7 @@ function getPositionMap(count) {
         return [
             [90, 50],
             [65, 20], [68, 50], [65, 80],
-            [44, 50], 
+            [44, 50],
             [20, 70], [20, 30],
         ];
     }
@@ -502,7 +502,7 @@ export const MatchDetails = () => {
                         )}
                     </div>
 
-                    <div className="pb-4" role="tabpanel">
+                    <div className={`pb-4 ${activeTab === "votes" || activeTab === "vote" ? "mt-4" : ""} `} role="tabpanel">
                         {activeTab === "facts" && canShowFacts && <MatchFacts match={match} teams={teams} />}
                         {activeTab === "lineup" && <Lineup match={match} teams={teams} />}
                         {activeTab === "vote" && canShowVoting && (

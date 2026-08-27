@@ -9,7 +9,7 @@ function Team({ team, captainPlayer, away }) {
         <div className="flex min-w-0 flex-1 flex-col items-center gap-1 text-center">
             <div className="relative w-16 sm:w-20">
                 <SafeImage
-                    className="w-full aspect-[3/4] object-cover overflow-visible object-top rounded-lg sm:h-28 sm:w-20"
+                    className="w-full object-cover overflow-visible object-top rounded-lg sm:h-24 sm:w-20"
                     src={captainPlayer?.image}
                     fallbackSrc={team.logo}
                     alt={captainPlayer?.name ?? team.name}

@@ -1481,10 +1481,12 @@
             "date": "2026-08-29T15:30:00.000Z",
             "teams": [
                 {
-                    "teamId": 1
+                    "teamId": 1,
+                    "captainPlayerId": 25
                 },
                 {
-                    "teamId": 2
+                    "teamId": 2,
+                    "captainPlayerId": 20
                 }
             ],
             "lineup": [

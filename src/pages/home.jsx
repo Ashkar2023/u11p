@@ -137,8 +137,8 @@ function TopScorersPreview() {
 }
 
 const awardRoutes = {
-    "Ultimate team": "awards/2026/july/ultimate-team",
-    "Top scorer": "awards/2026/july/top-scorer"
+    // "Ultimate team": "awards/2026/july/ultimate-team",
+    "Top scorer": "awards/2026/august/top-scorer"
 }
 
 export const Home = () => {
@@ -231,7 +231,7 @@ export const Home = () => {
                                         Monthly Awards
                                     </span>
                                     <h3 className="italic font-black uppercase tracking-tight text-white">
-                                        July
+                                        August
                                     </h3>
                                 </div>
 

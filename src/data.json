@@ -1482,11 +1482,52 @@
             "teams": [
                 {
                     "teamId": 1,
-                    "captainPlayerId": 25
+                    "captainPlayerId": 25,
+                    "score": 4
                 },
                 {
                     "teamId": 2,
-                    "captainPlayerId": 20
+                    "captainPlayerId": 20,
+                    "score": 6
+                }
+            ],
+            "motmPlayerId": 20,
+            "goals": [
+                {
+                    "playerId": 6,
+                    "teamId": 2,
+                    "count": 4,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 9,
+                    "teamId": 2,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 23,
+                    "teamId": 1,
+                    "count": 1,
+                    "ownGoal": true
+                },
+                {
+                    "playerId": 8,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 1
+                },
+                {
+                    "playerId": 2,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                                {
+                    "playerId": 14,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
                 }
             ],
             "lineup": [
@@ -1499,12 +1540,11 @@
                         8,
                         29,
                         38,
-                        14,
-                        23,
-                        27,
+                        1,
                         25,
                         2,
-                        1
+                        14,
+                        27
                     ]
                 },
                 {
@@ -1517,7 +1557,7 @@
                         13,
                         6,
                         5,
-                        10,
+                        23,
                         39,
                         9,
                         20

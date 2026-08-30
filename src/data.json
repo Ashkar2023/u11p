@@ -1512,10 +1512,9 @@
                     "penaltiesCount": 0
                 },
                 {
-                    "playerId": 23,
+                    "playerId": 27,
                     "teamId": 1,
-                    "count": 1,
-                    "ownGoal": true
+                    "count": 1
                 },
                 {
                     "playerId": 8,

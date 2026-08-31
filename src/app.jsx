@@ -10,6 +10,7 @@ import { Stats } from "./pages/stats";
 import { Devtools } from "./pages/devtools";
 import { isLocalHost } from "./utils/is-local-host";
 import AwardDetailsPage from "./pages/award-details";
+import { ErrorBoundary } from "./components/error.boundary";
 
 function ScrollToTop() {
     const [location] = useLocation();
@@ -24,7 +25,7 @@ function ScrollToTop() {
 export const App = () => {
     const showDevtools = isLocalHost();
 
-    return <>
+    return <ErrorBoundary>
         <ScrollToTop />
         <Route path="/" component={Home} />
         <Route path="/matches" component={Matches} />
@@ -32,8 +33,8 @@ export const App = () => {
         <Route path="/players" component={Players} />
         <Route path="/players/:id" component={PlayerDetails} />
         <Route path="/stats" component={Stats} />
-        <Route path="/awards/:year/:month/:type" component={AwardDetailsPage}/>
+        <Route path="/awards/:year/:month/:type" component={AwardDetailsPage} />
         {showDevtools && <Route path="/devtools" component={Devtools} />}
         <Analytics />
-    </>
+    </ErrorBoundary>
 };

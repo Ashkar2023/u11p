@@ -684,7 +684,7 @@
                 "defending": "??",
                 "physical": "??",
                 "goalkeeping": "??",
-                "position": "MID",
+                "position": "DEF",
                 "overall": "??"
             }
         },
@@ -1556,16 +1556,16 @@
                     "teamId": 2,
                     "playerIds": [
                         18,
-                        15,
-                        19,
-                        11,
-                        13,
-                        6,
-                        5,
-                        23,
                         39,
+                        19,
+                        23,
+                        13,
+                        15,
+                        6,
+                        11,
                         9,
-                        20
+                        20,
+                        5
                     ]
                 }
             ]

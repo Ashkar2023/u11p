@@ -707,6 +707,7 @@
             "id": 41,
             "name": "Shinaz",
             "image": "/players/shinaz.png",
+            "hidden": true,
             "attributes": {
                 "pace": "??",
                 "shooting": "??",

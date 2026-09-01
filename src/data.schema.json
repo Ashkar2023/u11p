@@ -299,7 +299,39 @@
                                 "goals": {
                                     "type": "integer"
                                 }
-                            }
+                            },
+                            "required": ["id"],
+                            "additionalProperties": false
+                        },
+                        "best-midfielder": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                }
+                            },
+                            "required": ["id"],
+                            "additionalProperties": false
+                        },
+                        "best-defender": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                }
+                            },
+                            "required": ["id"],
+                            "additionalProperties": false
+                        },
+                        "golden-glove": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                }
+                            },
+                            "required": ["id"],
+                            "additionalProperties": false
                         }
                     },
                     "additionalProperties": false

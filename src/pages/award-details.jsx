@@ -91,6 +91,14 @@ function UltimateTeamPitch({ players }) {
     ) : null;
 }
 
+const AWARD_CONFIG = {
+    "ultimate-team": { label: "Ultimate Team" },
+    "top-scorer": { label: "Golden Boot Winner", showScore: true },
+    "best-midfielder": { label: "Best Midfielder" },
+    "best-defender": { label: "Best Defender" },
+    "golden-glove": { label: "Golden Glove Winner" },
+};
+
 export default function AwardDetailsPage() {
     const { year, month, type } = useParams();
     const [, navigate] = useLocation();
@@ -99,19 +107,15 @@ export default function AwardDetailsPage() {
     const award_key = `${year}-${String(MONTHS.indexOf(month.toLowerCase()) + 1).padStart(2, "0")}`;
 
     const award = data.awards?.[award_key];
-
+    const awardConfig = AWARD_CONFIG[type];
     const isUltimateTeam = type === "ultimate-team";
-    const isTopScorer = type === "top-scorer";
+    const winner = award?.[type];
 
     const ultimateTeamPlayers = isUltimateTeam
         ? (award?.["ultimate-team"] ?? [])
             .map((playerId) => playersById.get(playerId))
             .filter(Boolean)
         : [];
-
-    const topScorer = isTopScorer
-        ? award?.["top-scorer"]
-        : null;
 
     const subtitle = new Date(`${award_key}-01T00:00:00`).toLocaleDateString(
         "en-US",
@@ -121,7 +125,7 @@ export default function AwardDetailsPage() {
         }
     );
 
-    if (!award || (!isUltimateTeam && !isTopScorer)) {
+    if (!award || !awardConfig || !winner) {
         return (
             <div className="min-h-screen bg-[#0d0d0d] px-4 py-12 text-center text-sm text-zinc-500">
                 Award not found.
@@ -150,7 +154,7 @@ export default function AwardDetailsPage() {
 
             <div className="text-center pt-8 pb-2 px-2">
                 <h1 className="font-black uppercase text-3xl">
-                    {isUltimateTeam ? "Ultimate Team" : "Top Scorer"}
+                    {awardConfig.label}
                 </h1>
                 <p className="uppercase text-yellow-400 font-semibold">
                     {subtitle}
@@ -167,10 +171,10 @@ export default function AwardDetailsPage() {
                 isUltimateTeam && <UltimateTeamPitch players={ultimateTeamPlayers} />
             }
 
-            {isTopScorer && topScorer && (
+            {!isUltimateTeam && winner && (
                 <div className="flex flex-col items-center px-4 py-10">
                     {(() => {
-                        const player = playersById.get(topScorer.id);
+                        const player = playersById.get(winner.id);
 
                         if (!player) return null;
 
@@ -189,7 +193,6 @@ export default function AwardDetailsPage() {
                                             aria-hidden="true"
                                         />
 
-                                        {/* Player image — top ~70% */}
                                         <div
                                             className="absolute overflow-hidden"
                                             style={{
@@ -213,15 +216,15 @@ export default function AwardDetailsPage() {
                                             />
                                         </div>
 
-                                        {/* Player information — bottom section */}
                                         <div className="absolute bottom-[15%] left-[17%] right-[17%] text-center font-ddin">
                                             <p className="text-xl font-bold leading-tight text-[#d8a718]">
                                                 {player.name.toUpperCase()}
                                             </p>
-
-                                            <p className="uppercase tracking-wider text-zinc-700">
-                                                {topScorer.goals} goals
-                                            </p>
+                                            {awardConfig.showScore && winner.goals != null && (
+                                                <p className="text-sm uppercase tracking-[0.2em] text-zinc-700">
+                                                    {winner.goals} GOALS
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
                                 </Link>

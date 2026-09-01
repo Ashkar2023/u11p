@@ -740,7 +740,25 @@
             "top-scorer": {
                 "id": 9,
                 "goals": 11
-            }
+            },
+            "best-midfielder": {
+                "id": 6
+            },
+            "best-defender": {
+                "id": 26
+            },
+            "golden-glove": {
+                "id": 10
+            },
+            "ultimate-team": [
+                10,
+                39,
+                26,
+                19,
+                5,
+                20,
+                27
+            ]
         }
     },
     "matches": [

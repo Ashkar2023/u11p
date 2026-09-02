@@ -723,10 +723,6 @@
     ],
     "awards": {
         "2026-07": {
-            "top-scorer": {
-                "id": 8,
-                "goals": 4
-            },
             "ultimate-team": [
                 7,
                 17,
@@ -735,9 +731,22 @@
                 6,
                 14,
                 25
-            ]
+            ],
+            "top-scorer": {
+                "id": 8,
+                "goals": 4
+            }
         },
         "2026-08": {
+            "ultimate-team": [
+                10,
+                39,
+                26,
+                19,
+                5,
+                20,
+                27
+            ],
             "top-scorer": {
                 "id": 9,
                 "goals": 11
@@ -750,16 +759,7 @@
             },
             "golden-glove": {
                 "id": 10
-            },
-            "ultimate-team": [
-                10,
-                39,
-                26,
-                19,
-                5,
-                20,
-                27
-            ]
+            }
         }
     },
     "matches": [

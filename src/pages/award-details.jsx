@@ -237,7 +237,7 @@ export default function AwardDetailsPage() {
                 <button
                     className="flex items-center gap-1 text-sm text-zinc-600 hover:text-white transition-colors"
                     type="button"
-                    onClick={() => navigate("/")}
+                    onClick={() => window.history.back()}
                 >
                     <BackIcon /> Back
                 </button>

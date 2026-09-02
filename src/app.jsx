@@ -16,6 +16,14 @@ function ScrollToTop() {
     const [location] = useLocation();
 
     useLayoutEffect(() => {
+        const hash = window.location.hash.slice(1);
+        const target = hash && document.getElementById(hash);
+
+        if (target) {
+            target.scrollIntoView({ block: "start", behavior:"smooth" });
+            return;
+        }
+
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }, [location]);
 
@@ -24,6 +32,16 @@ function ScrollToTop() {
 
 export const App = () => {
     const showDevtools = isLocalHost();
+    
+    useLayoutEffect(()=>{
+        const currentUrl = window.location.href;
+
+        if(window.location.pathname !== "/"){
+            window.history.replaceState(null,"","/");
+            window.history.pushState(null,"",currentUrl);
+        }
+    },[])
+
 
     return <ErrorBoundary>
         <ScrollToTop />

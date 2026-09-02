@@ -26,7 +26,7 @@ export const PlayerDetails = () => {
     const [, navigate] = useLocation();
     const player = data.players.find((item) => String(item.id) === params?.id);
 
-    const goBack = () => navigate("/players");
+    const goBack = () => window.history.back();
 
     const totalGoals = data.matches.reduce((total, match) => {
         const playerGoals = match.goals

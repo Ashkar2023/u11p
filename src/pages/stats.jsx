@@ -32,6 +32,16 @@ const statItems = [
     ["GA", "goalsAgainst"],
 ];
 
+const awardLabels = {
+    "ultimate-team": "Ultimate Team",
+    "top-scorer": "Golden Boot Winner",
+    "best-midfielder": "Best Midfielder",
+    "best-defender": "Best Defender",
+    "golden-glove": "Golden Glove Winner",
+};
+
+const awardMonths = Object.keys(data.awards ?? {}).sort().reverse();
+
 function matchesForPeriod(period) {
     return period === ALL_TIME
         ? completedMatches
@@ -62,10 +72,12 @@ function PeriodSelect({ value, onChange, label }) {
     );
 }
 
-function usePeriodFilter(paramName) {
+function usePeriodFilter(paramName, defaultPeriod = ALL_TIME) {
     const [searchParams, setSearchParams] = useSearchParams();
     const requestedPeriod = searchParams.get(paramName);
-    const period = availableMonths.includes(requestedPeriod) ? requestedPeriod : ALL_TIME;
+    const period = requestedPeriod === ALL_TIME || availableMonths.includes(requestedPeriod)
+        ? requestedPeriod
+        : defaultPeriod;
 
     const setPeriod = (nextPeriod) => {
         setSearchParams((currentParams) => {
@@ -153,7 +165,7 @@ export function calculateGoalScorers(matches) {
 }
 
 function TeamStats() {
-    const [period, setPeriod] = usePeriodFilter("teamPeriod");
+    const [period, setPeriod] = usePeriodFilter("teamPeriod", availableMonths[0] ?? ALL_TIME);
     const teamStats = calculateTeamStats(matchesForPeriod(period));
 
     return (
@@ -192,7 +204,7 @@ function TeamStats() {
 }
 
 function GoalScorers() {
-    const [period, setPeriod] = usePeriodFilter("scorersPeriod");
+    const [period, setPeriod] = usePeriodFilter("scorersPeriod", availableMonths[0] ?? ALL_TIME);
     const goalScorers = calculateGoalScorers(matchesForPeriod(period));
     const [showGBM, setShowGBM] = useState(false);
 
@@ -278,6 +290,64 @@ function GoalScorers() {
     );
 }
 
+function Awards() {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const requestedMonth = searchParams.get("awardsPeriod");
+    const selectedMonth = awardMonths.includes(requestedMonth)
+        ? requestedMonth
+        : awardMonths[0] ?? "";
+    const awards = data.awards?.[selectedMonth] ?? {};
+
+    const setSelectedMonth = (month) => {
+        setSearchParams((currentParams) => {
+            const nextParams = new URLSearchParams(currentParams);
+            nextParams.set("awardsPeriod", month);
+            return nextParams;
+        }, { replace: true });
+    };
+
+    return (
+        <section className="rounded-lg border border-white/10 bg-zinc-900/75 p-3 mb-12 shadow-2xl shadow-black/25" id="awards">
+            <div className="mb-3 flex items-center justify-between gap-3">
+                <h2 className="text-sm font-semibold uppercase tracking-wide text-amber-400 sm:text-lg">
+                    Awards
+                </h2>
+                {awardMonths.length > 0 && (
+                    <select
+                        className="max-w-36 rounded-md border border-white/10 bg-zinc-950 px-2 py-1 text-xs text-zinc-200 outline-none focus:border-amber-400 sm:text-sm"
+                        value={selectedMonth}
+                        onChange={(event) => setSelectedMonth(event.target.value)}
+                        aria-label="Awards month"
+                    >
+                        {awardMonths.map((month) => (
+                            <option value={month} key={month}>{formatMonth(month)}</option>
+                        ))}
+                    </select>
+                )}
+            </div>
+
+            {Object.keys(awards).length > 0 ? (
+                <div className="grid gap-2 sm:grid-cols-2">
+                    {Object.keys(awards).map((type) => (
+                        <Link
+                            className="flex items-center justify-between gap-3 rounded-md border border-white/10 bg-black/20 px-3 py-3 text-sm text-zinc-200 transition-colors hover:border-amber-400/50 hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-amber-400"
+                            href={`/awards/${selectedMonth.slice(0, 4)}/${formatMonth(selectedMonth).split(" ")[0].toLowerCase()}/${type}`}
+                            key={type}
+                        >
+                            <span>{awardLabels[type] ?? type}</span>
+                            <svg className="size-4 shrink-0 text-zinc-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                                <path d="m9 18 6-6-6-6" />
+                            </svg>
+                        </Link>
+                    ))}
+                </div>
+            ) : (
+                <p className="py-5 text-center text-sm text-zinc-500">No awards for this month.</p>
+            )}
+        </section>
+    );
+}
+
 export const Stats = () => {
     return (
         <PageLayout>
@@ -287,6 +357,7 @@ export const Stats = () => {
                 </div>
                 <TeamStats />
                 <GoalScorers />
+                <Awards />
             </div>
         </PageLayout>
     );

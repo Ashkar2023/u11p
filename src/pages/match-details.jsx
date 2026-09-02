@@ -400,13 +400,7 @@ export const MatchDetails = () => {
         }
     }, [canShowVotes, canShowVoting, canShowFacts, isFactsDefault, params?.id]);
 
-    const goBack = () => {
-        if (window.history.length > 1) {
-            window.history.back();
-        } else {
-            navigate("/matches");
-        }
-    };
+    const goBack = () => window.history.back();
 
     if (!match) {
         return (

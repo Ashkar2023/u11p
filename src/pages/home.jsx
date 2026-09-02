@@ -240,7 +240,7 @@ export const Home = () => {
 
                                 <Link
                                     className="flex items-center gap-1 font-light text-zinc-400 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
-                                    href="/stats"
+                                    href="/stats#awards"
                                 >
                                     <span className="text-sm">View history</span>
                                     <svg

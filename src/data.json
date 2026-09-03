@@ -21,7 +21,7 @@
         {
             "id": 1,
             "name": "Ashkar",
-            "image": "/players/ashkar.png",
+            "image": "/players/ashkar.webp",
             "teamId": 1,
             "attributes": {
                 "pace": 81,
@@ -73,7 +73,7 @@
         {
             "id": 4,
             "name": "Athar",
-            "image": "/players/athar.png",
+            "image": "/players/athar.webp",
             "teamId": 2,
             "attributes": {
                 "pace": 85,
@@ -89,7 +89,7 @@
         {
             "id": 5,
             "name": "Haseem",
-            "image": "/players/haseem.png",
+            "image": "/players/haseem.webp",
             "teamId": 1,
             "attributes": {
                 "pace": 77,
@@ -105,7 +105,7 @@
         {
             "id": 6,
             "name": "Huzain",
-            "image": "/players/huzain.png",
+            "image": "/players/huzain.webp",
             "teamId": 2,
             "attributes": {
                 "pace": 82,
@@ -122,7 +122,7 @@
         {
             "id": 7,
             "name": "Abdulla",
-            "image": "/players/abdullah.png",
+            "image": "/players/abdullah.webp",
             "teamId": 1,
             "attributes": {
                 "pace": 38,
@@ -197,7 +197,7 @@
         {
             "id": 11,
             "name": "Bablu",
-            "image": "/players/bablu.png",
+            "image": "/players/bablu.webp",
             "teamId": 2,
             "attributes": {
                 "pace": 76,
@@ -250,7 +250,7 @@
         {
             "id": 14,
             "name": "Ajmal",
-            "image": "/players/aju.png",
+            "image": "/players/aju.webp",
             "teamId": 1,
             "attributes": {
                 "pace": 78,
@@ -268,7 +268,7 @@
         {
             "id": 15,
             "name": "Jaleel",
-            "image": "/players/jaleel.png",
+            "image": "/players/jaleel.webp",
             "teamId": 2,
             "attributes": {
                 "pace": 62,
@@ -285,7 +285,7 @@
         {
             "id": 16,
             "name": "Latheef",
-            "image": "/players/latheef.png",
+            "image": "/players/latheef.webp",
             "teamId": 2,
             "attributes": {
                 "pace": 50,
@@ -319,7 +319,7 @@
         {
             "id": 18,
             "name": "Bavakunj",
-            "image": "/players/bavakunj.png",
+            "image": "/players/bavakunj.webp",
             "teamId": 2,
             "attributes": {
                 "pace": 65,
@@ -406,7 +406,7 @@
         {
             "id": 23,
             "name": "Aideed",
-            "image": "/players/aideed.png",
+            "image": "/players/aideed.webp",
             "teamId": 2,
             "attributes": {
                 "pace": 76,
@@ -423,7 +423,7 @@
         {
             "id": 24,
             "name": "Ansar",
-            "image": "/players/ansar.png",
+            "image": "/players/ansar.webp",
             "teamId": 1,
             "attributes": {
                 "pace": 58,
@@ -441,7 +441,7 @@
         {
             "id": 25,
             "name": "Adhil",
-            "image": "/players/adhil.png",
+            "image": "/players/adhil.webp",
             "teamId": 1,
             "attributes": {
                 "pace": 80,
@@ -458,7 +458,7 @@
         {
             "id": 26,
             "name": "Noushad mama",
-            "image": "/players/mama.png",
+            "image": "/players/mama.webp",
             "teamId": 1,
             "attributes": {
                 "pace": 48,
@@ -475,7 +475,7 @@
         {
             "id": 27,
             "name": "Akku",
-            "image": "/players/akku.png",
+            "image": "/players/akku.webp",
             "teamId": 1,
             "attributes": {
                 "pace": 74,
@@ -493,7 +493,7 @@
         {
             "id": 28,
             "name": "Faruq",
-            "image": "/players/faruq.png",
+            "image": "/players/faruq.webp",
             "teamId": 2,
             "attributes": {
                 "pace": 84,
@@ -511,7 +511,7 @@
         {
             "id": 29,
             "name": "Vahab Kavu",
-            "image": "/players/kavu.png",
+            "image": "/players/kavu.webp",
             "teamId": 1,
             "attributes": {
                 "pace": 55,
@@ -581,7 +581,7 @@
         {
             "id": 33,
             "name": "Almas",
-            "image": "/players/almas.png",
+            "image": "/players/almas.webp",
             "teamId": 1,
             "attributes": {
                 "pace": 65,
@@ -647,7 +647,7 @@
         {
             "id": 37,
             "name": "Muhammed Ali",
-            "image": "/players/mammali.png",
+            "image": "/players/mammali.webp",
             "attributes": {
                 "pace": "??",
                 "shooting": "??",
@@ -678,7 +678,7 @@
         {
             "id": 39,
             "name": "Hashim Roshan",
-            "image": "/players/hashim-roshan.png",
+            "image": "/players/hashim-roshan.webp",
             "attributes": {
                 "pace": "??",
                 "shooting": "??",

@@ -664,6 +664,7 @@
         {
             "id": 38,
             "name": "Hashim",
+            "image": "/players/hashim.webp",
             "attributes": {
                 "pace": "??",
                 "shooting": "??",
@@ -695,6 +696,7 @@
         {
             "id": 40,
             "name": "Kudu",
+            "image": "/players/kudu.webp",
             "attributes": {
                 "pace": "??",
                 "shooting": "??",

@@ -7,18 +7,6 @@ import fifa_shield from "../assets/fifa-player-shield.webp";
 
 const visiblePlayers = data.players.filter((player) => !player.hidden);
 
-function PlayerAvatar({ player }) {
-    return (
-        <SafeImage
-            className="h-[70%] w-full shrink-0 bg-motm object-cover object-top"
-            src={player.image}
-            fallbackSrc={user_png}
-            alt={`${player.name} profile`}
-            loading="lazy"
-        />
-    );
-}
-
 export const Players = () => {
     return (
         <PageLayout>
@@ -62,7 +50,6 @@ export const Players = () => {
                                             src={player.image}
                                             fallbackSrc={user_png}
                                             alt={`${player.name} profile`}
-                                            loading="lazy"
                                             style={{
                                                 maskImage:
                                                     "linear-gradient(to bottom, black 70%, transparent 100%)",

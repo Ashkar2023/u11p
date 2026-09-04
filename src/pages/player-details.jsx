@@ -2,9 +2,9 @@ import { useLocation, useRoute } from "wouter";
 import data from "../data.json";
 import SafeImage from "../components/safe-image";
 import { hasMatchResult } from "../utils/date.util";
-import user_png from "../assets/user.png";
+import user_png from "../assets/user.webp";
 
-import fifa_shield from "../assets/fifa-player-shield.png";
+import fifa_shield from "../assets/fifa-player-shield.webp";
 import { BackIcon } from "../icons";
 import { useBrowserLocation } from "wouter/use-browser-location";
 

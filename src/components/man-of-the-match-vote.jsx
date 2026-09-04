@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import data from "../data.json";
 import SafeImage from "./safe-image";
-import user_png from "../assets/user.png";
-import fifa_shield_white from "../assets/fifa-player-shield-white.png";
+import user_png from "../assets/user.webp";
+import fifa_shield_white from "../assets/fifa-player-shield-white.webp";
 
 const UNLOCK_DELAY = 5_000;
 const APPSCRIPT_URL = import.meta.env.VITE_APPSCRIPT_URL;

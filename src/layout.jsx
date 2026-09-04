@@ -1,7 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { isLocalHost } from "./utils/is-local-host";
-import u11p_logo from "./assets/u11p-logo.png";
-import stadium_png from './assets/stadium.png'
+import u11p_logo from "./assets/u11p-logo.webp";
+import stadium_png from './assets/stadium.webp'
 
 const navItems = [
     { label: "Home", icon: "home", path: "/" },

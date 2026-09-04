@@ -6,7 +6,7 @@ import Layout from "../layout";
 import { Link, useLocation } from "wouter";
 import { formatDate, getMatchVotingPeriodStatus, hasMatchResult } from "../utils/date.util";
 import { calculateGoalScorers } from "./stats";
-import user_png from "../assets/user.png";
+import user_png from "../assets/user.webp";
 
 const completedMatches = [...data.matches]
     .filter(hasMatchResult)

@@ -6,9 +6,9 @@ import MotmVotes from "../components/motm-votes";
 import SafeImage from "../components/safe-image";
 import data from "../data.json";
 import { getMatchVotingPeriodStatus } from "../utils/date.util";
-import user_png from "../assets/user.png";
-import lineup_ground_png from "../assets/lineup-ground.png"
-import fifa_shield from "../assets/fifa-player-shield.png";
+import user_png from "../assets/user.webp";
+import lineup_ground_png from "../assets/lineup-ground.webp"
+import fifa_shield from "../assets/fifa-player-shield.webp";
 
 const teamsById = new Map(data.teams.map((team) => [team.id, team]));
 const playersById = new Map(data.players.map((player) => [player.id, player]));

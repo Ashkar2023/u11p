@@ -21,42 +21,42 @@
         {
             "id": 1,
             "name": "Lionel Messi",
-            "image": "/players/ashkar.png"
+            "image": "/players/ashkar.webp"
         },
         {
             "id": 2,
             "name": "Cristiano Ronaldo",
-            "image": "/players/sulaiman.png"
+            "image": "/players/sulaiman.webp"
         },
         {
             "id": 3,
             "name": "Kylian Mbappé",
-            "image": "/players/miqu.png"
+            "image": "/players/miqu.webp"
         },
         {
             "id": 4,
             "name": "Erling Haaland",
-            "image": "/players/athar.png"
+            "image": "/players/athar.webp"
         },
         {
             "id": 5,
             "name": "Mohamed Salah",
-            "image": "/players/haseem.png"
+            "image": "/players/haseem.webp"
         },
         {
             "id": 6,
             "name": "Neymar Jr",
-            "image": "/players/huzain.png"
+            "image": "/players/huzain.webp"
         },
         {
             "id": 7,
             "name": "Virgil van Dijk",
-            "image": "/players/abdullah.png"
+            "image": "/players/abdullah.webp"
         },
         {
             "id": 8,
             "name": "Robert Lewandowski",
-            "image": "/players/manu.png",
+            "image": "/players/manu.webp",
             "topScorerMonths": [
                 "July 2026"
             ]
@@ -64,37 +64,37 @@
         {
             "id": 9,
             "name": "Vinícius Júnior",
-            "image": "/players/milan.png"
+            "image": "/players/milan.webp"
         },
         {
             "id": 10,
             "name": "Thibaut Courtois",
-            "image": "/players/saleem.png"
+            "image": "/players/saleem.webp"
         },
         {
             "id": 11,
             "name": "Jude Bellingham",
-            "image": "/players/bablu.png"
+            "image": "/players/bablu.webp"
         },
         {
             "id": 12,
             "name": "Kevin De Bruyne",
-            "image": "/players/siddi.png"
+            "image": "/players/siddi.webp"
         },
         {
             "id": 13,
             "name": "Luka Modrić",
-            "image": "/players/shukoor.png"
+            "image": "/players/shukoor.webp"
         },
         {
             "id": 14,
             "name": "Harry Kane",
-            "image": "/players/aju.png"
+            "image": "/players/aju.webp"
         },
         {
             "id": 15,
             "name": "Trent Alexander-Arnold",
-            "image": "/players/jaleel.png"
+            "image": "/players/jaleel.webp"
         },
         {
             "id": 16,
@@ -103,7 +103,7 @@
         {
             "id": 17,
             "name": "Sergio Ramos",
-            "image": "/players/sajeer.png"
+            "image": "/players/sajeer.webp"
         },
         {
             "id": 18,
@@ -112,12 +112,12 @@
         {
             "id": 19,
             "name": "Rodri",
-            "image": "/players/shafeeq.png"
+            "image": "/players/shafeeq.webp"
         },
         {
             "id": 20,
             "name": "Bernardo Silva",
-            "image": "/players/sabith.png"
+            "image": "/players/sabith.webp"
         },
         {
             "id": 21,
@@ -126,12 +126,12 @@
         {
             "id": 22,
             "name": "Son Heung-min",
-            "image": "/players/nazmel.png"
+            "image": "/players/nazmel.webp"
         },
         {
             "id": 23,
             "name": "Bukayo Saka",
-            "image": "/players/aideed.png"
+            "image": "/players/aideed.webp"
         },
         {
             "id": 24,
@@ -140,37 +140,37 @@
         {
             "id": 25,
             "name": "Jamal Musiala",
-            "image": "/players/adhil.png"
+            "image": "/players/adhil.webp"
         },
         {
             "id": 26,
             "name": "Zlatan Ibrahimović",
-            "image": "/players/mama.png"
+            "image": "/players/mama.webp"
         },
         {
             "id": 27,
             "name": "Lamine Yamal",
-            "image": "/players/akku.png"
+            "image": "/players/akku.webp"
         },
         {
             "id": 28,
             "name": "Sadio Mané",
-            "image": "/players/faruq.png"
+            "image": "/players/faruq.webp"
         },
         {
             "id": 29,
             "name": "N'Golo Kanté",
-            "image": "/players/kavu.png"
+            "image": "/players/kavu.webp"
         },
         {
             "id": 30,
             "name": "Ederson",
-            "image": "/players/rashid.png"
+            "image": "/players/rashid.webp"
         },
         {
             "id": 31,
             "name": "Rúben Dias",
-            "image": "/players/shabab.png"
+            "image": "/players/shabab.webp"
         },
         {
             "id": 32,
@@ -179,12 +179,12 @@
         {
             "id": 33,
             "name": "Declan Rice",
-            "image": "/players/almas.png"
+            "image": "/players/almas.webp"
         },
         {
             "id": 34,
             "name": "Thierry Henry",
-            "image": "/players/moosi.png"
+            "image": "/players/moosi.webp"
         },
         {
             "id": 35,

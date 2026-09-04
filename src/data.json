@@ -38,7 +38,7 @@
         {
             "id": 2,
             "name": "Sulaiman",
-            "image": "/players/sulaiman.png",
+            "image": "/players/sulaiman.webp",
             "teamId": 1,
             "attributes": {
                 "pace": 65,
@@ -56,7 +56,7 @@
         {
             "id": 3,
             "name": "Miqu",
-            "image": "/players/miqu.png",
+            "image": "/players/miqu.webp",
             "teamId": 1,
             "attributes": {
                 "pace": 68,
@@ -139,7 +139,7 @@
         {
             "id": 8,
             "name": "Manu Paappan",
-            "image": "/players/manu.png",
+            "image": "/players/manu.webp",
             "topScorerMonths": [
                 "July 2026"
             ],
@@ -159,7 +159,7 @@
         {
             "id": 9,
             "name": "Milan",
-            "image": "/players/milan.png",
+            "image": "/players/milan.webp",
             "teamId": 2,
             "attributes": {
                 "pace": 77,
@@ -179,7 +179,7 @@
         {
             "id": 10,
             "name": "Saleem",
-            "image": "/players/saleem.png",
+            "image": "/players/saleem.webp",
             "teamId": 2,
             "attributes": {
                 "pace": 42,
@@ -215,7 +215,7 @@
         {
             "id": 12,
             "name": "Siddique",
-            "image": "/players/siddi.png",
+            "image": "/players/siddi.webp",
             "teamId": 2,
             "attributes": {
                 "pace": 60,
@@ -233,7 +233,7 @@
         {
             "id": 13,
             "name": "Shukoor",
-            "image": "/players/shukoor.png",
+            "image": "/players/shukoor.webp",
             "teamId": 2,
             "attributes": {
                 "pace": 58,
@@ -302,7 +302,7 @@
         {
             "id": 17,
             "name": "Sajeer",
-            "image": "/players/sajeer.png",
+            "image": "/players/sajeer.webp",
             "teamId": 2,
             "attributes": {
                 "pace": 68,
@@ -336,7 +336,7 @@
         {
             "id": 19,
             "name": "Shafeeq Cheppu",
-            "image": "/players/shafeeq.png",
+            "image": "/players/shafeeq.webp",
             "teamId": 2,
             "attributes": {
                 "pace": 64,
@@ -354,7 +354,7 @@
         {
             "id": 20,
             "name": "Sabith",
-            "image": "/players/sabith.png",
+            "image": "/players/sabith.webp",
             "teamId": 2,
             "attributes": {
                 "pace": 82,
@@ -389,7 +389,7 @@
         {
             "id": 22,
             "name": "Nazmel",
-            "image": "/players/nazmel.png",
+            "image": "/players/nazmel.webp",
             "teamId": 1,
             "attributes": {
                 "pace": 80,
@@ -529,7 +529,7 @@
         {
             "id": 30,
             "name": "Rashid",
-            "image": "/players/rashid.png",
+            "image": "/players/rashid.webp",
             "teamId": 1,
             "attributes": {
                 "pace": 72,
@@ -546,7 +546,7 @@
         {
             "id": 31,
             "name": "Shabab",
-            "image": "/players/shabab.png",
+            "image": "/players/shabab.webp",
             "teamId": 2,
             "attributes": {
                 "pace": 78,
@@ -599,7 +599,7 @@
             "id": 34,
             "name": "Muhsin Moosi",
             "teamId": 2,
-            "image": "/players/moosi.png",
+            "image": "/players/moosi.webp",
             "attributes": {
                 "pace": 52,
                 "shooting": 42,
@@ -616,6 +616,7 @@
             "id": 35,
             "name": "Yasir",
             "teamId": 2,
+            "hidden": true,
             "attributes": {
                 "pace": 72,
                 "shooting": 65,
@@ -709,7 +710,7 @@
         {
             "id": 41,
             "name": "Shinaz",
-            "image": "/players/shinaz.png",
+            "image": "/players/shinaz.webp",
             "hidden": true,
             "attributes": {
                 "pace": "??",
@@ -1507,6 +1508,7 @@
         {
             "id": 11,
             "date": "2026-08-29T15:30:00.000Z",
+            "poster_filename": "august-29.png",
             "teams": [
                 {
                     "teamId": 1,

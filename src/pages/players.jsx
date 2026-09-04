@@ -2,8 +2,8 @@ import data from "../data.json";
 import { PageLayout } from "../layout";
 import { Link } from "wouter";
 import SafeImage from "../components/safe-image";
-import user_png from "../assets/user.png";
-import fifa_shield from "../assets/fifa-player-shield.png";
+import user_png from "../assets/user.webp";
+import fifa_shield from "../assets/fifa-player-shield.webp";
 
 const visiblePlayers = data.players.filter((player) => !player.hidden);
 

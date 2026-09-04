@@ -4,7 +4,7 @@ import data from "../data.json";
 import { PageLayout } from "../layout";
 import { hasMatchResult } from "../utils/date.util";
 import { useState } from "react";
-import user_png from "../assets/user.png";
+import user_png from "../assets/user.webp";
 
 const ALL_TIME = "all";
 const completedMatches = data.matches.filter(hasMatchResult);

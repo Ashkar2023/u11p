@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import data from "../data.json";
 import SafeImage from "./safe-image";
-import user_png from "../assets/user.png";
+import user_png from "../assets/user.webp";
 
 const APPSCRIPT_URL = import.meta.env.VITE_APPSCRIPT_URL;
 

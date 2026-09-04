@@ -1,6 +1,6 @@
 import { formatDate } from "../utils/date.util";
 import SafeImage from "./safe-image";
-import user_png from "../assets/user.png";
+import user_png from "../assets/user.webp";
 
 function StarIcon() {
     return (

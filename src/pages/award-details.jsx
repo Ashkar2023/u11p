@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useLocation, useParams } from "wouter";
 import data from "../data.json";
-import lineup_ground_gold from "../assets/lineup-ground-gold.png";
-import fifa_shield_white from "../assets/fifa-player-shield-white.png";
+import lineup_ground_gold from "../assets/lineup-ground-gold.webp";
+import fifa_shield_white from "../assets/fifa-player-shield-white.webp";
 import SafeImage from "../components/safe-image";
-import user_png from "../assets/user.png"
+import user_png from "../assets/user.webp"
 import { BackIcon } from "../icons";
 
 const POSITION_MAP = [

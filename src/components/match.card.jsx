@@ -2,7 +2,7 @@ import { formatDate } from "../utils/date.util";
 import { Link, useLocation } from "wouter";
 import SafeImage from "./safe-image";
 import MatchdayPoster from "./matchday-poster";
-import user_png from "../assets/user.png";
+import user_png from "../assets/user.webp";
 
 function Team({ team, captainPlayer, away }) {
     return (

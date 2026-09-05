@@ -1603,14 +1603,42 @@
             "teams": [
                 {
                     "teamId": 1,
-                    "captainPlayerId": 23
+                    "captainPlayerId": 23,
+                    "score": 4
                 },
                 {
                     "teamId": 2,
-                    "captainPlayerId": 22
+                    "captainPlayerId": 22,
+                    "score": 2
                 }
             ],
-            "goals": [],
+            "goals": [
+                {
+                    "playerId": 1,
+                    "count": 2,
+                    "teamId": 1
+                },
+                {
+                    "playerId": 2,
+                    "count": 1,
+                    "teamId": 1
+                },
+                {
+                    "playerId": 27,
+                    "count": 1,
+                    "teamId": 1
+                },
+                {
+                    "playerId": 6,
+                    "count": 1,
+                    "teamId": 2
+                },
+                {
+                    "playerId": 22,
+                    "count": 1,
+                    "teamId": 2
+                }
+            ],
             "lineup": [
                 {
                     "teamId": 1,

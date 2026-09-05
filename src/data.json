@@ -1555,7 +1555,7 @@
                     "count": 1,
                     "penaltiesCount": 0
                 },
-                                {
+                {
                     "playerId": 14,
                     "teamId": 1,
                     "count": 1,
@@ -1593,6 +1593,55 @@
                         9,
                         20,
                         5
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 12,
+            "date": "2026-09-05T15:30:00.000Z",
+            "teams": [
+                {
+                    "teamId": 1,
+                    "captainPlayerId": 23
+                },
+                {
+                    "teamId": 2,
+                    "captainPlayerId": 22
+                }
+            ],
+            "goals": [],
+            "lineup": [
+                {
+                    "teamId": 1,
+                    "playerIds": [
+                        8,
+                        38,
+                        26,
+                        29,
+                        37,
+                        23,
+                        1,
+                        25,
+                        2,
+                        14,
+                        27
+                    ]
+                },
+                {
+                    "teamId": 2,
+                    "playerIds": [
+                        10,
+                        12,
+                        17,
+                        19,
+                        11,
+                        15,
+                        6,
+                        40,
+                        9,
+                        4,
+                        22
                     ]
                 }
             ]

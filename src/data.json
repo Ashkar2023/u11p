@@ -371,6 +371,7 @@
         },
         {
             "id": 21,
+            "hidden": true,
             "name": "Ameen",
             "teamId": 1,
             "attributes": {

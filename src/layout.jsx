@@ -8,6 +8,7 @@ const navItems = [
     { label: "Matches", icon: "matches", path: "/matches" },
     { label: "Players", icon: "players", path: "/players" },
     { label: "Stats", icon: "stats", path: "/stats" },
+    { label: "Tools", icon: "tools", path: "/tools" },
     { label: "Devtools", icon: "devtools", path: "/devtools", localOnly: true },
 ];
 
@@ -54,6 +55,12 @@ function NavIcon({ name }) {
                     <path d="m5 19 1-1" />
                 </>
             )}
+            {name === "tools" && (
+                <>
+                    <path d="M14.7 6.3a4 4 0 0 0-5 5L3.5 17.5a2.1 2.1 0 0 0 3 3l6.2-6.2a4 4 0 0 0 5-5l-2.4 2.4-3-3 2.4-2.4Z" />
+                    <path d="m5 19 1-1" />
+                </>
+            )}
         </svg>
     );
 }
@@ -69,7 +76,8 @@ function Navigation() {
                 aria-label="Primary navigation"
             >
                 {visibleNavItems.map(({ label, icon, path }) => {
-                    const className = `flex min-w-0 flex-1 flex-col items-center justify-center rounded-md text-[11px] font-medium transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-amber-400 ${location === path ? "text-amber-400" : "text-zinc-400"}`;
+                    const isActive = location === path || (path === "/tools" && location.startsWith("/tools/"));
+                    const className = `flex min-w-0 flex-1 flex-col items-center justify-center rounded-md text-[11px] font-medium transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-amber-400 ${isActive ? "text-amber-400" : "text-zinc-400"}`;
                     const content = (
                         <>
                             <NavIcon name={icon} />
@@ -81,7 +89,7 @@ function Navigation() {
                         <Link
                             className={className}
                             href={path}
-                            aria-current={location === path ? "page" : undefined}
+                            aria-current={isActive ? "page" : undefined}
                             key={label}
                         >
                             {content}

@@ -9,6 +9,7 @@ import { getMatchVotingPeriodStatus } from "../utils/date.util";
 import user_png from "../assets/user.webp";
 import lineup_ground_png from "../assets/lineup-ground.webp"
 import fifa_shield from "../assets/fifa-player-shield.webp";
+import { getPositionMap } from "../utils/lineup-creator.util";
 
 const teamsById = new Map(data.teams.map((team) => [team.id, team]));
 const playersById = new Map(data.players.map((player) => [player.id, player]));
@@ -83,50 +84,6 @@ function MatchFacts({ match, teams }) {
             })}
         </div>
     );
-}
-
-function getPositionMap(count) {
-    if (count >= 11) {
-        // 4-3-3
-        return [
-            [90, 50],
-            [68, 15], [71, 38], [71, 62], [68, 85],
-            [44, 22], [46, 50], [44, 78],
-            [20, 22], [16, 50], [20, 78],
-        ];
-    } else if (count === 10) {
-        // 4-3-2
-        return [
-            [90, 50],
-            [68, 15], [71, 38], [71, 62], [68, 85],
-            [45, 33], [45, 67],
-            [20, 22], [16, 50], [20, 78],
-        ];
-    } else if (count === 9) {
-        // 3-2-3 (GK + 3 DEF + 2 MID + 2 FWD)
-        return [
-            [90, 50],
-            [68, 15], [71, 38], [71, 62], [68, 85],
-            [44, 33], [44, 67],
-            [20, 33], [20, 67],
-        ];
-    } else if (count === 8) {
-        // 3-2-2 (GK + 3 DEF + 2 MID + 2 FWD)
-        return [
-            [90, 50],
-            [65, 20], [68, 50], [65, 80],
-            [43, 33], [43, 67],
-            [20, 30], [20, 70],
-        ];
-    } else {
-        // 7 players: 2-2-2 (GK + 2 DEF + 2 MID + 2 FWD)
-        return [
-            [90, 50],
-            [65, 20], [68, 50], [65, 80],
-            [44, 50],
-            [20, 70], [20, 30],
-        ];
-    }
 }
 
 function Lineup({ match, teams }) {

@@ -75,20 +75,16 @@ function PeriodSelect({ value, onChange, label }) {
 function usePeriodFilter(paramName, defaultPeriod = ALL_TIME) {
     const [searchParams, setSearchParams] = useSearchParams();
     const requestedPeriod = searchParams.get(paramName);
-    const period = requestedPeriod === ALL_TIME || availableMonths.includes(requestedPeriod)
-        ? requestedPeriod
-        : defaultPeriod;
+
+    const period =
+        requestedPeriod === ALL_TIME || availableMonths.includes(requestedPeriod)
+            ? requestedPeriod
+            : defaultPeriod;
 
     const setPeriod = (nextPeriod) => {
         setSearchParams((currentParams) => {
             const nextParams = new URLSearchParams(currentParams);
-
-            if (nextPeriod === ALL_TIME) {
-                nextParams.delete(paramName);
-            } else {
-                nextParams.set(paramName, nextPeriod);
-            }
-
+            nextParams.set(paramName, nextPeriod);
             return nextParams;
         }, { replace: true });
     };

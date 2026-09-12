@@ -1,4 +1,5 @@
-import { useLocation, useRoute } from "wouter";
+import { useEffect, useRef, useState } from "react";
+import { useRoute } from "wouter";
 import data from "../data.json";
 import SafeImage from "../components/safe-image";
 import { hasMatchResult } from "../utils/date.util";
@@ -6,7 +7,6 @@ import user_png from "../assets/user.webp";
 
 import fifa_shield from "../assets/fifa-player-shield.webp";
 import { BackIcon } from "../icons";
-import { useBrowserLocation } from "wouter/use-browser-location";
 
 const STAT_LABELS = {
     pace: "SPD",
@@ -21,10 +21,23 @@ const STAT_LABELS = {
 const STAT_ORDER_OUTFIELD = ["pace", "shooting", "passing", "dribbling", "defending", "physical"];
 const STAT_ORDER_GK = ["pace", "shooting", "passing", "dribbling", "defending", "goalkeeping"];
 
+const MAX_TILT = 14;
+const NATURAL_BETA = 70;
+const NATURAL_GAMMA = 0;
+const CALIBRATION_SAMPLE_COUNT = 5;
+const DEAD_ZONE = 1.5;
+
+function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+}
+
 export const PlayerDetails = () => {
     const [, params] = useRoute("/players/:id");
-    const [, navigate] = useLocation();
     const player = data.players.find((item) => String(item.id) === params?.id);
+    const cardRef = useRef(null);
+    const calibrationRef = useRef(null);
+    const calibrationSamplesRef = useRef([]);
+    const [tiltEnabled, setTiltEnabled] = useState(false);
 
     const goBack = () => window.history.back();
 
@@ -44,6 +57,81 @@ export const PlayerDetails = () => {
     const motmWins = data.matches.filter(
         (match) => hasMatchResult(match) && match.motmPlayerId === player?.id,
     ).length;
+
+    useEffect(() => {
+        if (!tiltEnabled) return undefined;
+
+        calibrationRef.current = null;
+        calibrationSamplesRef.current = [];
+
+        const handleOrientation = (event) => {
+            if (typeof event.beta !== "number" || typeof event.gamma !== "number") return;
+
+            if (!calibrationRef.current) {
+                calibrationSamplesRef.current.push({ beta: event.beta, gamma: event.gamma });
+
+                if (calibrationSamplesRef.current.length >= CALIBRATION_SAMPLE_COUNT) {
+                    const average = calibrationSamplesRef.current.reduce(
+                        (accumulator, sample) => ({
+                            beta: accumulator.beta + sample.beta,
+                            gamma: accumulator.gamma + sample.gamma,
+                        }),
+                        { beta: 0, gamma: 0 },
+                    );
+
+                    calibrationRef.current = {
+                        beta: average.beta / CALIBRATION_SAMPLE_COUNT,
+                        gamma: average.gamma / CALIBRATION_SAMPLE_COUNT,
+                    };
+                    calibrationSamplesRef.current = [];
+                }
+            }
+
+            const calibration = calibrationRef.current ?? {
+                beta: NATURAL_BETA,
+                gamma: NATURAL_GAMMA,
+            };
+            const rawX = (event.beta - calibration.beta) * 0.5;
+            const rawY = (event.gamma - calibration.gamma) * -0.7;
+            const deltaX = Math.abs(rawX) > DEAD_ZONE ? rawX : 0;
+            const deltaY = Math.abs(rawY) > DEAD_ZONE ? rawY : 0;
+            const rotateX = clamp(deltaX, -MAX_TILT, MAX_TILT);
+            const rotateY = clamp(deltaY, -MAX_TILT, MAX_TILT);
+
+            if (cardRef.current) {
+                cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            }
+        };
+
+        window.addEventListener("deviceorientation", handleOrientation);
+
+        return () => {
+            window.removeEventListener("deviceorientation", handleOrientation);
+            calibrationRef.current = null;
+            calibrationSamplesRef.current = [];
+            if (cardRef.current) cardRef.current.style.transform = "";
+        };
+    }, [tiltEnabled]);
+
+    const toggleTilt = async () => {
+        if (tiltEnabled) {
+            setTiltEnabled(false);
+            return;
+        }
+
+        if (typeof window.DeviceOrientationEvent === "undefined") return;
+
+        try {
+            const requestPermission = window.DeviceOrientationEvent.requestPermission;
+            if (typeof requestPermission === "function") {
+                const permission = await requestPermission.call(window.DeviceOrientationEvent);
+                if (permission !== "granted") return;
+            }
+            setTiltEnabled(true);
+        } catch {
+            setTiltEnabled(false);
+        }
+    };
 
     if (!player || player.hidden) {
         return (
@@ -81,6 +169,17 @@ export const PlayerDetails = () => {
                 </button>
             </div>
 
+            <button
+                className={`absolute top-4 right-4 z-20 rounded-full p-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 ${tiltEnabled ? "text-amber-400" : "text-zinc-500 hover:text-zinc-300"}`}
+                type="button"
+                onClick={toggleTilt}
+                aria-label={`${tiltEnabled ? "Disable" : "Enable"} gyroscopic card tilt`}
+                aria-pressed={tiltEnabled}
+                title={`${tiltEnabled ? "Disable" : "Enable"} gyroscopic card tilt`}
+            >
+                <span className="font-ddin text-sm font-bold tracking-wider" aria-hidden="true">3D</span>
+            </button>
+
             {/* FUT Card Hero — 80vh */}
             <section
                 className="relative flex items-center justify-center"
@@ -96,8 +195,15 @@ export const PlayerDetails = () => {
 
                 {/* Card container */}
                 <div
+                    ref={cardRef}
                     className="relative z-10 flex items-center justify-center"
-                    style={{ height: "80%", maxHeight: 560 }}
+                    style={{
+                        height: "80%",
+                        maxHeight: 560,
+                        transformStyle: "preserve-3d",
+                        transition: "transform 120ms ease-out",
+                        willChange: tiltEnabled ? "transform" : "auto",
+                    }}
                 >
                     {/* The shield image as base */}
                     <div className="relative" style={{ height: "100%", aspectRatio: "2/3" }}>

@@ -9,59 +9,71 @@ const allPlayers = data.players.filter((player) => !player.hidden);
 const playersById = new Map(allPlayers.map((player) => [String(player.id), player]));
 const teamMap = new Map(data.teams.map((team) => [team.id, team]));
 const FALLBACK_VENUE = "Thavalam turf";
-const POSTER_PROMPT_TEMPLATE = `Create a new United XI Pallilamkara matchday poster using the two attached images.
+const POSTER_PROMPT_TEMPLATE = `You are given two attached images.
 
-IMAGE 1 is an existing matchday poster. Use it strictly as a visual and design 
-reference — preserve its premium football-poster identity, overall visual language, 
-cinematic lighting, atmosphere, typography hierarchy, graphic treatment, and branding 
-style. Redesign and adapt the composition for this new match. Do not simply recreate 
-the previous poster unchanged.
+IMAGE 1 is a reference poster for composition and design style only. Study its:
+- Overall layout and composition structure
+- Typography style, scale, and placement of the MATCHDAY title
+- Color palette, lighting, and atmosphere
+- Bottom bar format for date, time, venue
+Do NOT copy the players, jerseys, logos, or any specific assets from IMAGE 1.
 
-IMAGE 2 is a mapped reference sheet containing the exact visual assets to use in 
-this poster. Follow the reference mapping below precisely.
+IMAGE 2 is a mapped reference sheet. Every visual asset you use in this poster 
+MUST come from IMAGE 2 only, according to this mapping:
 
 REFERENCE IMAGE MAPPING:
 [DYNAMIC REFERENCE MAPPING]
 
-Player 1 represents Paappan FC.
-Player 2 represents Cheppu Fighters.
+---
+
+CRITICAL ASSET RULES — READ BEFORE GENERATING
+
+JERSEYS:
+[JERSEY INSTRUCTION]
+
+PLAYER FACES:
+Preserve the exact facial features of both players as shown in IMAGE 2. Do not 
+generate or replace faces. Do not idealise or alter their appearance.
+
+LOGO:
+Use the United XI parent-club logo exactly as shown in IMAGE 2. Do not invent 
+or replace it.
+
+TEAM NAMES:
+Must appear exactly as "Paappan FC" and "Cheppu Fighters". No abbreviations, 
+alternate spellings, or invented branding.
 
 ---
 
-POSTER CONTENT — REPRODUCE EXACTLY AS WRITTEN BELOW
+POSTER CONTENT — REPRODUCE EXACTLY AS WRITTEN
 
-Main title: MATCHDAY
-Teams: Paappan FC VS Cheppu Fighters
+MATCHDAY title must appear at the very top of the poster, large, bold, and 
+spanning the full width — this is the dominant headline of the entire design.
+
+Teams: Paappan FC vs Cheppu Fighters
 Date: [DYNAMIC DATE]
 Time: [DYNAMIC TIME] IST
 Venue: [DYNAMIC VENUE]
-
-Include the United XI parent-club logo from the reference sheet.
 
 ---
 
 COMPOSITION
 
-Feature the two supplied players as the main subjects. Compose them naturally and 
-dramatically within the established style of the existing poster. Adapt the layout, 
-poses, and framing as needed to suit the new players — do not force a composition 
-that does not fit.
+Follow the composition language of IMAGE 1:
+- Adapt the layout structure, player positioning, and framing to match the 
+  reference style — not your default sports poster template.
+- Feature both players as the main subjects, composed dramatically.
+- The MATCHDAY title must be at the very top, matching the scale and weight 
+  shown in IMAGE 1. Do not move it to the center or bottom.
+- Bottom section must include date, time, and venue in the same icon-based 
+  format as IMAGE 1.
 
----
-
-CRITICAL — DO NOT ALTER ANY OF THE FOLLOWING
-
-- Player faces and identities: preserve the actual facial features of both players 
-  exactly as supplied. Do not generate replacement or idealised faces.
-- Jersey designs: preserve supplied jersey designs exactly where jersey references 
-  are provided.
-- United XI parent-club logo: reproduce accurately from the reference sheet.
-- Team names: must appear exactly as "Paappan FC" and "Cheppu Fighters" — no 
-  abbreviations, alternate spellings, or invented branding.
-- Match details: date, time, and venue must appear exactly as specified above.
-
-The image model may integrate, position, scale, mask, light, shade, and compose 
-the supplied assets, but must not redesign, replace, or significantly alter them.
+TEAM NAME STYLING:
+- Display team names in a clean, bold, standard font — no brush strokes, no 
+  handwritten or script styles.
+- No background color, banner, or highlight behind the team names.
+- "vs" in lowercase, placed between the two team names.
+- [TEAM NAME COLOR INSTRUCTION]
 
 ---
 
@@ -71,15 +83,17 @@ DO NOT ADD
 - Fictional or altered team names
 - Fake sponsors or invented logos
 - Unnecessary slogans or taglines
-- Fabricated or altered match information
+- Fabricated match information
 - Replacement or AI-generated faces
+- Brush stroke, script, or decorative fonts on team names
+- Background fills or banners behind team names
 
 ---
 
-The final poster should feel like a professionally designed football matchday poster — 
-strong visual hierarchy, cinematic stadium-style lighting, premium textures, depth, 
-contrast, and clean typography — consistent with the existing poster's identity, 
-customised for this match, with all supplied assets faithfully preserved.`;
+The final poster must feel like a professionally designed football matchday poster 
+faithful to the composition style of IMAGE 1, with all player faces, jerseys (where 
+supplied), logo, team names, and match details sourced exclusively from IMAGE 2 and 
+the content specified above.`;
 
 function ToolHeader() {
     return (
@@ -342,13 +356,31 @@ export function PosterKit() {
     const matchTime = selectedMatch ? formatDisplayTime(selectedMatch.date) : "Time unavailable";
     const matchVenue = selectedMatch?.venue || FALLBACK_VENUE;
 
+
     const promptText = useMemo(() => {
+        const jerseyInstruction = includeJerseys
+            ? `The players in IMAGE 2 are wearing placeholder photos. The correct jerseys 
+    are supplied as separate numbered references in IMAGE 2. You must dress:
+    - Player 1 (Paappan FC) in the Paappan FC jersey reference from IMAGE 2
+    - Player 2 (Cheppu Fighters) in the Cheppu Fighters jersey reference from IMAGE 2
+    Do not use the jersey the player is wearing in their photo. Replace it completely.`
+            : `No jersey references are supplied. Dress the players in football attire 
+    appropriate to their team colors. Do not invent specific jersey designs.`;
+
+        const teamNameColorInstruction = includeJerseys
+            ? `Use the primary color of each team's supplied jersey as the text color 
+    for that team's name.`
+            : `Use color-neutral white or light gray for both team names.`;
+
         const mapping = references.map((reference) => `${reference.number} — ${reference.label}`).join("\n");
-        return POSTER_PROMPT_TEMPLATE.replace("[DYNAMIC REFERENCE MAPPING]", mapping)
+        return POSTER_PROMPT_TEMPLATE
+            .replace("[DYNAMIC REFERENCE MAPPING]", mapping)
+            .replace("[JERSEY INSTRUCTION]", jerseyInstruction)
+            .replace("[TEAM NAME COLOR INSTRUCTION]", teamNameColorInstruction)
             .replace("[DYNAMIC DATE]", matchDate)
             .replace("[DYNAMIC TIME]", matchTime)
             .replace("[DYNAMIC VENUE]", matchVenue);
-    }, [matchDate, matchTime, matchVenue, references]);
+    }, [matchDate, matchTime, matchVenue, references, includeJerseys]);
 
     const handleCopyPrompt = async () => {
         try {

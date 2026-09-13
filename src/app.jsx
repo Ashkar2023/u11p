@@ -11,6 +11,7 @@ import { Devtools } from "./pages/devtools";
 import { Tools } from "./pages/tools";
 import { LineupCreator } from "./pages/lineup-creator";
 import { PaymentTracker } from "./pages/payment-tracker";
+import { PosterKit } from "./pages/poster-kit";
 import { isLocalHost } from "./utils/is-local-host";
 import AwardDetailsPage from "./pages/award-details";
 import { ErrorBoundary } from "./components/error.boundary";
@@ -56,6 +57,7 @@ export const App = () => {
         <Route path="/stats" component={Stats} />
         <Route path="/tools/lineup-creator" component={LineupCreator} />
         <Route path="/tools/payment-tracker" component={PaymentTracker} />
+        <Route path="/tools/poster-kit" component={PosterKit} />
         <Route path="/tools" component={Tools} />
         <Route path="/awards/:year/:month/:type" component={AwardDetailsPage} />
         {showDevtools && <Route path="/devtools" component={Devtools} />}

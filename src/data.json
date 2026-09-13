@@ -1599,6 +1599,7 @@
         {
             "id": 12,
             "date": "2026-09-05T15:30:00.000Z",
+            "poster_filename": "september-5.jpeg",
             "teams": [
                 {
                     "teamId": 1,
@@ -1676,6 +1677,7 @@
         {
             "id": 13,
             "date": "2026-09-12T15:30:00.000Z",
+            "poster_filename": "september-12.png",
             "teams": [
                 {
                     "teamId": 1,

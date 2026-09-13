@@ -19,6 +19,15 @@ function WalletIcon() {
     );
 }
 
+function PosterIcon() {
+    return (
+        <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2" />
+            <path d="M8 15V9l4 3 4-6v12" />
+        </svg>
+    );
+}
+
 export function Tools() {
     return (
         <PageLayout>
@@ -49,6 +58,18 @@ export function Tools() {
                         <span className="min-w-0 flex-1">
                             <strong className="block text-sm font-semibold text-zinc-100">Payment tracker</strong>
                             <span className="mt-1 block text-sm text-zinc-400">Track player payments per matchday and balance UPI vs cash.</span>
+                        </span>
+                        <span className="text-xl text-zinc-500" aria-hidden="true">&#8250;</span>
+                    </Link>
+
+                    <Link
+                        href="/tools/poster-kit"
+                        className="flex items-center gap-4 rounded-lg border border-white/10 bg-zinc-900/75 p-4 transition-colors hover:border-amber-400/50 hover:bg-zinc-900 focus-visible:outline-2 focus-visible:outline-amber-400"
+                    >
+                        <span className="text-pink-400"><PosterIcon /></span>
+                        <span className="min-w-0 flex-1">
+                            <strong className="block text-sm font-semibold text-zinc-100">Poster Kit</strong>
+                            <span className="mt-1 block text-sm text-zinc-400">Assemble a matchday poster reference sheet and prompt.</span>
                         </span>
                         <span className="text-xl text-zinc-500" aria-hidden="true">&#8250;</span>
                     </Link>

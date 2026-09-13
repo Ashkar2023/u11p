@@ -100,16 +100,6 @@ function CopyIcon() {
     );
 }
 
-function DownloadIcon() {
-    return (
-        <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M12 4v11" />
-            <path d="m7.5 20.5 4.5 4.5 4.5-4.5" />
-            <path d="M4 20.5h16" />
-        </svg>
-    );
-}
-
 function SelectorArrow() {
     return (
         <svg className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-zinc-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -371,27 +361,21 @@ export function PosterKit() {
         window.setTimeout(() => setCopyStatus("Copy prompt"), 1800);
     };
 
-    const handleDownload = () => {
+    const handleCopyImage = async () => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
-        if (canvas.toBlob) {
-            canvas.toBlob((blob) => {
-                if (!blob) return;
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement("a");
-                link.href = url;
-                link.download = "poster-kit-reference.png";
-                link.click();
-                URL.revokeObjectURL(url);
-            }, "image/png");
-            return;
-        }
-
-        const link = document.createElement("a");
-        link.download = "poster-kit-reference.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
+        canvas.toBlob(async (blob) => {
+            if (!blob) return;
+            try {
+                await navigator.clipboard.write([
+                    new ClipboardItem({ "image/png": blob })
+                ]);
+                // optional: show a brief success state
+            } catch (error) {
+                console.error("Copy failed", error);
+            }
+        }, "image/png");
     };
 
     return (
@@ -534,11 +518,11 @@ export function PosterKit() {
                             <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-400">4. Mapped reference image</h2>
                             <button
                                 type="button"
-                                onClick={handleDownload}
+                                onClick={handleCopyImage}
                                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-400 px-4 py-2 text-sm font-black text-zinc-950 shadow-xl shadow-amber-500/15 transition-colors hover:bg-amber-300"
                             >
-                                <DownloadIcon />
-                                Download PNG
+                                <CopyIcon />
+                                Copy image
                             </button>
                         </div>
 

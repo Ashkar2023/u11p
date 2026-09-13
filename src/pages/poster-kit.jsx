@@ -359,13 +359,12 @@ export function PosterKit() {
 
     const promptText = useMemo(() => {
         const jerseyInstruction = includeJerseys
-            ? `The players in IMAGE 2 are wearing placeholder photos. The correct jerseys 
-    are supplied as separate numbered references in IMAGE 2. You must dress:
-    - Player 1 (Paappan FC) in the Paappan FC jersey reference from IMAGE 2
-    - Player 2 (Cheppu Fighters) in the Cheppu Fighters jersey reference from IMAGE 2
-    Do not use the jersey the player is wearing in their photo. Replace it completely.`
-            : `No jersey references are supplied. Dress the players in football attire 
-    appropriate to their team colors. Do not invent specific jersey designs.`;
+            ? `JERSEY REPLACEMENT — THIS IS MANDATORY:
+The player photos show incorrect jerseys. You must replace them.
+Image 3 in the reference sheet is the Paappan FC jersey — dress Player 1 in this exactly.
+Image 4 in the reference sheet is the Cheppu Fighters jersey — dress Player 2 in this exactly.
+Ignore all clothing visible in the player photos 1 & 2. Only use mapping images 3 and 4 for jerseys.`
+            : `No jersey references supplied. Use the same jersey from the player photos 1 & 2 from mapped image.`;
 
         const teamNameColorInstruction = includeJerseys
             ? `Use the primary color of each team's supplied jersey as the text color 

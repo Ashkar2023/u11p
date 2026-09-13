@@ -205,7 +205,7 @@ function GoalScorers() {
     const [showGBM, setShowGBM] = useState(false);
 
     return (
-        <section className="rounded-lg border border-white/10 bg-zinc-900/75 p-3 shadow-2xl shadow-black/25">
+        <section className="rounded-lg border border-white/10 bg-zinc-900/75 p-3 shadow-2xl shadow-black/25" id="topscorers">
             <div className="mb-1 flex items-center justify-between gap-3">
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-amber-400 sm:text-lg">
                     Top scorers

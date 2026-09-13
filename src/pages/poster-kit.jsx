@@ -359,12 +359,40 @@ export function PosterKit() {
 
     const promptText = useMemo(() => {
         const jerseyInstruction = includeJerseys
-            ? `JERSEY REPLACEMENT — THIS IS MANDATORY:
-The player photos show incorrect jerseys. You must replace them.
-Image 3 in the reference sheet is the Paappan FC jersey — dress Player 1 in this exactly.
-Image 4 in the reference sheet is the Cheppu Fighters jersey — dress Player 2 in this exactly.
-Ignore all clothing visible in the player photos 1 & 2. Only use mapping images 3 and 4 for jerseys.`
-            : `No jersey references supplied. Use the same jersey from the player photos 1 & 2 from mapped image.`;
+            ? `JERSEY REPLACEMENT — ABSOLUTE AND MANDATORY:
+
+The jerseys shown on the player photos in reference images 1 and 2 are NOT the jerseys to use in the final poster.
+
+You MUST replace the clothing/jersey on each player using ONLY the corresponding jersey reference images:
+
+- IMAGE 3 = Paappan FC jersey → Player 1 MUST wear this jersey.
+- IMAGE 4 = Cheppu Fighters jersey → Player 2 MUST wear this jersey.
+
+IMPORTANT:
+- Treat images 3 and 4 as the AUTHORITATIVE jersey references, not as optional inspiration.
+- Do NOT preserve, copy, reconstruct, or blend the jerseys/clothing visible on player images 1 and 2.
+- The final jersey worn by Player 1 must visually match IMAGE 3.
+- The final jersey worn by Player 2 must visually match IMAGE 4.
+- Preserve the exact jersey design, colors, color placement, patterns, logos, graphics, collar, sleeves, and overall appearance shown in the corresponding jersey reference.
+- Do not invent a new jersey design or substitute a generic football jersey.
+- Do not mix elements from the two jerseys.
+- Player 1 gets ONLY the Paappan FC jersey from IMAGE 3.
+- Player 2 gets ONLY the Cheppu Fighters jersey from IMAGE 4.
+- Keep each player's face, head, body, pose, and identity from their respective player reference image; change the clothing only where necessary to replace the jersey.
+- The jersey references have higher priority than the clothing visible in the player photographs.
+
+FINAL CLOTHING CHECK:
+Before generating the final poster, verify:
+1. Player 1 is wearing the exact Paappan FC jersey from IMAGE 3.
+2. Player 2 is wearing the exact Cheppu Fighters jersey from IMAGE 4.
+3. Neither player's original jersey from images 1 or 2 remains visible.
+4. No jersey design has been invented, simplified, recolored, or substituted.
+5. No elements from the Paappan FC jersey appear on Player 2, and no elements from the Cheppu Fighters jersey appear on Player 1.`
+            : `JERSEY HANDLING:
+
+No separate jersey references are supplied.
+
+Preserve the jersey/clothing visible on each player's mapped player image. Do not invent, replace, redesign, recolor, or substitute their jerseys.`;
 
         const teamNameColorInstruction = includeJerseys
             ? `Use the primary color of each team's supplied jersey as the text color 

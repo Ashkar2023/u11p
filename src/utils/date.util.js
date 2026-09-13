@@ -48,9 +48,13 @@ export function getMatchVotingWindow(date) {
         matchDayFormatter.formatToParts(startsAt).map(({ type, value }) => [type, value]),
     );
 
+    const matchDayStart = new Date(`${parts.year}-${parts.month}-${parts.day}T00:00:00+05:30`);
+    const deadlineDay = new Date(matchDayStart.getTime() + 24 * 60 * 60 * 1000);
+    deadlineDay.setHours(23, 59, 59, 999);
+
     return {
         opensAt: new Date(startsAt.getTime() + 60 * 60 * 1000),
-        closesAt: new Date(`${parts.year}-${parts.month}-${parts.day}T23:59:59.999+05:30`),
+        closesAt: deadlineDay,
     };
 }
 

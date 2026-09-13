@@ -1679,14 +1679,59 @@
             "teams": [
                 {
                     "teamId": 1,
-                    "captainPlayerId": 8
+                    "captainPlayerId": 8,
+                    "score": 5
                 },
                 {
                     "teamId": 2,
-                    "captainPlayerId": 9
+                    "captainPlayerId": 9,
+                    "score": 8
                 }
             ],
-            "goals": null,
+            "goals": [
+                {
+                    "playerId": 2,
+                    "teamId": 1,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 27,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 22,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 14,
+                    "teamId": 1,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 9,
+                    "teamId": 2,
+                    "count": 4,
+                    "penaltiesCount": 0
+                },
+                {
+                    "playerId": 4,
+                    "teamId": 2,
+                    "count": 3,
+                    "penaltiesCount": 1
+                },
+                {
+                    "playerId": 40,
+                    "teamId": 2,
+                    "count": 1,
+                    "penaltiesCount": 1
+                }
+            ],
             "lineup": [
                 {
                     "teamId": 1,

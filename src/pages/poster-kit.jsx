@@ -306,6 +306,7 @@ export function PosterKit() {
     const [player1Id, setPlayer1Id] = useState(String(getDefaultVisiblePlayer(1)?.id ?? ""));
     const [player2Id, setPlayer2Id] = useState(String(getDefaultVisiblePlayer(2)?.id ?? ""));
     const [copyStatus, setCopyStatus] = useState("Copy prompt");
+    const [copyImageStatus, setCopyImageStatus] = useState("Copy Image");
     const [canvasReady, setCanvasReady] = useState(false);
     const canvasRef = useRef(null);
 
@@ -414,6 +415,7 @@ Preserve the jersey/clothing visible on each player's mapped player image. Do no
             await navigator.clipboard.writeText(promptText);
             setCopyStatus("Copied!");
         } catch (error) {
+            console.error("Copy failed", error);
             setCopyStatus("Clipboard blocked");
         }
 
@@ -430,11 +432,14 @@ Preserve the jersey/clothing visible on each player's mapped player image. Do no
                 await navigator.clipboard.write([
                     new ClipboardItem({ "image/png": blob })
                 ]);
-                // optional: show a brief success state
+                setCopyImageStatus("Copied!");
             } catch (error) {
+                setCopyImageStatus("Clipboard blocked");
                 console.error("Copy failed", error);
             }
         }, "image/png");
+
+        window.setTimeout(() => setCopyImageStatus("Copy image"), 1800);
     };
 
     return (
@@ -581,7 +586,7 @@ Preserve the jersey/clothing visible on each player's mapped player image. Do no
                                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-400 px-4 py-2 text-sm font-black text-zinc-950 shadow-xl shadow-amber-500/15 transition-colors hover:bg-amber-300"
                             >
                                 <CopyIcon />
-                                Copy image
+                                {copyImageStatus}
                             </button>
                         </div>
 

@@ -1678,6 +1678,7 @@
             "id": 13,
             "date": "2026-09-12T15:30:00.000Z",
             "poster_filename": "september-12.png",
+            "motmPlayerId": 2,
             "teams": [
                 {
                     "teamId": 1,

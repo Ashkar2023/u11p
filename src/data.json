@@ -1776,11 +1776,31 @@
             "teams": [
                 {
                     "teamId": 1,
-                    "captainPlayerId": 5
+                    "captainPlayerId": 5,
+                    "score": 5
                 },
                 {
                     "teamId": 2,
-                    "captainPlayerId": 4
+                    "captainPlayerId": 4,
+                    "score": 1
+                }
+            ],
+            "goals": [
+                {
+                    "teamId": 1,
+                    "playerId": 14,
+                    "count": 4,
+                    "penaltiesCount": 1
+                },
+                {
+                    "teamId": 1,
+                    "playerId": 27,
+                    "count": 1
+                },
+                {
+                    "teamId": 2,
+                    "playerId": 13,
+                    "count": 1
                 }
             ],
             "lineup": [

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useRoute } from "wouter";
 import ManOfTheMatchVote from "../components/man-of-the-match-vote";
 import MatchCard from "../components/match.card";
@@ -9,7 +9,7 @@ import { getMatchVotingPeriodStatus } from "../utils/date.util";
 import user_png from "../assets/user.webp";
 import lineup_ground_png from "../assets/lineup-ground.webp"
 import fifa_shield from "../assets/fifa-player-shield.webp";
-import { getPositionMap } from "../utils/lineup-creator.util";
+import { getPositionMap, LINEUP_SIZES, writeLineupState } from "../utils/lineup-creator.util";
 
 const teamsById = new Map(data.teams.map((team) => [team.id, team]));
 const playersById = new Map(data.players.map((player) => [player.id, player]));
@@ -19,6 +19,96 @@ function BackIcon() {
         <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="m15 18-6-6 6-6" />
         </svg>
+    );
+}
+
+function MoreIcon() {
+    return (
+        <svg className="size-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <circle cx="12" cy="5" r="1.75" />
+            <circle cx="12" cy="12" r="1.75" />
+            <circle cx="12" cy="19" r="1.75" />
+        </svg>
+    );
+}
+
+function EditIcon() {
+    return (
+        <svg className="size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M12 20h9" />
+            <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z" />
+        </svg>
+    );
+}
+
+function getLineupCreatorHref(match) {
+    const slots = data.teams.map((team) => {
+        const playerIds = match.lineup?.find((lineup) => lineup.teamId === team.id)?.playerIds ?? [];
+        const visiblePlayerIds = playerIds.slice(0, 11);
+        return [...visiblePlayerIds, ...Array(11 - visiblePlayerIds.length).fill(null)];
+    });
+    const targets = data.teams.map((team) => {
+        const playerCount = match.lineup?.find((lineup) => lineup.teamId === team.id)?.playerIds?.length ?? 0;
+        if (!playerCount) return 11;
+        return Math.max(LINEUP_SIZES.at(-1), Math.min(LINEUP_SIZES[0], playerCount));
+    });
+    const lineups = slots.map((teamSlots, index) => ({
+        teamId: data.teams[index].id,
+        playerIds: teamSlots.filter(Boolean),
+    }));
+    const params = writeLineupState({ step: "lineup", pool: [], targets, slots, lineups });
+
+    return `/tools/lineup-creator?${params.toString()}`;
+}
+
+function MatchActions({ editLineupHref }) {
+    const [isOpen, setIsOpen] = useState(false);
+    const menuRef = useRef(null);
+
+    useEffect(() => {
+        if (!isOpen) return undefined;
+
+        const handlePointerDown = (event) => {
+            if (!menuRef.current?.contains(event.target)) setIsOpen(false);
+        };
+        const handleKeyDown = (event) => {
+            if (event.key === "Escape") setIsOpen(false);
+        };
+
+        document.addEventListener("pointerdown", handlePointerDown);
+        document.addEventListener("keydown", handleKeyDown);
+        return () => {
+            document.removeEventListener("pointerdown", handlePointerDown);
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [isOpen]);
+
+    return (
+        <div ref={menuRef} className="relative">
+            <button
+                type="button"
+                className="flex size-9 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-amber-400"
+                aria-label="More match actions"
+                aria-haspopup="menu"
+                aria-expanded={isOpen}
+                onClick={() => setIsOpen((current) => !current)}
+            >
+                <MoreIcon />
+            </button>
+            {isOpen && (
+                <div className="absolute right-0 top-10 z-40 min-w-40 overflow-hidden rounded-xl border border-white/10 bg-zinc-900 p-1 shadow-2xl shadow-black/60" role="menu">
+                    <Link
+                        href={editLineupHref}
+                        role="menuitem"
+                        className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm text-zinc-200 transition-colors hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-amber-400"
+                        onClick={() => setIsOpen(false)}
+                    >
+                        <EditIcon />
+                        Edit lineup
+                    </Link>
+                </div>
+            )}
+        </div>
     );
 }
 
@@ -380,7 +470,7 @@ export const MatchDetails = () => {
 
     return (
         <main className="min-h-dvh bg-zinc-950 px-4 py-[calc(1.5rem+env(safe-area-inset-top))] text-white">
-            <div className="pb-3">
+            <div className="mx-auto flex w-full max-w-3xl items-center justify-between pb-3">
                 <button
                     className="flex items-center gap-1 text-sm text-zinc-500 hover:text-white transition-colors"
                     type="button"
@@ -388,6 +478,7 @@ export const MatchDetails = () => {
                 >
                     <BackIcon /> Back
                 </button>
+                <MatchActions editLineupHref={getLineupCreatorHref(match)} />
             </div>
             <div className="mx-auto w-full max-w-3xl">
                 <MatchCard

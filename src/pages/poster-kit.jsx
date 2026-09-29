@@ -126,6 +126,15 @@ function getDefaultVisiblePlayer(teamId) {
     return allPlayers.find((player) => Number(player.teamId) === Number(teamId)) ?? null;
 }
 
+function getDefaultCaptainPlayerId(match, teamId) {
+    const captainPlayerId = match?.teams?.find((team) => Number(team.teamId) === Number(teamId))?.captainPlayerId;
+    return String(
+        typeof captainPlayerId === "number" && Number.isFinite(captainPlayerId)
+            ? captainPlayerId
+            : getDefaultVisiblePlayer(teamId)?.id ?? ""
+    );
+}
+
 function buildReferenceList({ player1Id, player2Id, includeJerseys }) {
     const refs = [];
     const p1 = playersById.get(String(player1Id)) ?? getDefaultVisiblePlayer(1);
@@ -303,8 +312,8 @@ export function PosterKit() {
     const defaultMatch = upcomingMatches[0] ?? data.matches[data.matches.length - 1] ?? data.matches[0];
     const [selectedMatchId, setSelectedMatchId] = useState(defaultMatch?.id ?? null);
     const [includeJerseys, setIncludeJerseys] = useState(true);
-    const [player1Id, setPlayer1Id] = useState(String(getDefaultVisiblePlayer(1)?.id ?? ""));
-    const [player2Id, setPlayer2Id] = useState(String(getDefaultVisiblePlayer(2)?.id ?? ""));
+    const [player1Id, setPlayer1Id] = useState(() => getDefaultCaptainPlayerId(defaultMatch, 1));
+    const [player2Id, setPlayer2Id] = useState(() => getDefaultCaptainPlayerId(defaultMatch, 2));
     const [copyStatus, setCopyStatus] = useState("Copy prompt");
     const [copyImageStatus, setCopyImageStatus] = useState("Copy Image");
     const [canvasReady, setCanvasReady] = useState(false);
@@ -356,6 +365,14 @@ export function PosterKit() {
     const matchDate = selectedMatch ? formatDisplayDate(selectedMatch.date) : "Date unavailable";
     const matchTime = selectedMatch ? formatDisplayTime(selectedMatch.date) : "Time unavailable";
     const matchVenue = selectedMatch?.venue || FALLBACK_VENUE;
+
+    const handleMatchChange = (event) => {
+        const matchId = Number(event.target.value);
+        const match = data.matches.find((item) => item.id === matchId) ?? null;
+        setSelectedMatchId(matchId);
+        setPlayer1Id(getDefaultCaptainPlayerId(match, 1));
+        setPlayer2Id(getDefaultCaptainPlayerId(match, 2));
+    };
 
 
     const promptText = useMemo(() => {
@@ -551,7 +568,7 @@ Preserve the jersey/clothing visible on each player's mapped player image. Do no
                                     <select
                                         className="h-12 w-full appearance-none rounded-xl border border-white/10 bg-zinc-900 px-3 pr-10 text-sm text-zinc-100 outline-none transition focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
                                         value={selectedMatchId ?? ""}
-                                        onChange={(event) => setSelectedMatchId(Number(event.target.value))}
+                                        onChange={handleMatchChange}
                                         aria-label="Select upcoming match"
                                     >
                                         {upcomingMatches.map((match) => (

@@ -24,8 +24,8 @@ function formatMoney(value) {
     return `₹${Number(value || 0).toLocaleString("en-IN", { maximumFractionDigits: 2 })}`;
 }
 
-function normalizePlayerName(value) {
-    return String(value ?? "").trim().toLowerCase();
+function recordMatchesPlayer(record, player) {
+    return String(record?.player_id ?? "").trim() === String(player.id);
 }
 
 async function readJsonResponse(response) {
@@ -102,14 +102,6 @@ export function PaymentTracker() {
     const [isLoading, setIsLoading] = useState(false);
 
     const lineupPlayers = useMemo(() => getCombinedLineupPlayers(selectedMatchdayId), [selectedMatchdayId]);
-    const paymentMap = useMemo(() => {
-        const map = new Map();
-        paymentRecords.forEach((record) => {
-            map.set(normalizePlayerName(record.player_name), record);
-        });
-        return map;
-    }, [paymentRecords]);
-
     const canWrite = Boolean(PAYMENT_TRACKER_URL) && isAdminUnlocked && Boolean(adminSessionPassword);
 
     useEffect(() => {
@@ -167,7 +159,7 @@ export function PaymentTracker() {
     const derivedRows = useMemo(() => {
         return lineupPlayers
             .map((player) => {
-                const record = paymentMap.get(normalizePlayerName(player.name));
+                const record = paymentRecords.find((entry) => recordMatchesPlayer(entry, player));
                 return {
                     player,
                     record,
@@ -176,8 +168,8 @@ export function PaymentTracker() {
                     amount_cash: Number(record?.amount_cash ?? 0),
                 };
             })
-            .sort((left, right) => Number(right.paid) - Number(left.paid) || left.player.name.localeCompare(right.player.name));
-    }, [lineupPlayers, paymentMap]);
+            .sort((left, right) => left.player.name.localeCompare(right.player.name));
+    }, [lineupPlayers, paymentRecords]);
 
     const paidCount = derivedRows.filter((row) => row.paid).length;
     const totalCount = derivedRows.length;
@@ -295,6 +287,7 @@ export function PaymentTracker() {
         try {
             const payload = {
                 matchday_id: Number(selectedMatchdayId),
+                player_id: selectedPlayer.id,
                 player_name: selectedPlayer.name,
                 paid: Boolean(modalState.form.paid),
                 amount_upi: Number(modalState.form.paid ? (modalState.form.amount_upi || 0) : 0),
@@ -313,10 +306,20 @@ export function PaymentTracker() {
                 throw new Error(result.reason || "Payment could not be saved.");
             }
 
-            await loadPayments(selectedMatchdayId);
             const successMessage = `${selectedPlayer.name} payment ${payload.paid ? "marked paid" : "updated"}.`;
             closeModal();
             setToast({ message: successMessage, state: "success" });
+            setPaymentRecords((previous) => [
+                ...previous.filter((record) => !recordMatchesPlayer(record, selectedPlayer)),
+                {
+                    matchday_id: payload.matchday_id,
+                    player_id: payload.player_id,
+                    player_name: payload.player_name,
+                    paid: payload.paid,
+                    amount_upi: payload.amount_upi,
+                    amount_cash: payload.amount_cash,
+                },
+            ]);
         } catch (error) {
             console.error(error);
             setSubmitState({ status: "error", message: error instanceof Error ? error.message : "Payment failed." });
@@ -401,7 +404,8 @@ export function PaymentTracker() {
                 </div>
 
                 {isLoading && (
-                    <div className="mb-3 rounded-lg border border-white/10 bg-zinc-900/75 px-3 py-2 text-xs text-zinc-300">
+                    <div className="flex mb-3 gap-2 rounded-lg border border-white/10 bg-zinc-900/75 px-3 py-2 text-xs text-zinc-300">
+                        <div className="size-4 animate-spin rounded-full border-2 border-zinc-700 border-t-amber-400" />
                         Loading payment records...
                     </div>
                 )}
@@ -431,7 +435,7 @@ export function PaymentTracker() {
                                         const imageSrc = playerData?.image ?? "/players/user.webp";
 
                                         return (
-                                            <tr key={player.id} className={`border-t border-white/10 ${paid ? "bg-emerald-500/5" : "bg-transparent"}`}>
+                                            <tr key={player.id} className={`border-t border-white/10 ${paid ? "bg-emerald-600/50" : "bg-transparent"}`}>
                                                 <td className="pt-1">
                                                     <div className="flex items-center justify-center">
                                                         <img
@@ -442,7 +446,7 @@ export function PaymentTracker() {
                                                     </div>
                                                 </td>
                                                 <td className="px-2.5 py-2.5">
-                                                    <span className={`inline-flex rounded-full px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.12em] ${paid ? "bg-emerald-500/15 text-emerald-300" : "bg-zinc-800 text-zinc-300"}`}>
+                                                    <span className={`inline-flex rounded-full px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.12em] ${paid ? "bg-emerald-500/40 text-emerald-300 outline-1 outline-emerald-400" : "bg-zinc-800 text-zinc-300"}`}>
                                                         {paid ? "Paid" : "Pending"}
                                                     </span>
                                                 </td>

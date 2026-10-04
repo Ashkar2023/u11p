@@ -1,6 +1,6 @@
 const SHEET_NAME = "PaymentTracker";
 const PASSWORD = "";
-const HEADERS = ["matchday_id", "player_name", "paid", "amount_upi", "amount_cash", "timestamp"];
+const HEADERS = ["matchday_id", "player_name", "paid", "amount_upi", "amount_cash", "timestamp", "player_id"];
 
 function doGet(e) {
   try {
@@ -46,16 +46,16 @@ function doPost(e) {
       return respond({ success: false, reason: "unauthorized", readOnly: true });
     }
 
-    const { matchday_id, player_name, paid, amount_upi, amount_cash } = body;
-    if (!matchday_id || !player_name) {
-      return respond({ success: false, reason: "matchday_id and player_name are required" });
+    const { matchday_id, player_id, player_name, paid, amount_upi, amount_cash } = body;
+    if (!matchday_id || player_id === undefined || player_id === null || player_id === "") {
+      return respond({ success: false, reason: "matchday_id and player_id are required" });
     }
 
     const sheet = ensureSheet();
     const values = sheet.getDataRange().getValues();
     const existingRowIndex = values.findIndex((row, index) => {
       if (index === 0) return false;
-      return String(row[0]) === String(matchday_id) && String(row[1]).trim().toLowerCase() === String(player_name).trim().toLowerCase();
+      return String(row[0]) === String(matchday_id) && String(row[6]).trim() === String(player_id);
     });
 
     const row = [
@@ -65,6 +65,7 @@ function doPost(e) {
       Number(amount_upi) || 0,
       Number(amount_cash) || 0,
       new Date().toISOString(),
+      String(player_id),
     ];
 
     if (existingRowIndex !== -1) {

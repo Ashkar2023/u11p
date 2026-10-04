@@ -1920,11 +1920,45 @@
             "teams": [
                 {
                     "teamId": 1,
-                    "captainPlayerId": 5
+                    "captainPlayerId": 5,
+                    "score": 7
                 },
                 {
                     "teamId": 2,
-                    "captainPlayerId": 37
+                    "captainPlayerId": 37,
+                    "score": 3
+                }
+            ],
+            "goals": [
+                {
+                    "teamId": 1,
+                    "playerId": 1,
+                    "count": 2
+                },
+                {
+                    "teamId": 1,
+                    "playerId": 14,
+                    "count": 3
+                },
+                {
+                    "teamId": 1,
+                    "playerId": 5,
+                    "count": 1
+                },
+                {
+                    "teamId": 1,
+                    "playerId": 26,
+                    "count": 1
+                },
+                {
+                    "teamId": 2,
+                    "playerId": 6,
+                    "count": 2
+                },
+                {
+                    "teamId": 2,
+                    "playerId": 40,
+                    "count": 1
                 }
             ],
             "lineup": [
@@ -1938,10 +1972,10 @@
                         29,
                         5,
                         1,
-                        38,
+                        30,
                         14,
                         27,
-                        30
+                        38
                     ]
                 },
                 {

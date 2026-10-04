@@ -766,6 +766,30 @@
             "golden-glove": {
                 "id": 10
             }
+        },
+        "2026-09": {
+            "ultimate-team": [
+                18,
+                8,
+                19,
+                13,
+                1,
+                9,
+                4
+            ],
+            "top-scorer": {
+                "id": 9,
+                "goals": 8
+            },
+            "best-midfielder": {
+                "id": 1
+            },
+            "best-defender": {
+                "id": 19
+            },
+            "golden-glove": {
+                "id": 18
+            }
         }
     },
     "matches": [

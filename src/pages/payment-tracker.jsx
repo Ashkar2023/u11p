@@ -282,19 +282,37 @@ export function PaymentTracker() {
             return;
         }
 
-        setSubmitState({ status: "loading", message: "Saving payment..." });
+        const player = selectedPlayer;
+        const previousRecord = paymentRecords.find((record) => recordMatchesPlayer(record, player));
+        const payload = {
+            matchday_id: Number(selectedMatchdayId),
+            player_id: player.id,
+            player_name: player.name,
+            paid: Boolean(modalState.form.paid),
+            amount_upi: Number(modalState.form.paid ? (modalState.form.amount_upi || 0) : 0),
+            amount_cash: Number(modalState.form.paid ? (modalState.form.amount_cash || 0) : 0),
+            password: adminSessionPassword,
+        };
+
+        const setPlayerRecord = (record) => {
+            setPaymentRecords((previous) => {
+                const others = previous.filter((entry) => !recordMatchesPlayer(entry, player));
+                return record ? [...others, record] : others;
+            });
+        };
+
+        // optimistic update: show the new state and close the modal right away
+        setPlayerRecord({
+            matchday_id: payload.matchday_id,
+            player_id: payload.player_id,
+            player_name: payload.player_name,
+            paid: payload.paid,
+            amount_upi: payload.amount_upi,
+            amount_cash: payload.amount_cash,
+        });
+        closeModal();
 
         try {
-            const payload = {
-                matchday_id: Number(selectedMatchdayId),
-                player_id: selectedPlayer.id,
-                player_name: selectedPlayer.name,
-                paid: Boolean(modalState.form.paid),
-                amount_upi: Number(modalState.form.paid ? (modalState.form.amount_upi || 0) : 0),
-                amount_cash: Number(modalState.form.paid ? (modalState.form.amount_cash || 0) : 0),
-                password: adminSessionPassword,
-            };
-
             const response = await fetch(PAYMENT_TRACKER_URL, {
                 method: "POST",
                 headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -306,24 +324,12 @@ export function PaymentTracker() {
                 throw new Error(result.reason || "Payment could not be saved.");
             }
 
-            const successMessage = `${selectedPlayer.name} payment ${payload.paid ? "marked paid" : "updated"}.`;
-            closeModal();
-            setToast({ message: successMessage, state: "success" });
-            setPaymentRecords((previous) => [
-                ...previous.filter((record) => !recordMatchesPlayer(record, selectedPlayer)),
-                {
-                    matchday_id: payload.matchday_id,
-                    player_id: payload.player_id,
-                    player_name: payload.player_name,
-                    paid: payload.paid,
-                    amount_upi: payload.amount_upi,
-                    amount_cash: payload.amount_cash,
-                },
-            ]);
+            setToast({ message: `${player.name} payment ${payload.paid ? "marked paid" : "updated"}.`, state: "success" });
         } catch (error) {
             console.error(error);
-            setSubmitState({ status: "error", message: error instanceof Error ? error.message : "Payment failed." });
-            setToast({ message: error instanceof Error ? error.message : "Payment failed.", state: "error" });
+            // save failed: put the previous state back
+            setPlayerRecord(previousRecord);
+            setToast({ message: `${player.name}: ${error instanceof Error ? error.message : "Payment failed."} Change reverted.`, state: "error" });
         }
     };
 

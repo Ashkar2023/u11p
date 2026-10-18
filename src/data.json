@@ -2120,11 +2120,13 @@
             "teams": [
                 {
                     "teamId": 1,
-                    "captainPlayerId": 30
+                    "captainPlayerId": 30,
+                    "score": 3
                 },
                 {
                     "teamId": 2,
-                    "captainPlayerId": 40
+                    "captainPlayerId": 40,
+                    "score": 5
                 }
             ],
             "lineup": [
@@ -2159,6 +2161,44 @@
                         40,
                         15
                     ]
+                }
+            ],
+            "goals": [
+                {
+                    "teamId": 1,
+                    "playerId": 26,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "teamId": 1,
+                    "playerId": 14,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "teamId": 2,
+                    "playerId": 40,
+                    "count": 2,
+                    "penaltiesCount": 0
+                },
+                {
+                    "teamId": 2,
+                    "playerId": 6,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "teamId": 2,
+                    "playerId": 9,
+                    "count": 1,
+                    "penaltiesCount": 0
+                },
+                {
+                    "teamId": 2,
+                    "playerId": 5,
+                    "count": 1,
+                    "penaltiesCount": 0
                 }
             ]
         }

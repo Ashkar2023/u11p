@@ -1,3 +1,9 @@
 node_modules/
 .env
+.env.*
+!.env.example
+.vercel/
+*-firebase-adminsdk-*.json
 dist/
+.vercel
+.env*

@@ -1,0 +1,20 @@
+{
+    "rules": {
+        ".read": false,
+        ".write": false,
+        "broadcast": {
+            "activeMatchId": {
+                ".read": true
+            },
+            "matches": {
+                "$matchId": {
+                    ".read": "$matchId === root.child('broadcast/activeMatchId').val()"
+                }
+            }
+        },
+        "admin": {
+            ".read": false,
+            ".write": false
+        }
+    }
+}

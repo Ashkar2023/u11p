@@ -16,6 +16,14 @@ body {
     min-height: 100vh;
 }
 
+html.broadcast-overlay,
+html.broadcast-overlay body,
+html.broadcast-overlay #root {
+    background: transparent !important;
+    min-width: 0;
+    overflow: hidden;
+}
+
 button,
 input,
 textarea,

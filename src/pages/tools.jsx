@@ -73,6 +73,23 @@ export function Tools() {
                         </span>
                         <span className="text-xl text-zinc-500" aria-hidden="true">&#8250;</span>
                     </Link>
+
+                    <Link
+                        href="/tools/broadcast"
+                        className="flex items-center gap-4 rounded-lg border border-white/10 bg-zinc-900/75 p-4 transition-colors hover:border-amber-400/50 hover:bg-zinc-900 focus-visible:outline-2 focus-visible:outline-amber-400"
+                    >
+                        <span className="text-amber-400" aria-hidden="true">
+                            <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                <rect x="3" y="5" width="13" height="14" rx="2" />
+                                <path d="m16 10 5-3v10l-5-3" />
+                            </svg>
+                        </span>
+                        <span className="min-w-0 flex-1">
+                            <strong className="block text-sm font-semibold text-zinc-100">Broadcast Console</strong>
+                            <span className="mt-1 block text-sm text-zinc-400">Manage live scores and broadcast graphics.</span>
+                        </span>
+                        <span className="text-xl text-zinc-500" aria-hidden="true">&#8250;</span>
+                    </Link>
                 </div>
             </section>
         </PageLayout>

@@ -234,16 +234,6 @@ export const PlayerDetails = () => {
                                                 {secondaryPosition}
                                             </span>
                                         }
-                                        {player.teamId && (() => {
-                                            const team = data.teams.find(t => t.id === player.teamId);
-                                            return team?.logo ? (
-                                                <img
-                                                    src={team.logo}
-                                                    alt={team.name ?? ""}
-                                                    className="max-w-14 md:max-w-10 object-contain"
-                                                />
-                                            ) : null;
-                                        })()}
                                     </div>
                                 )}
 

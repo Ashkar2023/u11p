@@ -1,10 +1,12 @@
 {
+    "$schema": "https://openapi.vercel.sh/vercel.json",
     "rewrites": [
         {
-            "source": "/(.*)",
+            "source": "/((?!api(?:/|$)|@vite/|@react-refresh$|src/|node_modules/|@id/|@fs/|assets/|.*\\.(?:[pP][nN][gG]|[jJ][pP][eE]?[gG]|[gG][iI][fF]|[sS][vV][gG]|[wW][eE][bB][pP]|[aA][vV][iI][fF]|[iI][cC][oO]|[bB][mM][pP])$).*)",
             "destination": "/index.html"
         }
     ],
+    "devCommand": "vite --host --port $PORT",
     "headers": [
         {
             "source": "/assets/(.*)",

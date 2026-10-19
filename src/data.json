@@ -4,11 +4,13 @@
         {
             "id": 1,
             "name": "Paappan FC",
+            "shortName": "PFC",
             "logo": "/pfc.png"
         },
         {
             "id": 2,
             "name": "Cheppu Fighters",
+            "shortName": "CF",
             "logo": "/cf.png"
         }
     ],
@@ -22,7 +24,6 @@
             "id": 1,
             "name": "Ashkar",
             "image": "/players/ashkar.webp",
-            "teamId": 1,
             "attributes": {
                 "pace": 81,
                 "shooting": 79,
@@ -39,7 +40,6 @@
             "id": 2,
             "name": "Sulaiman",
             "image": "/players/sulaiman.webp",
-            "teamId": 1,
             "attributes": {
                 "pace": 65,
                 "shooting": 74,
@@ -57,7 +57,6 @@
             "id": 3,
             "name": "Miqu",
             "image": "/players/miqu.webp",
-            "teamId": 1,
             "attributes": {
                 "pace": 68,
                 "shooting": 71,
@@ -74,7 +73,6 @@
             "id": 4,
             "name": "Athar",
             "image": "/players/athar.webp",
-            "teamId": 2,
             "attributes": {
                 "pace": 85,
                 "shooting": 70,
@@ -90,7 +88,6 @@
             "id": 5,
             "name": "Haseem",
             "image": "/players/haseem.webp",
-            "teamId": 1,
             "attributes": {
                 "pace": 77,
                 "shooting": 78,
@@ -106,7 +103,6 @@
             "id": 6,
             "name": "Huzain",
             "image": "/players/huzain.webp",
-            "teamId": 2,
             "attributes": {
                 "pace": 82,
                 "shooting": 80,
@@ -123,7 +119,6 @@
             "id": 7,
             "name": "Abdulla",
             "image": "/players/abdullah.webp",
-            "teamId": 1,
             "attributes": {
                 "pace": 38,
                 "shooting": 30,
@@ -143,7 +138,6 @@
             "topScorerMonths": [
                 "July 2026"
             ],
-            "teamId": 1,
             "attributes": {
                 "pace": 70,
                 "shooting": 74,
@@ -160,7 +154,6 @@
             "id": 9,
             "name": "Milan",
             "image": "/players/milan.webp",
-            "teamId": 2,
             "attributes": {
                 "pace": 77,
                 "shooting": 81,
@@ -180,7 +173,6 @@
             "id": 10,
             "name": "Saleem",
             "image": "/players/saleem.webp",
-            "teamId": 2,
             "attributes": {
                 "pace": 42,
                 "shooting": 18,
@@ -198,7 +190,6 @@
             "id": 11,
             "name": "Bablu",
             "image": "/players/bablu.webp",
-            "teamId": 2,
             "attributes": {
                 "pace": 76,
                 "shooting": 62,
@@ -216,7 +207,6 @@
             "id": 12,
             "name": "Siddique",
             "image": "/players/siddi.webp",
-            "teamId": 2,
             "attributes": {
                 "pace": 60,
                 "shooting": 30,
@@ -234,7 +224,6 @@
             "id": 13,
             "name": "Shukoor",
             "image": "/players/shukoor.webp",
-            "teamId": 2,
             "attributes": {
                 "pace": 58,
                 "shooting": 52,
@@ -251,7 +240,6 @@
             "id": 14,
             "name": "Ajmal",
             "image": "/players/aju.webp",
-            "teamId": 1,
             "attributes": {
                 "pace": 78,
                 "shooting": 76,
@@ -269,7 +257,6 @@
             "id": 15,
             "name": "Jaleel",
             "image": "/players/jaleel.webp",
-            "teamId": 2,
             "attributes": {
                 "pace": 62,
                 "shooting": 48,
@@ -286,7 +273,6 @@
             "id": 16,
             "name": "Latheef",
             "image": "/players/latheef.webp",
-            "teamId": 2,
             "attributes": {
                 "pace": 50,
                 "shooting": 28,
@@ -303,7 +289,6 @@
             "id": 17,
             "name": "Sajeer",
             "image": "/players/sajeer.webp",
-            "teamId": 2,
             "attributes": {
                 "pace": 68,
                 "shooting": 35,
@@ -320,7 +305,6 @@
             "id": 18,
             "name": "Bavakunj",
             "image": "/players/bavakunj.webp",
-            "teamId": 2,
             "attributes": {
                 "pace": 65,
                 "shooting": 72,
@@ -337,7 +321,6 @@
             "id": 19,
             "name": "Shafeeq Cheppu",
             "image": "/players/shafeeq.webp",
-            "teamId": 2,
             "attributes": {
                 "pace": 64,
                 "shooting": 35,
@@ -355,7 +338,6 @@
             "id": 20,
             "name": "Sabith",
             "image": "/players/sabith.webp",
-            "teamId": 2,
             "attributes": {
                 "pace": 82,
                 "shooting": 62,
@@ -373,7 +355,6 @@
             "id": 21,
             "hidden": true,
             "name": "Ameen",
-            "teamId": 1,
             "attributes": {
                 "pace": 60,
                 "shooting": 50,
@@ -391,7 +372,6 @@
             "id": 22,
             "name": "Nazmel",
             "image": "/players/nazmel.webp",
-            "teamId": 1,
             "attributes": {
                 "pace": 80,
                 "shooting": 55,
@@ -408,7 +388,6 @@
             "id": 23,
             "name": "Aideed",
             "image": "/players/aideed.webp",
-            "teamId": 2,
             "attributes": {
                 "pace": 76,
                 "shooting": 38,
@@ -425,7 +404,6 @@
             "id": 24,
             "name": "Ansar",
             "image": "/players/ansar.webp",
-            "teamId": 1,
             "attributes": {
                 "pace": 58,
                 "shooting": 48,
@@ -443,7 +421,6 @@
             "id": 25,
             "name": "Adhil",
             "image": "/players/adhil.webp",
-            "teamId": 1,
             "attributes": {
                 "pace": 80,
                 "shooting": 78,
@@ -460,7 +437,6 @@
             "id": 26,
             "name": "Noushad mama",
             "image": "/players/mama.webp",
-            "teamId": 1,
             "attributes": {
                 "pace": 48,
                 "shooting": 30,
@@ -477,7 +453,6 @@
             "id": 27,
             "name": "Akku",
             "image": "/players/akku.webp",
-            "teamId": 1,
             "attributes": {
                 "pace": 74,
                 "shooting": 86,
@@ -495,7 +470,6 @@
             "id": 28,
             "name": "Faruq",
             "image": "/players/faruq.webp",
-            "teamId": 2,
             "attributes": {
                 "pace": 84,
                 "shooting": 73,
@@ -513,7 +487,6 @@
             "id": 29,
             "name": "Vahab Kavu",
             "image": "/players/kavu.webp",
-            "teamId": 1,
             "attributes": {
                 "pace": 55,
                 "shooting": 35,
@@ -531,7 +504,6 @@
             "id": 30,
             "name": "Rashid",
             "image": "/players/rashid.webp",
-            "teamId": 1,
             "attributes": {
                 "pace": 72,
                 "shooting": 35,
@@ -548,7 +520,6 @@
             "id": 31,
             "name": "Shabab",
             "image": "/players/shabab.webp",
-            "teamId": 2,
             "attributes": {
                 "pace": 78,
                 "shooting": 68,
@@ -583,7 +554,6 @@
             "id": 33,
             "name": "Almas",
             "image": "/players/almas.webp",
-            "teamId": 1,
             "attributes": {
                 "pace": 65,
                 "shooting": 32,
@@ -599,7 +569,6 @@
         {
             "id": 34,
             "name": "Muhsin Moosi",
-            "teamId": 2,
             "image": "/players/moosi.webp",
             "attributes": {
                 "pace": 52,
@@ -616,7 +585,6 @@
         {
             "id": 35,
             "name": "Yasir",
-            "teamId": 2,
             "hidden": true,
             "attributes": {
                 "pace": 72,

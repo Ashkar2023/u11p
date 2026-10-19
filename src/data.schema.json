@@ -14,7 +14,8 @@
                 "type": "object",
                 "required": [
                     "id",
-                    "name"
+                    "name",
+                    "shortName"
                 ],
                 "properties": {
                     "id": {
@@ -22,6 +23,11 @@
                     },
                     "name": {
                         "type": "string"
+                    },
+                    "shortName": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Short team name used in compact displays"
                     },
                     "logo": {
                         "type": "string",
@@ -45,10 +51,6 @@
                     },
                     "name": {
                         "type": "string"
-                    },
-                    "teamId": {
-                        "type": "integer",
-                        "description": "ID of the team the player belongs to"
                     },
                     "image": {
                         "type": "string",

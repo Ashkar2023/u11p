@@ -1,4 +1,4 @@
-import { useLayoutEffect } from "react";
+import { lazy, Suspense, useLayoutEffect } from "react";
 import { Route, useLocation } from "wouter";
 import { Analytics } from "@vercel/analytics/react";
 import { Home } from "./pages/home";
@@ -15,6 +15,28 @@ import { PosterKit } from "./pages/poster-kit";
 import { isLocalHost } from "./utils/is-local-host";
 import AwardDetailsPage from "./pages/award-details";
 import { ErrorBoundary } from "./components/error.boundary";
+
+const BroadcastConsole = lazy(() => import("./pages/broadcast-console.jsx"));
+const BroadcastOverlay = lazy(() => import("./pages/broadcast-overlay.jsx"));
+
+export function App() {
+    const [location] = useLocation();
+    const overlay = location.replace(/\/$/, "") === "/broadcast/overlay";
+    useLayoutEffect(() => {
+        document.documentElement.classList.toggle("broadcast-overlay", overlay);
+        return () => document.documentElement.classList.remove("broadcast-overlay");
+    }, [overlay]);
+    if (overlay) return <ErrorBoundary fallback={null}><Suspense fallback={null}><BroadcastOverlay /></Suspense></ErrorBoundary>;
+    return <WebsiteApp />;
+}
+
+function BroadcastConsoleRoute() {
+    return (
+        <Suspense fallback={<p className="p-6 text-zinc-400" role="status">Loading Broadcast Console…</p>}>
+            <BroadcastConsole />
+        </Suspense>
+    );
+}
 
 function ScrollToTop() {
     const [location] = useLocation();
@@ -34,7 +56,7 @@ function ScrollToTop() {
     return null;
 }
 
-export const App = () => {
+const WebsiteApp = () => {
     const showDevtools = isLocalHost();
     
     useLayoutEffect(()=>{
@@ -58,6 +80,7 @@ export const App = () => {
         <Route path="/tools/lineup-creator" component={LineupCreator} />
         <Route path="/tools/payment-tracker" component={PaymentTracker} />
         <Route path="/tools/poster-kit" component={PosterKit} />
+        <Route path="/tools/broadcast" component={BroadcastConsoleRoute} />
         <Route path="/tools" component={Tools} />
         <Route path="/awards/:year/:month/:type" component={AwardDetailsPage} />
         {showDevtools && <Route path="/devtools" component={Devtools} />}

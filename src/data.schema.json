@@ -171,6 +171,16 @@
                             "july-25.png"
                         ]
                     },
+                    "stream_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "YouTube live stream URL. The watch button is shown from midnight IST on match day until two hours after kickoff."
+                    },
+                    "video_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "YouTube URL for the processed match video. The button is shown from midnight IST after match day."
+                    },
                     "motmPlayerId": {
                         "description": "Man of the Match player ID",
                         "oneOf": [
@@ -189,8 +199,7 @@
                         "items": {
                             "type": "object",
                             "required": [
-                                "teamId",
-                                "score"
+                                "teamId"
                             ],
                             "properties": {
                                 "teamId": {

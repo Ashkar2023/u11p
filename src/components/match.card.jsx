@@ -1,8 +1,9 @@
-import { formatDate } from "../utils/date.util";
+import { formatDate, isMatchStreamAvailable, isMatchVideoAvailable } from "../utils/date.util";
 import { Link, useLocation } from "wouter";
 import SafeImage from "./safe-image";
 import MatchdayPoster from "./matchday-poster";
 import user_png from "../assets/user.webp";
+import YouTubeLink from "./youtube-link";
 
 function Team({ team, captainPlayer, away }) {
     return (
@@ -46,9 +47,11 @@ function StarIcon() {
     );
 }
 
-export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, homeCaptain, awayCaptain, title, motm, matchdayCount, hideMatchdayCount, matchHref, posterFilename }) {
+export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, homeCaptain, awayCaptain, title, motm, matchdayCount, hideMatchdayCount, matchHref, posterFilename, streamUrl, videoUrl, now = new Date() }) {
     const [, navigate] = useLocation();
     const hasResult = Number.isFinite(scoreA) && Number.isFinite(scoreB);
+    const showLiveStream = streamUrl && isMatchStreamAvailable(date, now);
+    const showVideo = videoUrl && !showLiveStream && isMatchVideoAvailable(date, now);
     const scoreColor = (score, opponentScore) => {
         if (score > opponentScore) {
             return "text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.45)]";
@@ -73,6 +76,12 @@ export default function MatchCard({ date, teamA, teamB, scoreA, scoreB, homeCapt
                     <time className="flex items-center gap-2 text-xs text-zinc-400 sm:text-sm" dateTime={date}>
                         {formatDate(date)}
                         {posterFilename && <MatchdayPoster filename={posterFilename} />}
+                        {showLiveStream && (
+                            <YouTubeLink href={streamUrl} label="Watch live stream" iconOnly />
+                        )}
+                        {showVideo && (
+                            <YouTubeLink href={videoUrl} label="Watch match video" iconOnly />
+                        )}
                     </time>
                 </div>
 

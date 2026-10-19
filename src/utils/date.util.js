@@ -42,6 +42,38 @@ const matchDayFormatter = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Kolkata",
 });
 
+export function getMatchStreamWindow(date) {
+    const startsAt = new Date(date);
+    if (!Number.isFinite(startsAt.getTime())) return null;
+
+    const parts = Object.fromEntries(
+        matchDayFormatter.formatToParts(startsAt).map(({ type, value }) => [type, value]),
+    );
+    const opensAt = new Date(`${parts.year}-${parts.month}-${parts.day}T00:00:00+05:30`);
+
+    return {
+        opensAt,
+        closesAt: new Date(startsAt.getTime() + 2 * 60 * 60 * 1000),
+    };
+}
+
+export function isMatchStreamAvailable(date, now = new Date()) {
+    const streamWindow = getMatchStreamWindow(date);
+    if (!streamWindow) return false;
+
+    const currentTime = now.getTime();
+    return currentTime >= streamWindow.opensAt.getTime()
+        && currentTime <= streamWindow.closesAt.getTime();
+}
+
+export function isMatchVideoAvailable(date, now = new Date()) {
+    const streamWindow = getMatchStreamWindow(date);
+    if (!streamWindow) return false;
+
+    const nextMatchDayStartsAt = streamWindow.opensAt.getTime() + 24 * 60 * 60 * 1000;
+    return now.getTime() >= nextMatchDayStartsAt;
+}
+
 export function getMatchVotingWindow(date) {
     const startsAt = new Date(date);
     const parts = Object.fromEntries(

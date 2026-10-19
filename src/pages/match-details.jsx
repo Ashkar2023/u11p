@@ -490,6 +490,9 @@ export const MatchDetails = () => {
                     motm={motm}
                     matchdayCount={match.id}
                     posterFilename={match.poster_filename}
+                    streamUrl={match.stream_url}
+                    videoUrl={match.video_url}
+                    now={now}
                     homeCaptain={playersById.get(homeResult.captainPlayerId)}
                     awayCaptain={playersById.get(awayResult.captainPlayerId)}
                 />

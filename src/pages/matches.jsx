@@ -105,6 +105,9 @@ export const Matches = () => {
                                 matchHref={`/matches/${match.id}`}
                                 key={match.id}
                                 posterFilename={match.poster_filename}
+                                streamUrl={match.stream_url}
+                                videoUrl={match.video_url}
+                                now={now}
                             />
                         );
                     })}

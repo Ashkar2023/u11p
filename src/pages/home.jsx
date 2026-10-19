@@ -4,9 +4,10 @@ import SafeImage from "../components/safe-image";
 import data from "../data.json";
 import Layout from "../layout";
 import { Link, useLocation } from "wouter";
-import { formatDate, getMatchVotingPeriodStatus, hasMatchResult } from "../utils/date.util";
+import { formatDate, getMatchVotingPeriodStatus, hasMatchResult, isMatchStreamAvailable } from "../utils/date.util";
 import { calculateGoalScorers } from "../utils/goal-scorers.util";
 import user_png from "../assets/user.webp";
+import YouTubeLink from "../components/youtube-link";
 
 const completedMatches = [...data.matches]
     .filter(hasMatchResult)
@@ -37,8 +38,11 @@ const lastMonthMatches = completedMatches.filter(
 
 const topScorers = calculateGoalScorers(lastMonthMatches);
 
-function NextMatchCard({ match }) {
+function NextMatchCard({ match, now }) {
     const [, navigate] = useLocation();
+    const showLiveStream = match.stream_url && isMatchStreamAvailable(match.date, now);
+    const hasStarted = now.getTime() >= new Date(match.date).getTime();
+    const hasLineup = Boolean(match.lineup?.length);
     return (
         <section className="flex items-center gap-4 rounded-lg border border-white/10 bg-zinc-900/75 p-3 shadow-2xl shadow-black/25 sm:p-6">
             <div className="flex size-14 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-100 sm:size-16">
@@ -49,31 +53,39 @@ function NextMatchCard({ match }) {
             </div>
             <div className="min-w-0">
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-amber-400 sm:text-lg">
-                    Next match
+                    {showLiveStream && hasStarted ? "Live match" : "Next match"}
                 </h2>
                 <time className="block text-sm font-semibold text-zinc-100 sm:text-lg" dateTime={match.date}>
                     {formatDate(match.date)}
                 </time>
                 <p className="text-zinc-500 text-sm">Thavalam turf</p>
             </div>
-            {
-                match.lineup.length !== 0 &&
-                <div className="flex-1">
-                    <button className="flex items-center text-zinc-300 py-1 px-2 rounded-md border border-white/30 ml-auto cursor-pointer" onClick={() => navigate(`/matches/${match.id}`)}>
-                        <span className="text-sm">View lineup</span>
-                        <svg
-                            className="size-4"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            aria-hidden="true"
+            {(hasLineup || showLiveStream) && (
+                <div className="ml-auto flex shrink-0 flex-col items-stretch gap-2">
+                    {hasLineup && (
+                        <button
+                            type="button"
+                            className="flex cursor-pointer items-center justify-center rounded-md border border-white/30 px-2 py-1 text-zinc-300"
+                            onClick={() => navigate(`/matches/${match.id}`)}
                         >
-                            <path d="m9 18 6-6-6-6" />
-                        </svg>
-                    </button>
+                            <span className="text-sm">View lineup</span>
+                            <svg
+                                className="size-4"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                aria-hidden="true"
+                            >
+                                <path d="m9 18 6-6-6-6" />
+                            </svg>
+                        </button>
+                    )}
+                    {showLiveStream && (
+                        <YouTubeLink href={match.stream_url} label="Watch live" />
+                    )}
                 </div>
-            }
+            )}
         </section>
     );
 }
@@ -149,7 +161,10 @@ export const Home = () => {
     const votingMatch = [...data.matches]
         .sort((a, b) => b.date.localeCompare(a.date))
         .find((match) => getMatchVotingPeriodStatus(match.date, now) === "open");
-    const nextMatch = [...data.matches]
+    const activeStreamMatch = [...data.matches]
+        .filter((match) => match.stream_url && isMatchStreamAvailable(match.date, now))
+        .sort((a, b) => b.date.localeCompare(a.date))[0];
+    const nextMatch = activeStreamMatch ?? [...data.matches]
         .filter((match) => new Date(match.date) > now)
         .sort((a, b) => a.date.localeCompare(b.date))[0];
     const [hasVotedForOpenMatch, setHasVotedForOpenMatch] = useState(false);
@@ -196,7 +211,7 @@ export const Home = () => {
         <Layout>
             <div className="mx-auto grid w-full max-w-3xl gap-5">
                 {
-                    nextMatch && <NextMatchCard match={nextMatch} />
+                    nextMatch && <NextMatchCard match={nextMatch} now={now} />
                 }
                 {votingMatch && !hasVotedForOpenMatch && (
                     <Link
@@ -298,6 +313,9 @@ export const Home = () => {
                     hideMatchdayCount
                     matchHref={`/matches/${recentMatch.id}`}
                     posterFilename={recentMatch.poster_filename}
+                    streamUrl={recentMatch.stream_url}
+                    videoUrl={recentMatch.video_url}
+                    now={now}
                 />
                 <TopScorersPreview />
             </div>

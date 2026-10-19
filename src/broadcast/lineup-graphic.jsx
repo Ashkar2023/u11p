@@ -6,16 +6,39 @@ import shield from "../assets/fifa-player-shield.webp";
 import fallback from "../assets/user.webp";
 import clubLogo from "../assets/u11p-logo.webp";
 import data from "../data.json";
+import { hasMatchResult } from "../utils/date.util.js";
+import { calculateGoalScorers } from "../utils/goal-scorers.util.js";
 import { getPositionMap } from "../utils/lineup-creator.util.js";
-import { LINEUP_DURATION_MS, LINEUP_TEAM_DURATION_MS } from "./constants.js";
+import { LINEUP_DURATION_MS, LINEUP_SCORERS_DURATION_MS, LINEUP_TEAM_DURATION_MS } from "./constants.js";
 
 const players = new Map(data.players.map((player) => [player.id, player]));
+const completedMatches = data.matches.filter(hasMatchResult);
+const monthKeyFormatter = new Intl.DateTimeFormat("en-CA", { year: "numeric", month: "2-digit", timeZone: "Asia/Kolkata" });
+const monthLabelFormatter = new Intl.DateTimeFormat("en-IN", { month: "long", year: "numeric", timeZone: "Asia/Kolkata" });
+const monthKey = (date) => {
+    const parts = Object.fromEntries(monthKeyFormatter.formatToParts(new Date(date)).map(({ type, value }) => [type, value]));
+    return `${parts.year}-${parts.month}`;
+};
+const currentMonth = monthKey(new Date());
+const scorerBoards = [
+    {
+        key: "current-month",
+        label: monthLabelFormatter.format(new Date()),
+        players: calculateGoalScorers(completedMatches.filter((match) => monthKey(match.date) === currentMonth)).filter((player) => player?.id).slice(0, 5),
+    },
+    {
+        key: "all-time",
+        label: "All time",
+        players: calculateGoalScorers(completedMatches).filter((player) => player?.id).slice(0, 5),
+    },
+];
 
 export function createLineupTimeline(element) {
-    const scenes = [...element.querySelectorAll(".ob-lineup-scene")];
+    const lineupScenes = [...element.querySelectorAll(".ob-lineup-scene")];
+    const scorerScenes = [...element.querySelectorAll(".ob-scorers-scene")];
     const timeline = gsap.timeline({ paused: true });
-    gsap.set(scenes, { autoAlpha: 0 });
-    scenes.forEach((scene, index) => {
+    gsap.set([...lineupScenes, ...scorerScenes], { autoAlpha: 0 });
+    lineupScenes.forEach((scene, index) => {
         const start = index * LINEUP_TEAM_DURATION_MS / 1000;
         const logo = scene.querySelector(".ob-lineup-logo");
         const pitch = scene.querySelector(".ob-lineup-pitch");
@@ -35,6 +58,22 @@ export function createLineupTimeline(element) {
             { autoAlpha: 1, y: 0, scale: 1, duration: 0.55, stagger: { amount: 3.3, from: "start" }, ease: "back.out(1.2)" }, start + 2.5);
         if (notes.length) timeline.to(notes, { autoAlpha: 1, duration: 0.3 }, start + 6.4);
         timeline.to(scene, { autoAlpha: 0, duration: 0.4 }, start + LINEUP_TEAM_DURATION_MS / 1000 - 0.4);
+    });
+    scorerScenes.forEach((scene, index) => {
+        const start = (2 * LINEUP_TEAM_DURATION_MS + index * LINEUP_SCORERS_DURATION_MS) / 1000;
+        const board = scene.querySelector(".ob-scorers-board");
+        const headings = scene.querySelectorAll(".ob-scorers-heading > *");
+        const rows = scene.querySelectorAll(".ob-scorers-row");
+        const empty = scene.querySelector(".ob-scorers-empty");
+        gsap.set([board, ...headings, ...rows, ...(empty ? [empty] : [])], { autoAlpha: 0 });
+        timeline.set(scene, { autoAlpha: 1 }, start)
+            .fromTo(board, { autoAlpha: 0, y: 36, scale: 0.98 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.55, ease: "power3.out" }, start)
+            .fromTo(headings, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.4, stagger: 0.09, ease: "power2.out" }, start + 0.18);
+        if (rows.length) timeline.fromTo(rows,
+            { autoAlpha: 0, x: index % 2 ? 70 : -70 },
+            { autoAlpha: 1, x: 0, duration: 0.48, stagger: 0.16, ease: "power3.out" }, start + 0.8);
+        if (empty) timeline.fromTo(empty, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.4 }, start + 0.8);
+        timeline.to(scene, { autoAlpha: 0, y: -18, duration: 0.45 }, start + LINEUP_SCORERS_DURATION_MS / 1000 - 0.45);
     });
     timeline.to({}, { duration: LINEUP_DURATION_MS / 1000 }, 0);
     return timeline;
@@ -98,5 +137,23 @@ export function Lineups({ match, visible, serverOffset = 0 }) {
                 {extra.length > 0 && <p className="ob-lineup-note ob-lineup-extra">Also listed: {extra.join(" · ")}</p>}
             </div>;
         })}
+        {scorerBoards.map((board) => <div key={board.key} className="ob-scorers-scene">
+            <section className="ob-scorers-board">
+                <header className="ob-scorers-heading">
+                    <span>UNITED XI PALLILAMKARA</span>
+                    <h2>TOP SCORERS</h2>
+                    <p>{board.label}</p>
+                </header>
+                {board.players.length ? <ol className="ob-scorers-list">
+                    {board.players.map((player, index) => <li key={player.id} className="ob-scorers-row">
+                        <span className="ob-scorers-rank">{index + 1}</span>
+                        <div className="ob-scorers-photo"><SafeImage src={player.image} fallbackSrc={fallback} alt="" /></div>
+                        <div className="ob-scorers-player"><strong>{player.name}</strong><span>{player.matchesPlayed} APPEARANCES</span></div>
+                        <div className="ob-scorers-goals"><strong>{player.goals}</strong><span>{player.goals === 1 ? "GOAL" : "GOALS"}</span></div>
+                    </li>)}
+                </ol> : <p className="ob-scorers-empty">No goals recorded</p>}
+                <footer>UNITED BY FOOTBALL</footer>
+            </section>
+        </div>)}
     </section>;
 }

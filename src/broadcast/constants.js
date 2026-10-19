@@ -3,7 +3,8 @@ export const LOCK_LEASE_MS = 20_000;
 export const SESSION_LIFETIME_SECONDS = 2 * 60 * 60;
 export const API_TIMEOUT_MS = 8_000;
 export const LINEUP_TEAM_DURATION_MS = 12_000;
-export const LINEUP_DURATION_MS = 2 * LINEUP_TEAM_DURATION_MS;
+export const LINEUP_SCORERS_DURATION_MS = 8_000;
+export const LINEUP_DURATION_MS = 2 * LINEUP_TEAM_DURATION_MS + 2 * LINEUP_SCORERS_DURATION_MS;
 
 export const MATCH_STATUS = Object.freeze({
     UPCOMING: "upcoming",

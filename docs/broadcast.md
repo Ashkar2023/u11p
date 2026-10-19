@@ -15,7 +15,8 @@ The fixture picker suggests the earliest future fixture, using the same date rul
 the homepage. The operator must press Load match and confirm before it becomes active.
 An existing active broadcast is loaded instead of replacing it with a new suggestion.
 If there is no future fixture, choose one manually. New records start at 0–0; existing
-records resume. Nothing is written back to `data.json`.
+records resume. The kickoff-soon graphic is enabled automatically when a fixture gets
+its first broadcast record. Nothing is written back to `data.json`.
 
 The normal website does not initialize Firebase or call broadcast APIs. The console's
 authentication code is loaded only through its lazy route and uses same-origin API
@@ -29,12 +30,15 @@ subscription and GSAP load only when the overlay route is opened.
 3. Set the browser-widget viewport to **1920×1080** (or **1280×720**) and fill the 16:9
    stream canvas. The design scales uniformly; other aspect ratios retain transparent
    space around the centered 16:9 canvas instead of stretching it.
-4. Before kickoff, show kickoff soon or team lineups. Turning one on automatically
-   turns the other off. Lineups play a 24-second sequence (12 seconds per team): a
-   large crest appears, settles larger at the top-center of the pitch, then upright
-   FIFA cards reveal in the existing goalkeeper-to-striker array order on the
-   horizontal black-and-gold pitch. Start Match hides both and turns the scorebug on.
-   While live, goal/removal animations can coexist with the scorebug.
+4. Before kickoff, show kickoff soon or the lineup sequence. Turning one on automatically
+   turns the other off. The 40-second sequence shows each team lineup for 12 seconds,
+   followed by this month's top scorers for 8 seconds and the all-time top scorers for
+   8 seconds. A large crest appears, settles larger at the top-center of the pitch, then
+   upright FIFA cards reveal in the existing goalkeeper-to-striker array order on the
+   horizontal black-and-gold pitch. Each scorer board shows at most five players from
+   the website's completed-match data, with staggered slide-and-fade animation. Start
+   Match hides the sequence and turns the scorebug on. While live, goal/removal
+   animations can coexist with the scorebug.
 5. Confirming End Match automatically shows the full-time board, hides the scorebug
    and cancels goal animations. The full-time board can then be toggled manually with
    no timeout. Hiding it leaves no score graphics; the scorebug is live-match only.
@@ -42,12 +46,13 @@ subscription and GSAP load only when the overlay route is opened.
    never stopped.
 
 While the lineup sequence runs, the console shows a countdown and locks match/graphic
-changes; the API also enforces the same 24-second window. Heartbeats and logout keep
-working. Each completed formation holds before transitioning, and the second formation
-automatically hides when the sequence ends. Use **Replay both team lineups** to run it
-again, without a one-play limit. A server start timestamp and run ID are stored alongside
-the `showLineup` flag. Reconnecting overlays resume at the current point rather than
-restarting the clock. These timings are shared constants in `src/broadcast/constants.js`.
+changes; the API also enforces the same 40-second window. Heartbeats and logout keep
+working. Each completed formation holds before transitioning, and the all-time scorer
+board automatically hides when the sequence ends. Use **Replay lineups and top scorers**
+to run it again, without a one-play limit. A server start timestamp and run ID are stored
+alongside the `showLineup` flag. Reconnecting overlays resume at the current point rather
+than restarting the clock. These timings are shared constants in
+`src/broadcast/constants.js`.
 
 The clean overlay is intentionally blank until a match is loaded. Connection errors
 and loading messages are not shown on air. Add `?debug=1` to the overlay URL when

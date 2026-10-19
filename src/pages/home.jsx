@@ -5,7 +5,7 @@ import data from "../data.json";
 import Layout from "../layout";
 import { Link, useLocation } from "wouter";
 import { formatDate, getMatchVotingPeriodStatus, hasMatchResult } from "../utils/date.util";
-import { calculateGoalScorers } from "./stats";
+import { calculateGoalScorers } from "../utils/goal-scorers.util";
 import user_png from "../assets/user.webp";
 
 const completedMatches = [...data.matches]

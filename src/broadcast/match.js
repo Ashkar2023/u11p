@@ -85,7 +85,7 @@ export function createMatchState(data, matchId) {
         status: MATCH_STATUS.UPCOMING,
         score: { home: 0, away: 0 },
         goals: {},
-        presentation: { showKickoff: false, showLineup: false, showScorebug: false, showFinalScore: false },
+        presentation: { showKickoff: true, showLineup: false, showScorebug: false, showFinalScore: false },
         events: {},
         nextGoalSequence: 1,
         nextEventSequence: 1,

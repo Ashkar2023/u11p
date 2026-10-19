@@ -2,7 +2,7 @@
 .ob-frame { position: relative; flex: none; }
 .ob-stage { position: absolute; width: 1920px; height: 1080px; transform-origin: top left; overflow: hidden; font-family: "DDIN", Arial, sans-serif; color: #f8f7f2; --ob-gold: #edc45b; --ob-dark: #111316; }
 .ob-stage *, .ob-stage *::before, .ob-stage *::after { box-sizing: border-box; }
-.ob-stage h1, .ob-stage h2, .ob-stage p, .ob-stage ul { margin: 0; }
+.ob-stage h1, .ob-stage h2, .ob-stage p, .ob-stage ul, .ob-stage ol { margin: 0; }
 .ob-graphic { position: absolute; visibility: hidden; opacity: 0; }
 .ob-crest { width: 64px; height: 64px; object-fit: contain; flex: none; }
 .ob-brand { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 9px 20px; background: #edc45b; color: #121212; font-size: 17px; font-weight: 700; letter-spacing: 3px; }
@@ -40,6 +40,28 @@
 .ob-lineup-player-name { position: absolute; left: 10%; right: 10%; bottom: 11%; text-align: center; color: #1a1a1a; font-size: 17px; font-weight: 700; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ob-lineup-missing { position: absolute; left: 80px; top: 470px; width: 1200px; text-align: center; font-size: 36px; }
 .ob-lineup-extra { position: absolute; left: 80px; right: 80px; top: 945px; color: var(--ob-gold); font-size: 20px; text-align: center; }
+.ob-scorers-scene { position: absolute; inset: 0; visibility: hidden; }
+.ob-scorers-board { position: absolute; left: 130px; top: 70px; display: flex; width: 1100px; height: 800px; flex-direction: column; overflow: hidden; border: 1px solid #edc45b70; border-top: 6px solid var(--ob-gold); background: linear-gradient(125deg, #191b1ef7, #0b0c0ef7); box-shadow: 0 22px 70px #0008; }
+.ob-scorers-heading { position: relative; min-height: 170px; padding: 26px 36px 22px; border-bottom: 1px solid #ffffff20; text-align: center; }
+.ob-scorers-heading::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--ob-gold), transparent); }
+.ob-scorers-heading > span { color: var(--ob-gold); font-size: 20px; font-weight: 700; letter-spacing: 5px; }
+.ob-scorers-heading h2 { margin-top: 6px; font-size: 62px; line-height: 1; letter-spacing: 7px; }
+.ob-scorers-heading p { margin-top: 10px; color: #d6d6d6; font-size: 25px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; }
+.ob-scorers-list { flex: 1; padding: 12px 30px 18px; list-style: none; }
+.ob-scorers-row { display: grid; grid-template-columns: 72px 105px minmax(0, 1fr) 170px; align-items: center; min-height: 105px; border-bottom: 1px solid #ffffff18; background: linear-gradient(90deg, #ffffff08, transparent 72%); }
+.ob-scorers-row:first-child { background: linear-gradient(90deg, #edc45b22, transparent 78%); }
+.ob-scorers-row:last-child { border-bottom: 0; }
+.ob-scorers-rank { color: var(--ob-gold); font-size: 43px; font-weight: 700; text-align: center; }
+.ob-scorers-photo { align-self: stretch; overflow: hidden; }
+.ob-scorers-photo > * { width: 100%; height: 118px; object-fit: contain; object-position: center top; }
+.ob-scorers-player { min-width: 0; padding: 0 24px; }
+.ob-scorers-player strong { display: block; overflow: hidden; color: #fff; font-size: 34px; line-height: 1.05; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+.ob-scorers-player span { display: block; margin-top: 7px; color: #929292; font-size: 17px; letter-spacing: 2px; }
+.ob-scorers-goals { display: flex; align-items: baseline; justify-content: flex-end; gap: 10px; padding-right: 24px; color: var(--ob-gold); }
+.ob-scorers-goals strong { font-size: 60px; line-height: 1; font-variant-numeric: tabular-nums; }
+.ob-scorers-goals span { color: #f8f7f2; font-size: 17px; letter-spacing: 2px; }
+.ob-scorers-empty { display: flex; flex: 1; align-items: center; justify-content: center; color: #aaa; font-size: 34px; letter-spacing: 2px; text-transform: uppercase; }
+.ob-scorers-board footer { padding: 14px; background: var(--ob-gold); color: #151515; font-size: 16px; font-weight: 700; letter-spacing: 6px; text-align: center; }
 .ob-final { top: 245px; }
 .ob-final-score { display: grid; grid-template-columns: 1fr 330px 1fr; align-items: center; gap: 20px; padding: 30px 40px 22px; text-align: center; }
 .ob-final-score .ob-crest { width: 140px; height: 140px; margin: 0 auto 12px; }

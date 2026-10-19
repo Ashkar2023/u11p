@@ -3,12 +3,12 @@ import SafeImage from "../components/safe-image";
 import data from "../data.json";
 import { PageLayout } from "../layout";
 import { hasMatchResult } from "../utils/date.util";
+import { calculateGoalScorers } from "../utils/goal-scorers.util";
 import { useState } from "react";
 import user_png from "../assets/user.webp";
 
 const ALL_TIME = "all";
 const completedMatches = data.matches.filter(hasMatchResult);
-const playersById = new Map(data.players.map((player) => [player.id, player]));
 const monthKeyFormatter = new Intl.DateTimeFormat("en-CA", {
     year: "numeric",
     month: "2-digit",
@@ -115,49 +115,6 @@ function calculateTeamStats(matches) {
             goalDifference: stats.goalsFor - stats.goalsAgainst,
         };
     });
-}
-
-const compareGoalsByMatch = (a, b) => {
-    const len = Math.max(a.goalsByMatch.length, b.goalsByMatch.length);
-    for (let i = 0; i < len; i++) {
-        const diff = (b.goalsByMatch[i] ?? 0) - (a.goalsByMatch[i] ?? 0);
-        if (diff !== 0) return diff;
-    }
-    return 0;
-};
-
-export function calculateGoalScorers(matches) {
-    const appearanceCount = new Map();
-    matches.forEach((match) => {
-        match.lineup?.flatMap((entry) => entry.playerIds).forEach((playerId) => {
-            appearanceCount.set(playerId, (appearanceCount.get(playerId) ?? 0) + 1);
-        });
-    });
-
-    return [...matches.reduce((totals, match) => {
-        match.goals?.forEach((goal) => {
-            if (!goal.ownGoal) {
-                const existing = totals.get(goal.playerId) ?? { goals: 0, goalsByMatch: [] };
-                totals.set(goal.playerId, {
-                    goals: existing.goals + goal.count,
-                    goalsByMatch: [...existing.goalsByMatch, goal.count].sort((a, b) => b - a),
-                });
-            }
-        });
-        return totals;
-    }, new Map())]
-        .map(([playerId, data]) => ({
-            ...playersById.get(playerId),
-            ...data,
-            matchesPlayed: appearanceCount.get(playerId) ?? 0,
-            GPM: data.goals / (appearanceCount.get(playerId) ?? 1),
-        }))
-        .sort((a, b) =>
-            b.goals - a.goals ||
-            b.GPM - a.GPM ||
-            compareGoalsByMatch(a, b) ||
-            a.name?.localeCompare(b.name)
-        );
 }
 
 function TeamStats() {

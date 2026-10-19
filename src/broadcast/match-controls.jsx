@@ -43,13 +43,17 @@ function ScorerCard({ player, selected, onSelect }) {
     </button>;
 }
 
+function ToggleSwitch({ checked, onToggle, disabled = false, label }) {
+    return <button type="button" role="switch" aria-label={label} aria-checked={checked} disabled={disabled} onClick={onToggle} className={`relative h-5 w-9 shrink-0 rounded-full transition-colors duration-200 disabled:cursor-not-allowed ${checked ? "bg-amber-400" : "bg-zinc-700"}`}>
+        <span className={`absolute left-0.5 top-0.5 size-4 rounded-full bg-white shadow transition-transform duration-200 ${checked ? "translate-x-4" : "translate-x-0"}`} />
+    </button>;
+}
+
 function GoalTypeToggle({ label, checked, onToggle }) {
-    return <label className="flex cursor-pointer items-center justify-between gap-3 rounded-lg border border-white/10 bg-zinc-900/80 px-3 py-3">
+    return <div className="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-zinc-900/80 px-3 py-3">
         <span className="text-sm font-semibold text-zinc-200">{label}</span>
-        <button type="button" role="switch" aria-checked={checked} onClick={onToggle} className={`relative h-5 w-9 shrink-0 rounded-full transition-colors duration-200 ${checked ? "bg-amber-400" : "bg-zinc-700"}`}>
-            <span className={`absolute left-0.5 top-0.5 size-4 rounded-full bg-white shadow transition-transform duration-200 ${checked ? "translate-x-4" : "translate-x-0"}`} />
-        </button>
-    </label>;
+        <ToggleSwitch label={label} checked={checked} onToggle={onToggle} />
+    </div>;
 }
 
 function Confirmation({ draft, busy, blocked, onClose, onConfirm }) {
@@ -191,7 +195,7 @@ export default function MatchControls({ onSessionLost, disabled = false }) {
             </div>
         </div>}
         {!state && !error && <p role="status" className="text-zinc-400">Loading match…</p>}
-        {lineupSeconds > 0 && <p role="status" className="rounded-lg border border-amber-400/30 bg-amber-400/10 p-4 text-amber-200">Lineups playing · {lineupSeconds}s remaining. Graphics, match selection and Start match unlock after both teams finish.</p>}
+        {lineupSeconds > 0 && <p role="status" className="rounded-lg border border-amber-400/30 bg-amber-400/10 p-4 text-amber-200">Lineup sequence playing · {lineupSeconds}s remaining. Graphics, match selection and Start match unlock after the lineups and top-scorer boards finish.</p>}
         <fieldset disabled={busy || Boolean(failed) || !state || lineupSeconds > 0} className="space-y-4 disabled:opacity-60">
             <div className="rounded-lg border border-white/10 bg-zinc-900/75 p-4">
                 <label htmlFor="broadcast-fixture" className="mb-2 block text-sm text-zinc-400">Match from data.json</label>
@@ -223,15 +227,15 @@ export default function MatchControls({ onSessionLost, disabled = false }) {
                     <h2 className="mb-3 font-semibold">Graphics visibility</h2>
                     {[
                         ["showKickoff", "Team vs team · Kicking off soon", match.status === "upcoming"],
-                        ["showLineup", `Team lineups · ${LINEUP_DURATION_MS / 1000} seconds`, match.status === "upcoming"],
+                        ["showLineup", `Lineups + top scorers · ${LINEUP_DURATION_MS / 1000} seconds`, match.status === "upcoming"],
                         ["showScorebug", "Scorebug", match.status === "live"],
                         ["showFinalScore", "Full-time scoreboard", match.status === "full_time"],
-                    ].map(([field, label, available]) => <label key={field} className={`flex min-h-14 items-center justify-between gap-4 border-b border-white/5 py-3 ${available ? "" : "opacity-40"}`}>
+                    ].map(([field, label, available]) => <div key={field} className={`flex min-h-14 items-center justify-between gap-4 border-b border-white/5 py-3 ${available ? "" : "opacity-40"}`}>
                         <span>{label}</span>
-                        <input type="checkbox" role="switch" checked={Boolean(presentation[field])} disabled={!available} onChange={(event) => save(requestBody("presentation", { field, visible: event.target.checked }))} className="h-6 w-6 shrink-0 accent-amber-400" />
-                    </label>)}
-                    {match.status === "upcoming" && match.presentation?.lineupRunId && <button type="button" onClick={() => save(requestBody("presentation", { field: "showLineup", visible: true }))} className={`${button} mt-3 w-full`}>Replay both team lineups</button>}
-                    <p className="mt-3 text-xs text-zinc-500">Before kickoff, choose kickoff soon or lineups. Live goals animate alongside the scorebug. End match automatically shows the full-time board and hides the scorebug. Hiding the full-time board leaves no score graphics. Post-match corrections do not animate.</p>
+                        <ToggleSwitch label={label} checked={Boolean(presentation[field])} disabled={!available} onToggle={() => save(requestBody("presentation", { field, visible: !presentation[field] }))} />
+                    </div>)}
+                    {match.status === "upcoming" && match.presentation?.lineupRunId && <button type="button" onClick={() => save(requestBody("presentation", { field: "showLineup", visible: true }))} className={`${button} mt-3 w-full`}>Replay lineups and top scorers</button>}
+                    <p className="mt-3 text-xs text-zinc-500">Before kickoff, choose kickoff soon or the lineup sequence. It shows both team lineups, this month&apos;s top scorers and the all-time top scorers. Live goals animate alongside the scorebug. End match automatically shows the full-time board and hides the scorebug. Hiding the full-time board leaves no score graphics. Post-match corrections do not animate.</p>
                 </div>
                 <div className="rounded-lg border border-white/10 bg-zinc-900/75 p-4">
                     <h2 className="mb-3 font-semibold">Goalscorers</h2>

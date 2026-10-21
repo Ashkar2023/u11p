@@ -230,9 +230,12 @@ Reference: [Firebase web setup](https://firebase.google.com/docs/database/web/st
   alongside the lock, and never inside publicly readable match records.
 - Upcoming matches may show either the lineup or the small team-vs-team/kicking-off-soon
   graphic, never both. Starting hides both and automatically enables the live scorebug.
+- A live match can return to upcoming only while it has no recorded goals. Undoing the
+  start restores the kickoff graphic and hides the scorebug.
 - Ending the match automatically shows the full-time board and disables the scorebug.
   Hiding the full-time board leaves the canvas clear of score graphics. Post-match
-  corrections do not trigger goal/disallowed animations.
+  corrections do not trigger goal/disallowed animations. A full-time match can resume
+  live play without changing its score or scorers; resuming restores the scorebug.
 - Only `goal` and `goal_disallowed` are one-time events. There is no full-time event,
   five-second result timer, or presentation show/hide event.
 - Corrections are allowed after full time and do not change match status.
@@ -252,10 +255,12 @@ serverless API small; `action` selects the operation:
 | `GET /state` | Read the active match for the signed-in owner |
 | `POST /match`, `action: "select"` | Initialize or resume a fixture's broadcast state |
 | `POST /match`, `action: "start"` | Start match and hide pre-match graphics |
+| `POST /match`, `action: "undo_start"` | Return a live match with no recorded goals to pre-match |
 | `POST /match`, `action: "add_goal"` | Save goal, derived score and animation event together |
 | `POST /match`, `action: "void_goal"` | Confirm and void the latest goal for a side |
 | `POST /match`, `action: "correct_goal"` | Correct scorer/goal type without adding a goal or animation |
 | `POST /match`, `action: "full_time"` | Confirm the reviewed result and set full-time status |
+| `POST /match`, `action: "resume"` | Resume a full-time match with its score and scorers intact |
 | `POST /match`, `action: "presentation"` | Toggle kickoff, lineup, scorebug or full-time result |
 
 Match commands include `requestId`, `activeMatchId` and the reviewed `revision`.

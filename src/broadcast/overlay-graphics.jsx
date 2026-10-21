@@ -37,12 +37,19 @@ export function Scorebug({ match, visible }) {
 }
 
 export function Kickoff({ match, visible }) {
-    const { homeTeam: home, awayTeam: away, sourceMatchId } = match.info;
+    const { homeTeam: home, awayTeam: away } = match.info;
 
     return <AnimatedGraphic visible={visible} className="ob-kickoff">
-        <div className="ob-brand">UNITED XI PALLILAMKARA <span>MATCH {match.sourceMatchId}</span></div>
-        <div className="ob-kickoff-teams"><Crest team={home} /><strong>{teamLabel(home.shortName)}</strong><span>VS</span><strong>{teamLabel(away.shortName)}</strong><Crest team={away} /></div>
+        <div className="ob-kickoff-heading"><span>UNITED XI PALLILAMKARA</span><b>MATCHDAY {match.sourceMatchId}</b></div>
+        <div className="ob-kickoff-teams"><Crest team={home} /><span>VS</span><Crest team={away} /></div>
         <div className="ob-kickoff-label">KICKING OFF SOON</div>
+    </AnimatedGraphic>;
+}
+
+export function LiveIndicator({ visible }) {
+    return <AnimatedGraphic visible={visible} className="ob-live-indicator">
+        <span className="ob-live-dot" aria-hidden="true" />
+        <span>LIVE</span>
     </AnimatedGraphic>;
 }
 
@@ -89,24 +96,76 @@ export function GoalAnimation({ event, match, onComplete }) {
     const ownGoal = goal.type === "own_goal";
     const penalty = goal.type === "penalty";
     const player = players.get(goal.playerId);
+    const headline = disallowed ? "NO GOAL" : ownGoal ? "OWN GOAL" : "GOAL";
+    const playerName = goal.playerName ?? player?.name ?? "Goalscorer";
     useLayoutEffect(() => {
         const context = gsap.context(() => {
-            gsap.timeline({ onComplete: () => onComplete(event.id) })
-                .fromTo(element.current, { autoAlpha: 0, x: -70 }, { autoAlpha: 1, x: 0, duration: 0.45, ease: "power3.out" })
-                .from(".ob-goal-copy > *", { y: 14, autoAlpha: 0, stagger: 0.08, duration: 0.3 }, "<0.1")
-                .to(element.current, { autoAlpha: 0, y: 20, duration: 0.3 }, `+=${disallowed ? 3 : 4.5}`);
+            if (disallowed) {
+                gsap.timeline({ defaults: { ease: "power2.out" }, onComplete: () => onComplete(event.id) })
+                    .set(element.current, { autoAlpha: 1 })
+                    .from(".ob-no-goal > *", { autoAlpha: 0, y: 18, stagger: 0.08, duration: 0.32 })
+                    .to(element.current, { autoAlpha: 0, y: 18, duration: 0.28, ease: "power2.in" }, "+=2.6");
+                return;
+            }
+            const timeline = gsap.timeline({ defaults: { ease: "power3.out" }, onComplete: () => onComplete(event.id) });
+            timeline
+                .set(element.current, { autoAlpha: 1 })
+                .from(".ob-goal-flash", { scaleX: 0, duration: 0.45, transformOrigin: "left center", ease: "expo.out" })
+                .from(".ob-goal-letter", {
+                    autoAlpha: 0,
+                    x: (index) => index % 2 ? 190 : -190,
+                    y: (index) => index % 2 ? -35 : 35,
+                    rotation: (index) => index % 2 ? 7 : -7,
+                    stagger: 0.075,
+                    duration: 0.55,
+                    ease: "back.out(1.4)",
+                }, "<0.08")
+                .from(".ob-goal-word", { x: -90, duration: 0.7, ease: "expo.out" }, "<")
+                .from(".ob-goal-portrait", { autoAlpha: 0, x: 230, clipPath: "inset(0 0 0 100%)", duration: 0.75, ease: "expo.out" }, "<0.12")
+                .from(".ob-goal-orbit", { autoAlpha: 0, scale: 0.25, rotation: -90, duration: 0.7, ease: "back.out(1.7)" }, "<")
+                .from(".ob-goal-team", { autoAlpha: 0, x: -70, duration: 0.42 }, "<0.18")
+                .from(".ob-goal-detail > *", { autoAlpha: 0, y: 32, stagger: 0.09, duration: 0.42 }, "<0.08")
+                .from(".ob-goal-speedline", { scaleX: 0, stagger: 0.05, duration: 0.35, transformOrigin: "left center" }, "<")
+                .to(".ob-goal-orbit", { rotation: 35, duration: disallowed ? 2.3 : 3.2, ease: "none" }, ">")
+                .to(".ob-goal-word, .ob-goal-detail, .ob-goal-team", { autoAlpha: 0, x: -170, stagger: 0.035, duration: 0.38, ease: "power3.in" })
+                .to(".ob-goal-portrait, .ob-goal-orbit", { autoAlpha: 0, x: 190, duration: 0.42, ease: "power3.in" }, "<")
+                .to(".ob-goal-flash, .ob-goal-speedlines", { autoAlpha: 0, duration: 0.2 }, "<0.18")
+                .set(element.current, { autoAlpha: 0 });
         }, element);
         return () => context.revert();
     }, [event.id, disallowed, onComplete]);
 
-    return <section ref={element} className={`ob-goal ob-graphic ${disallowed ? "ob-disallowed" : ""}`}>
-        {!ownGoal && !disallowed && <SafeImage src={goal.imageUrl ?? player?.image} fallbackSrc={fallback} alt="" className="ob-goal-photo" />}
-        <div className="ob-goal-copy">
-            <div className="ob-goal-team"><Crest team={team} /><span>{teamLabel(team.name)}</span></div>
-            <h1>{disallowed ? "GOAL DISALLOWED" : ownGoal ? "OWN GOAL" : penalty ? "PENALTY GOAL!" : "GOAL!"}</h1>
-            {!ownGoal && <h2>{goal.playerName ?? player?.name ?? "Goalscorer"}</h2>}
-            {ownGoal && <p>Credited to <span>{teamLabel(team.name)}</span></p>}
+    if (disallowed) return <section ref={element} className="ob-goal ob-graphic ob-disallowed">
+        <div className="ob-no-goal">
+            <span className="ob-no-goal-label">DECISION REVERSED</span>
+            <h1>NO GOAL</h1>
+            <div className="ob-no-goal-team"><Crest team={team} /><span>{teamLabel(team.name)}</span></div>
         </div>
-        <div className="ob-goal-stripe" />
+    </section>;
+
+    return <section ref={element} className={`ob-goal ob-graphic ${disallowed ? "ob-disallowed" : ""}`}>
+        <div className="ob-goal-flash" />
+        <div className="ob-goal-speedlines" aria-hidden="true">
+            <span className="ob-goal-speedline" /><span className="ob-goal-speedline" /><span className="ob-goal-speedline" />
+        </div>
+        <div className="ob-goal-type">
+            <div className="ob-goal-team"><Crest team={team} /><span>{teamLabel(team.name)}</span></div>
+            <h1 className="ob-goal-word" aria-label={headline}>
+                {Array.from(headline).map((letter, index) => <span key={`${letter}-${index}`} aria-hidden="true" className={`ob-goal-letter ${letter === " " ? "ob-goal-space" : ""}`}>{letter === " " ? "\u00a0" : letter}</span>)}
+            </h1>
+            <div className="ob-goal-detail">
+                <span>{disallowed ? "DECISION REVERSED" : penalty ? "PENALTY SCORED" : ownGoal ? "SCORE UPDATED" : "GOALSCORER"}</span>
+                {!ownGoal && !disallowed && <h2>{playerName}</h2>}
+                {(ownGoal || disallowed) && <h2>{teamLabel(team.name)}</h2>}
+            </div>
+        </div>
+        {!ownGoal && !disallowed && <div className="ob-goal-portrait" aria-hidden="true">
+            <div className="ob-goal-orbit" />
+            <SafeImage src={goal.imageUrl ?? player?.image} fallbackSrc={fallback} alt="" className="ob-goal-photo" />
+        </div>}
+        {(ownGoal || disallowed) && <div className="ob-goal-portrait ob-goal-crest-portrait" aria-hidden="true">
+            <div className="ob-goal-orbit" />
+            <Crest team={team} />
+        </div>}
     </section>;
 }

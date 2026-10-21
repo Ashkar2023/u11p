@@ -21,6 +21,47 @@ function scorer(body) {
     return { type: body.type, ...resolveGoalscorer(body.playerId) };
 }
 
+export function applyMatchStatusTransition(match, action) {
+    const presentation = match.presentation ??= {};
+    switch (action) {
+        case "start":
+            if (match.status !== "upcoming") reject("Only an upcoming match can be started.");
+            match.status = "live";
+            presentation.showKickoff = false;
+            presentation.showLineup = false;
+            presentation.showScorebug = true;
+            presentation.showFinalScore = false;
+            return;
+        case "undo_start":
+            if (match.status !== "live") reject("Only a live match can return to pre-match.");
+            if (Object.keys(match.goals ?? {}).length > 0) reject("A match with recorded goals cannot return to pre-match.");
+            match.status = "upcoming";
+            presentation.showKickoff = true;
+            presentation.showLineup = false;
+            presentation.showScorebug = false;
+            presentation.showFinalScore = false;
+            return;
+        case "full_time":
+            if (match.status !== "live") reject("Only a live match can be ended.");
+            match.status = "full_time";
+            presentation.showKickoff = false;
+            presentation.showLineup = false;
+            presentation.showScorebug = false;
+            presentation.showFinalScore = true;
+            return;
+        case "resume":
+            if (match.status !== "full_time") reject("Only a full-time match can be resumed.");
+            match.status = "live";
+            presentation.showKickoff = false;
+            presentation.showLineup = false;
+            presentation.showScorebug = true;
+            presentation.showFinalScore = false;
+            return;
+        default:
+            reject("Choose a valid match status action.");
+    }
+}
+
 export async function readBroadcastState(req) {
     const session = await broadcastService.requireSession(req);
     const database = getBroadcastDatabase();
@@ -71,20 +112,10 @@ export async function changeBroadcastMatch(req) {
             }
             switch (body.action) {
                 case "start":
-                    if (match.status !== "upcoming") reject("Only an upcoming match can be started.");
-                    match.status = "live";
-                    presentation.showKickoff = false;
-                    presentation.showLineup = false;
-                    presentation.showScorebug = true;
-                    presentation.showFinalScore = false;
-                    break;
+                case "undo_start":
                 case "full_time":
-                    if (match.status !== "live") reject("Only a live match can be ended.");
-                    match.status = "full_time";
-                    presentation.showKickoff = false;
-                    presentation.showLineup = false;
-                    presentation.showScorebug = false;
-                    presentation.showFinalScore = true;
+                case "resume":
+                    applyMatchStatusTransition(match, body.action);
                     break;
                 case "presentation": {
                     const { field, visible } = body;

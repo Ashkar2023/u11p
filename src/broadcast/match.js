@@ -1,5 +1,18 @@
 import { LINEUP_DURATION_MS, MATCH_STATUS } from "./constants.js";
 
+const matchMonthFormatter = new Intl.DateTimeFormat("en-CA", {
+    year: "numeric",
+    month: "2-digit",
+    timeZone: "Asia/Kolkata",
+});
+
+function matchMonthKey(date) {
+    const parsed = new Date(date);
+    if (!Number.isFinite(parsed.getTime())) return null;
+    const parts = Object.fromEntries(matchMonthFormatter.formatToParts(parsed).map(({ type, value }) => [type, value]));
+    return `${parts.year}-${parts.month}`;
+}
+
 export function lineupRemainingMs(match, now) {
     if (match?.status !== MATCH_STATUS.UPCOMING || !match.presentation?.showLineup || !Number.isFinite(match.presentation.lineupStartedAt)) return 0;
     return Math.max(0, match.presentation.lineupStartedAt + LINEUP_DURATION_MS - now);
@@ -17,6 +30,32 @@ export function getPresentation(match, now = Date.now()) {
         showScorebug: match.status === MATCH_STATUS.LIVE && flags.showScorebug !== false,
         showFinalScore,
     };
+}
+
+export function getCurrentMonthTeamForm(matches, fixtureId, teamId) {
+    const fixture = matches.find((match) => match.id === fixtureId);
+    const fixtureTime = new Date(fixture?.date).getTime();
+    const fixtureMonth = matchMonthKey(fixture?.date);
+    if (!fixtureMonth || !Number.isFinite(fixtureTime)) return [];
+
+    return matches
+        .filter((match) => {
+            const playedAt = new Date(match.date).getTime();
+            return match.id !== fixtureId
+                && Number.isFinite(playedAt)
+                && playedAt < fixtureTime
+                && matchMonthKey(match.date) === fixtureMonth
+                && match.teams?.length === 2
+                && match.teams.every((team) => Number.isFinite(team.score))
+                && match.teams.some((team) => team.teamId === teamId);
+        })
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .map((match) => {
+            const team = match.teams.find((entry) => entry.teamId === teamId);
+            const opponent = match.teams.find((entry) => entry.teamId !== teamId);
+            if (team.score === opponent.score) return "D";
+            return team.score > opponent.score ? "W" : "L";
+        });
 }
 
 export function getFixture(data, matchId) {

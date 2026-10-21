@@ -65,7 +65,7 @@ function Confirmation({ draft, busy, blocked, onClose, onConfirm }) {
     const sections = picking ? getScorerSections(data, draft.match.sourceMatchId, search) : null;
     const player = data.players.find((entry) => entry.id === selected);
     useEffect(() => { ref.current.showModal(); }, []);
-    const titles = { select: "Load broadcast match?", start: "Start match?", full_time: "Confirm full time", void_goal: "Disallow latest goal?", add_goal: "Choose goalscorer", correct_goal: "Correct goalscorer" };
+    const titles = { select: "Load broadcast match?", start: "Start match?", undo_start: "Undo match start?", full_time: "Confirm full time", resume: "Resume live match?", void_goal: "Disallow latest goal?", add_goal: "Choose goalscorer", correct_goal: "Correct goalscorer" };
     function confirm() {
         const { match, goal, ...body } = draft;
         if (picking) Object.assign(body, { type: goalType, playerId: goalType === "own_goal" ? null : selected });
@@ -75,10 +75,12 @@ function Confirmation({ draft, busy, blocked, onClose, onConfirm }) {
         <h2 id="broadcast-confirm-title" className="text-xl font-semibold text-amber-300">{titles[draft.action]}</h2>
         <fieldset disabled={busy || blocked} className="mt-4 space-y-4">
             {draft.match && <p className="text-center font-semibold">{teamName(draft.match, "home")} {draft.match.score.home} – {draft.match.score.away} {teamName(draft.match, "away")}</p>}
-            {draft.match?.status === "full_time" && <p className="text-sm text-amber-200">Post-match correction. The match will remain full time.</p>}
+            {draft.match?.status === "full_time" && draft.action !== "resume" && <p className="text-sm text-amber-200">Post-match correction. The match will remain full time.</p>}
             {draft.action === "select" && <p className="text-sm text-zinc-300">Switch the overlay to fixture #{draft.sourceMatchId}? New fixtures start at 0–0; previously loaded fixtures resume their saved broadcast score. Website results are not changed.</p>}
             {draft.action === "start" && <p className="text-sm text-zinc-300">This sets the match to LIVE and hides the pre-match graphics. It does not control YouTube.</p>}
+            {draft.action === "undo_start" && <p className="text-sm text-zinc-300">Return this 0–0 match to pre-match? The kickoff graphic will replace the live scorebug. This is only allowed before any goal has been recorded.</p>}
             {draft.action === "full_time" && <><GoalList match={draft.match} /><p className="text-sm text-zinc-300">Confirm the score and scorers above. The full-time scoreboard will appear and the scorebug will hide. The camera keeps streaming.</p></>}
+            {draft.action === "resume" && <><GoalList match={draft.match} /><p className="text-sm text-zinc-300">Resume this match with the score and scorers above? The full-time scoreboard will hide and the live scorebug will return.</p></>}
             {draft.action === "void_goal" && <p>Remove goal #{draft.goal.sequence}: <strong>{scorerName(draft.goal)}</strong> for {teamName(draft.match, draft.team)}?</p>}
             {picking && <>
                 <p className="text-sm text-zinc-300">Goal credited to <strong>{teamName(draft.match, draft.team)}</strong>. You may select any player.</p>
@@ -119,6 +121,7 @@ export default function MatchControls({ onSessionLost, disabled = false }) {
     const match = state?.match;
     const presentation = match ? getPresentation(match, serverTime) : {};
     const lineupSeconds = Math.ceil(lineupRemainingMs(match, serverTime) / 1000);
+    const hasRecordedGoals = Object.keys(match?.goals ?? {}).length > 0;
 
     useEffect(() => {
         if (!state?.serverNow) return;
@@ -220,8 +223,15 @@ export default function MatchControls({ onSessionLost, disabled = false }) {
                         </div>)}
                     </div>
                     {match.status === "upcoming" && <button type="button" onClick={() => confirm("start")} className={`${primary} mt-5 w-full`}>Start match</button>}
-                    {match.status === "live" && <button type="button" onClick={() => confirm("full_time")} className={`${button} mt-5 w-full`}>End match</button>}
-                    {match.status === "full_time" && <p className="mt-4 text-center text-sm text-zinc-400">Full time · Score and scorer corrections remain available.</p>}
+                    {match.status === "live" && <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                        <button type="button" onClick={() => confirm("full_time")} className={button}>End match</button>
+                        <button type="button" disabled={hasRecordedGoals} onClick={() => confirm("undo_start")} className={button}>Undo start</button>
+                    </div>}
+                    {match.status === "live" && hasRecordedGoals && <p className="mt-3 text-center text-xs text-zinc-500">Undo start is unavailable after a goal has been recorded.</p>}
+                    {match.status === "full_time" && <>
+                        <p className="mt-4 text-center text-sm text-zinc-400">Full time · Score and scorer corrections remain available.</p>
+                        <button type="button" onClick={() => confirm("resume")} className={`${primary} mt-4 w-full`}>Resume match</button>
+                    </>}
                 </div>
                 <div className="rounded-lg border border-white/10 bg-zinc-900/75 p-4">
                     <h2 className="mb-3 font-semibold">Graphics visibility</h2>

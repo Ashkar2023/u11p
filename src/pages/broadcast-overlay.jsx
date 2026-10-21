@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useOverlayFeed } from "../broadcast/use-overlay-feed.js";
-import { FinalScore, GoalAnimation, Kickoff, Lineups, Scorebug } from "../broadcast/overlay-graphics.jsx";
+import { FinalScore, GoalAnimation, Kickoff, Lineups, LiveIndicator, Scorebug } from "../broadcast/overlay-graphics.jsx";
 import "../broadcast/overlay.css";
 import { getPresentation } from "../broadcast/match.js";
 
@@ -22,6 +22,7 @@ export function OverlayCanvas({ match, event, finishEvent, diagnostic, serverOff
                     <Kickoff match={match} visible={presentation.showKickoff} />
                     <Lineups match={match} visible={presentation.showLineup} serverOffset={serverOffset} />
                     <FinalScore match={match} visible={presentation.showFinalScore} />
+                    <LiveIndicator visible={match.status !== "live" && (presentation.showKickoff || presentation.showLineup || presentation.showFinalScore)} />
                     {event && match.status === "live" && <GoalAnimation key={event.id} event={event} match={match} onComplete={finishEvent} />}
                 </>}
                 {diagnostic && <aside className="ob-diagnostic">{diagnostic}</aside>}

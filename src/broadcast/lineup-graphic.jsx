@@ -10,6 +10,7 @@ import { hasMatchResult } from "../utils/date.util.js";
 import { calculateGoalScorers } from "../utils/goal-scorers.util.js";
 import { getPositionMap } from "../utils/lineup-creator.util.js";
 import { LINEUP_DURATION_MS, LINEUP_SCORERS_DURATION_MS, LINEUP_TEAM_DURATION_MS } from "./constants.js";
+import { getCurrentMonthTeamForm } from "./match.js";
 
 const players = new Map(data.players.map((player) => [player.id, player]));
 const completedMatches = data.matches.filter(hasMatchResult);
@@ -45,7 +46,8 @@ export function createLineupTimeline(element) {
         const intro = scene.querySelector(".ob-lineup-intro-name");
         const cards = [...scene.querySelectorAll(".ob-lineup-card")];
         const notes = scene.querySelectorAll(".ob-lineup-note");
-        gsap.set([pitch, intro, ...cards, ...notes], { autoAlpha: 0 });
+        const form = scene.querySelector(".ob-lineup-form");
+        gsap.set([pitch, intro, ...cards, ...notes, ...(form ? [form] : [])], { autoAlpha: 0 });
         gsap.set(logo, { xPercent: -50, yPercent: -50 });
         timeline.set(scene, { autoAlpha: 1 }, start)
             .fromTo(logo, { autoAlpha: 0, scale: 0.7, x: 0, y: 0 }, { autoAlpha: 1, scale: 1, duration: 0.65, ease: "power3.out" }, start)
@@ -57,6 +59,9 @@ export function createLineupTimeline(element) {
             { autoAlpha: 0, y: 22, scale: 0.85 },
             { autoAlpha: 1, y: 0, scale: 1, duration: 0.55, stagger: { amount: 3.3, from: "start" }, ease: "back.out(1.2)" }, start + 2.5);
         if (notes.length) timeline.to(notes, { autoAlpha: 1, duration: 0.3 }, start + 6.4);
+        if (form) timeline.fromTo(form,
+            { autoAlpha: 0, y: 16 },
+            { autoAlpha: 1, y: 0, duration: 0.45, ease: "power2.out" }, start + 6.6);
         timeline.to(scene, { autoAlpha: 0, duration: 0.4 }, start + LINEUP_TEAM_DURATION_MS / 1000 - 0.4);
     });
     scorerScenes.forEach((scene, index) => {
@@ -116,9 +121,19 @@ export function Lineups({ match, visible, serverOffset = 0 }) {
             const ids = fixture?.lineup?.find((entry) => entry.teamId === team.id)?.playerIds ?? [];
             const positions = getPositionMap(ids.length);
             const extra = ids.slice(11).map((id) => players.get(id)?.name).filter(Boolean);
+            const form = getCurrentMonthTeamForm(data.matches, match.sourceMatchId, team.id);
+            const formMonth = fixture ? monthLabelFormatter.format(new Date(fixture.date)).toLocaleUpperCase("en-IN") : "";
 
             return <div key={side} className="ob-lineup-scene" data-team={side}>
-                <div className="ob-lineup-pitch"><img src={ground} alt="" className="ob-lineup-ground" /></div>
+                <div className="ob-lineup-pitch">
+                    <img src={ground} alt="" className="ob-lineup-ground" />
+                    {form.length > 0 && <div className="ob-lineup-form">
+                        <span>CURRENT MONTH FORM · {formMonth}</span>
+                        <ol aria-label={`${team.name} ${formMonth} form`}>
+                            {form.map((result, index) => <li key={index} className={`ob-form-${result.toLocaleLowerCase()}`} aria-label={result === "W" ? "Win" : result === "L" ? "Loss" : "Draw"}>{result}</li>)}
+                        </ol>
+                    </div>}
+                </div>
                 <SafeImage src={team.logoUrl} fallbackSrc={clubLogo} alt="" className="ob-lineup-logo" />
                 <h2 className="ob-lineup-intro-name">{team.name}</h2>
                 {ids.slice(0, 11).map((id, index) => {

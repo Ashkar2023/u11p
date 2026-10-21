@@ -16,9 +16,9 @@ function reject(message, code = "INVALID_ACTION", status = 400) {
 }
 
 function scorer(body) {
-    if (body.type === "own_goal") return { type: "own_goal", playerId: null, playerName: null, imageUrl: null };
-    if (!["normal", "penalty"].includes(body.type)) reject("Choose a player, Penalty or Own Goal.");
-    return { type: body.type, ...resolveGoalscorer(body.playerId) };
+    if (!["normal", "penalty", "own_goal"].includes(body.type)) reject("Choose a player, Penalty or Own Goal.");
+    const player = resolveGoalscorer(body.playerId);
+    return { type: body.type, ...player, imageUrl: body.type === "own_goal" ? null : player.imageUrl };
 }
 
 export function applyMatchStatusTransition(match, action) {

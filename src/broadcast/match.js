@@ -90,18 +90,36 @@ export function getScorer(data, playerId) {
 export function getScorerSections(data, matchId, search = "") {
     const match = getFixture(data, matchId);
     const teamIds = new Set(match.teams.map((team) => team.teamId));
-    const lineupIds = new Set(
+    const lineupByTeam = new Map(
         (match.lineup ?? [])
             .filter((entry) => teamIds.has(entry.teamId))
-            .flatMap((entry) => entry.playerIds ?? []),
+            .map((entry) => [entry.teamId, entry.playerIds ?? []]),
+    );
+    const lineupIds = new Set(
+        [...lineupByTeam.values()].flat(),
     );
     const visiblePlayers = data.players.filter((player) => !player.hidden);
     const playersById = new Map(visiblePlayers.map((player) => [player.id, player]));
     const query = search.trim().toLocaleLowerCase();
     const matchesSearch = (player) => player.name.toLocaleLowerCase().includes(query);
+    const assignedPlayers = new Set();
+    const teamLineups = match.teams.map(({ teamId }, index) => {
+        const team = data.teams.find((entry) => entry.id === teamId);
+        const players = (lineupByTeam.get(teamId) ?? [])
+            .map((id) => playersById.get(id))
+            .filter(Boolean)
+            .filter((player) => {
+                if (assignedPlayers.has(player.id)) return false;
+                assignedPlayers.add(player.id);
+                return true;
+            })
+            .filter(matchesSearch);
+        return { side: index === 0 ? "home" : "away", team, players };
+    });
 
     return {
         lineup: [...lineupIds].map((id) => playersById.get(id)).filter(Boolean).filter(matchesSearch),
+        teamLineups,
         others: visiblePlayers.filter((player) => !lineupIds.has(player.id)).filter(matchesSearch),
     };
 }

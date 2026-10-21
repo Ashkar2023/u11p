@@ -215,7 +215,8 @@ Reference: [Firebase web setup](https://firebase.google.com/docs/database/web/st
   players. Filtering retains both groups. No player needs a permanent team assignment.
 - The server resolves player identity and image from static data. Goal events will
   contain only the small content snapshot needed to play a reliable animation.
-- Missing images use the website fallback. Own goals have no player image.
+- Missing images use the website fallback. Own goals retain the selected scorer's name
+  but do not show a player image in the goal graphic.
 - Match records contain score, individual goals, events, sequence counters, presentation
   flags and a revision number. Revisions let confirmation requests detect a changed
   result. RTDB omits empty objects and null values: readers must default missing

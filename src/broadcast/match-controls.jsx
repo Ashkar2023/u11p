@@ -3,6 +3,7 @@ import data from "../data.json";
 import SafeImage from "../components/safe-image.jsx";
 import playerFallback from "../assets/user.webp";
 import playerShield from "../assets/fifa-player-shield.webp";
+import clubLogo from "../assets/u11p-logo.webp";
 import { broadcastRequest } from "./api-client.js";
 import { LINEUP_DURATION_MS } from "./constants.js";
 import { getPresentation, getScorerSections, lineupRemainingMs } from "./match.js";
@@ -11,7 +12,7 @@ const button = "min-h-12 rounded-lg border border-white/15 px-4 py-3 font-semibo
 const primary = `${button} bg-amber-400 text-zinc-950 hover:bg-amber-300`;
 const fixtures = [...data.matches].sort((a, b) => a.date.localeCompare(b.date));
 const teamName = (match, side) => match.info[`${side}Team`].name;
-const scorerName = (goal) => goal.type === "own_goal" ? "Own goal" : `${goal.playerName}${goal.type === "penalty" ? " (Penalty)" : ""}`;
+const scorerName = (goal) => goal.type === "own_goal" ? goal.playerName ? `${goal.playerName} (OG)` : "Own goal" : `${goal.playerName}${goal.type === "penalty" ? " (Penalty)" : ""}`;
 const recordedGoals = (match) => Object.entries(match.goals ?? {}).filter(([, goal]) => !goal.voided).sort((a, b) => a[1].sequence - b[1].sequence);
 const playerImageStyle = {
     maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
@@ -43,6 +44,20 @@ function ScorerCard({ player, selected, onSelect }) {
     </button>;
 }
 
+function TeamLineupGroup({ section, selected, onSelect, suggested, suggestion }) {
+    const sideLabel = section.side === "home" ? "Home" : "Away";
+    return <section className={`rounded-xl border p-3 transition-colors ${suggested ? "border-amber-400/45 bg-amber-400/10" : "border-white/10 bg-zinc-900/70"}`}>
+        <header className="mb-3 flex min-h-10 items-center gap-2 border-b border-white/10 pb-2">
+            <SafeImage src={section.team?.logo} fallbackSrc={clubLogo} alt="" className="size-9 shrink-0 object-contain" />
+            <div className="min-w-0 flex-1">
+                <h4 className="truncate text-sm font-semibold text-zinc-100">{section.team?.name ?? `${sideLabel} team`}</h4>
+                <p className={`text-[10px] font-bold uppercase tracking-[0.18em] ${suggested ? "text-amber-300" : "text-zinc-500"}`}>{suggested ? suggestion : sideLabel}</p>
+            </div>
+        </header>
+        {section.players.length ? <div className="grid grid-cols-3 gap-2 sm:grid-cols-2 lg:grid-cols-3">{section.players.map((entry) => <ScorerCard key={entry.id} player={entry} selected={selected === entry.id} onSelect={() => onSelect(entry.id)} />)}</div> : <p className="py-3 text-center text-sm text-zinc-500">No matching lineup players.</p>}
+    </section>;
+}
+
 function ToggleSwitch({ checked, onToggle, disabled = false, label }) {
     return <button type="button" role="switch" aria-label={label} aria-checked={checked} disabled={disabled} onClick={onToggle} className={`relative h-5 w-9 shrink-0 rounded-full transition-colors duration-200 disabled:cursor-not-allowed ${checked ? "bg-amber-400" : "bg-zinc-700"}`}>
         <span className={`absolute left-0.5 top-0.5 size-4 rounded-full bg-white shadow transition-transform duration-200 ${checked ? "translate-x-4" : "translate-x-0"}`} />
@@ -59,7 +74,7 @@ function GoalTypeToggle({ label, checked, onToggle }) {
 function Confirmation({ draft, busy, blocked, onClose, onConfirm }) {
     const ref = useRef(null);
     const [search, setSearch] = useState("");
-    const [selected, setSelected] = useState(draft.goal?.type === "own_goal" ? null : draft.goal?.playerId ?? null);
+    const [selected, setSelected] = useState(draft.goal?.playerId ?? null);
     const [goalType, setGoalType] = useState(draft.goal?.type ?? "normal");
     const picking = ["add_goal", "correct_goal"].includes(draft.action);
     const sections = picking ? getScorerSections(data, draft.match.sourceMatchId, search) : null;
@@ -68,10 +83,12 @@ function Confirmation({ draft, busy, blocked, onClose, onConfirm }) {
     const titles = { select: "Load broadcast match?", start: "Start match?", undo_start: "Undo match start?", full_time: "Confirm full time", resume: "Resume live match?", void_goal: "Disallow latest goal?", add_goal: "Choose goalscorer", correct_goal: "Correct goalscorer" };
     function confirm() {
         const { match, goal, ...body } = draft;
-        if (picking) Object.assign(body, { type: goalType, playerId: goalType === "own_goal" ? null : selected });
+        if (picking) Object.assign(body, { type: goalType, playerId: selected });
         onConfirm(body);
     }
-    return <dialog ref={ref} onCancel={(event) => { event.preventDefault(); if (!busy) onClose(); }} aria-labelledby="broadcast-confirm-title" className="m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-xl border border-amber-400/30 bg-zinc-950 p-5 text-zinc-100 backdrop:bg-black/75">
+    const suggestedSide = goalType === "own_goal" ? draft.team === "home" ? "away" : "home" : draft.team;
+    const suggestion = goalType === "own_goal" ? "Own-goal team" : "Scoring team";
+    return <dialog ref={ref} onCancel={(event) => { event.preventDefault(); if (!busy) onClose(); }} aria-labelledby="broadcast-confirm-title" className={`m-auto max-h-[90dvh] w-[calc(100%-2rem)] overflow-y-auto rounded-xl border border-amber-400/30 bg-zinc-950 p-5 text-zinc-100 backdrop:bg-black/75 ${picking ? "max-w-4xl" : "max-w-lg"}`}>
         <h2 id="broadcast-confirm-title" className="text-xl font-semibold text-amber-300">{titles[draft.action]}</h2>
         <fieldset disabled={busy || blocked} className="mt-4 space-y-4">
             {draft.match && <p className="text-center font-semibold">{teamName(draft.match, "home")} {draft.match.score.home} – {draft.match.score.away} {teamName(draft.match, "away")}</p>}
@@ -88,23 +105,31 @@ function Confirmation({ draft, busy, blocked, onClose, onConfirm }) {
                 <div className="grid grid-cols-2 gap-2">
                     <GoalTypeToggle label="Own Goal" checked={goalType === "own_goal"} onToggle={() => {
                         setGoalType((current) => current === "own_goal" ? "normal" : "own_goal");
-                        setSelected(null);
                     }} />
                     <GoalTypeToggle label="Penalty" checked={goalType === "penalty"} onToggle={() => setGoalType((current) => current === "penalty" ? "normal" : "penalty")} />
                 </div>
                 <div className="max-h-[42dvh] overflow-y-auto">
-                    {[["Current lineup", sections.lineup], ["Other players", sections.others]].map(([label, players], index) => <section key={label} className={`rounded-xl border p-3 ${index ? "mt-3 border-white/10 bg-zinc-900/70" : "border-amber-400/25 bg-amber-400/10"}`}>
-                        <h3 className="mb-2 text-sm font-semibold text-zinc-400">{label}</h3>
-                        {players.length ? <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">{players.map((entry) => <ScorerCard key={entry.id} player={entry} selected={goalType !== "own_goal" && selected === entry.id} onSelect={() => { setSelected(entry.id); if (goalType === "own_goal") setGoalType("normal"); }} />)}</div> : <p className="py-2 text-sm text-zinc-500">No matching players.</p>}
-                    </section>)}
+                    <section className="rounded-xl border border-amber-400/25 bg-white/[0.025] p-3">
+                        <div className="mb-3 flex items-baseline justify-between gap-3">
+                            <h3 className="text-sm font-semibold text-zinc-300">Current lineup</h3>
+                            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-500">Home / Away</span>
+                        </div>
+                        <div className="grid gap-3 sm:grid-cols-2">
+                            {sections.teamLineups.map((section) => <TeamLineupGroup key={section.side} section={section} selected={selected} onSelect={setSelected} suggested={section.side === suggestedSide} suggestion={suggestion} />)}
+                        </div>
+                    </section>
+                    <section className="mt-3 rounded-xl border border-white/10 bg-zinc-900/70 p-3">
+                        <h3 className="mb-2 text-sm font-semibold text-zinc-400">Other players</h3>
+                        {sections.others.length ? <div className="grid grid-cols-3 gap-2 sm:grid-cols-5 lg:grid-cols-6">{sections.others.map((entry) => <ScorerCard key={entry.id} player={entry} selected={selected === entry.id} onSelect={() => setSelected(entry.id)} />)}</div> : <p className="py-2 text-sm text-zinc-500">No matching players.</p>}
+                    </section>
                 </div>
-                {(goalType === "own_goal" || selected !== null) && <p className="text-sm text-amber-200">Confirm: {goalType === "own_goal" ? "Own goal" : `${player?.name}${goalType === "penalty" ? " · Penalty" : ""}`} for {teamName(draft.match, draft.team)}.</p>}
+                {selected !== null && <p className="text-sm text-amber-200">Confirm: {player?.name}{goalType === "own_goal" ? " · Own goal" : goalType === "penalty" ? " · Penalty" : ""} for {teamName(draft.match, draft.team)}.</p>}
             </>}
         </fieldset>
         {blocked && <p role="alert" className="mt-4 text-sm text-amber-200">The save could not be confirmed. Close this dialog to retry or refresh the match.</p>}
         <div className="mt-5 flex gap-3">
             <button type="button" disabled={busy} onClick={onClose} className={`${button} flex-1`}>{blocked ? "Close" : "Cancel"}</button>
-            <button type="button" disabled={busy || blocked || (picking && goalType !== "own_goal" && selected === null)} onClick={confirm} className={`${primary} flex-1`}>{busy ? "Saving…" : "Confirm"}</button>
+            <button type="button" disabled={busy || blocked || (picking && selected === null)} onClick={confirm} className={`${primary} flex-1`}>{busy ? "Saving…" : "Confirm"}</button>
         </div>
     </dialog>;
 }

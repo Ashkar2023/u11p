@@ -2176,10 +2176,46 @@
             "stream_url": "https://youtube.com/live/B4kSkShfwK4",
             "teams": [
                 {
-                    "teamId": 1
+                    "teamId": 1,
+                    "captainPlayerId": 29
                 },
                 {
-                    "teamId": 2
+                    "teamId": 2,
+                    "captainPlayerId": 12
+                }
+            ],
+            "lineup": [
+                {
+                    "teamId": 1,
+                    "playerIds": [
+                        23,
+                        33,
+                        26,
+                        8,
+                        29,
+                        38,
+                        1,
+                        25,
+                        2,
+                        14,
+                        30
+                    ]
+                },
+                {
+                    "teamId": 2,
+                    "playerIds": [
+                        37,
+                        15,
+                        39,
+                        19,
+                        12,
+                        20,
+                        5,
+                        40,
+                        4,
+                        9,
+                        22
+                    ]
                 }
             ]
         }

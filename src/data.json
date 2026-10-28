@@ -681,7 +681,7 @@
             "id": 41,
             "name": "Shinaz",
             "image": "/players/shinaz.webp",
-            "hidden": true,
+            "hidden": false,
             "attributes": {
                 "pace": "??",
                 "shooting": "??",

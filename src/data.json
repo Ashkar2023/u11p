@@ -2242,29 +2242,53 @@
                 }
             ]
         },
-{
-  "id": 20,
-  "date": "2026-10-31T15:30:00.000Z",
-  "teams": [
-    {
-      "teamId": 1,
-      "captainPlayerId": 14
-    },
-    {
-      "teamId": 2,
-      "captainPlayerId": 11
-    }
-  ],
-  "lineup": [
-    {
-      "teamId": 1,
-      "playerIds": [37, 38, 8, 26, 25, 28, 1, 22, 2, 14, 27]
-    },
-    {
-      "teamId": 2,
-      "playerIds": [18, 17, 19, 12, 11, 4, 6, 15, 10, 40, 9]
-    }
-  ]
-}
+        {
+            "id": 20,
+            "date": "2026-10-31T15:30:00.000Z",
+            "teams": [
+                {
+                    "teamId": 1,
+                    "captainPlayerId": 14
+                },
+                {
+                    "teamId": 2,
+                    "captainPlayerId": 11
+                }
+            ],
+            "lineup": [
+                {
+                    "teamId": 1,
+                    "playerIds": [
+                        37,
+                        38,
+                        8,
+                        26,
+                        25,
+                        40,
+                        1,
+                        22,
+                        2,
+                        14,
+                        27
+                    ]
+                },
+                {
+                    "teamId": 2,
+                    "playerIds": [
+                        18,
+                        17,
+                        19,
+                        12,
+                        11,
+                        4,
+                        6,
+                        15,
+                        10,
+                        28,
+                        9
+                    ]
+                }
+            ]
+        }
     ]
 }

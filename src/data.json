@@ -2248,11 +2248,25 @@
             "teams": [
                 {
                     "teamId": 1,
-                    "captainPlayerId": 14
+                    "captainPlayerId": 14,
+                    "score": 1
                 },
                 {
                     "teamId": 2,
-                    "captainPlayerId": 11
+                    "captainPlayerId": 11,
+                    "score": 1
+                }
+            ],
+            "goals":[
+                {
+                    "count": 1,
+                    "teamId": 1,
+                    "playerId": 25
+                },
+                {
+                    "count": 1,
+                    "teamId": 2,
+                    "playerId": 6
                 }
             ],
             "lineup": [

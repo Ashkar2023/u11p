@@ -2246,6 +2246,7 @@
             "id": 20,
             "date": "2026-10-31T15:30:00.000Z",
             "video_url": "https://youtu.be/qz-jb8WdG94",
+            "motmPlayerId": 37,
             "teams": [
                 {
                     "teamId": 1,

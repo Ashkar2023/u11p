@@ -148,12 +148,13 @@ function TopScorersPreview() {
     );
 }
 
+const currentMonth = "october";
 const awardRoutes = {
-    "Ultimate team": "awards/2026/september/ultimate-team",
-    "Golden Boot Winner": "awards/2026/september/top-scorer",
-    "Best Midfielder": "awards/2026/september/best-midfielder",
-    "Best Defender": "awards/2026/september/best-defender",
-    "Golden Glove Winner": "awards/2026/september/golden-glove",
+    // "Ultimate team": `awards/2026/${currentMonth}/ultimate-team`,
+    "Golden Boot Winner": `awards/2026/${currentMonth}/top-scorer`,
+    "Best Midfielder": `awards/2026/${currentMonth}/best-midfielder`,
+    "Best Defender": `awards/2026/${currentMonth}/best-defender`,
+    "Golden Glove Winner": `awards/2026/${currentMonth}/golden-glove`,
 };
 
 export const Home = () => {
@@ -249,7 +250,7 @@ export const Home = () => {
                                         Monthly Awards
                                     </span>
                                     <h3 className="italic font-black uppercase tracking-tight text-white">
-                                        September
+                                        {currentMonth}
                                     </h3>
                                 </div>
 

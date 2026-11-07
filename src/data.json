@@ -758,6 +758,20 @@
             "golden-glove": {
                 "id": 18
             }
+        },
+        "2026-10": {
+            "best-midfielder": {
+                "id": 25
+            },
+            "best-defender": {
+                "id": 33
+            },
+            "golden-glove": {
+                "id": 29
+            },
+            "top-scorer": {
+                "id": 14
+            }
         }
     },
     "matches": [
@@ -2302,6 +2316,54 @@
                         10,
                         28,
                         9
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 21,
+            "date": "2026-11-07T15:30:00.000Z",
+            "teams": [
+                {
+                    "teamId": 1,
+                    "captainPlayerId": 7
+                },
+                {
+                    "teamId": 2,
+                    "captainPlayerId": 18
+                }
+            ],
+            "lineup": [
+                {
+                    "teamId": 1,
+                    "playerIds": [
+                        7,
+                        30,
+                        8,
+                        17,
+                        37,
+                        5,
+                        1,
+                        38,
+                        2,
+                        14,
+                        25
+                    ]
+                },
+                {
+                    "teamId": 2,
+                    "playerIds": [
+                        18,
+                        12,
+                        33,
+                        19,
+                        13,
+                        10,
+                        6,
+                        11,
+                        4,
+                        40,
+                        27
                     ]
                 }
             ]

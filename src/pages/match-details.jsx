@@ -32,6 +32,23 @@ function MoreIcon() {
     );
 }
 
+function InfoIcon() {
+    return (
+        <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 11v5m0-8h.01" />
+        </svg>
+    );
+}
+
+function CloseIcon() {
+    return (
+        <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12" />
+        </svg>
+    );
+}
+
 function EditIcon() {
     return (
         <svg className="size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -109,6 +126,67 @@ function MatchActions({ editLineupHref }) {
                 </div>
             )}
         </div>
+    );
+}
+
+function MatchSwipeInfo() {
+    const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        if (!isOpen) return undefined;
+        const handleKeyDown = (event) => {
+            if (event.key === "Escape") setIsOpen(false);
+        };
+        document.addEventListener("keydown", handleKeyDown);
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    }, [isOpen]);
+
+    return (
+        <>
+            <button
+                type="button"
+                className="flex size-9 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-amber-400"
+                aria-label="Match navigation info"
+                aria-haspopup="dialog"
+                onClick={() => setIsOpen(true)}
+            >
+                <InfoIcon />
+            </button>
+            {isOpen && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4 backdrop-blur-sm"
+                    role="presentation"
+                    onMouseDown={(event) => {
+                        if (event.target === event.currentTarget) setIsOpen(false);
+                    }}
+                >
+                    <section
+                        className="w-full max-w-sm rounded-2xl border border-white/10 bg-zinc-900 p-5 text-zinc-100 shadow-2xl shadow-black"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="match-swipe-info-title"
+                    >
+                        <div className="flex items-start justify-between gap-3">
+                            <h2 id="match-swipe-info-title" className="text-lg font-bold">Info</h2>
+                            <button
+                                type="button"
+                                onClick={() => setIsOpen(false)}
+                                className="flex size-8 shrink-0 items-center justify-center rounded-lg text-zinc-400 hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-amber-400"
+                                aria-label="Close match navigation info"
+                            >
+                                <CloseIcon />
+                            </button>
+                        </div>
+                        <ul className="mt-4 text-sm text-zinc-300">
+                            <li className="flex items-start gap-3">
+                                <span className="mt-2 size-2 shrink-0 rounded-full bg-amber-400" aria-hidden="true" />
+                                <span>Swipe on the score card to navigate to other matches.</span>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+            )}
+        </>
     );
 }
 
@@ -368,7 +446,9 @@ export const MatchDetails = () => {
     const [, navigate] = useLocation();
     const [activeTab, setActiveTab] = useState("facts");
     const [now, setNow] = useState(() => new Date());
+    const swipeStart = useRef(null);
     const match = data.matches.find((item) => String(item.id) === params?.id);
+    const matchIndex = match ? data.matches.indexOf(match) : -1;
     const [hasVoted, setHasVoted] = useState(() => (
         params?.id ? localStorage.getItem(`voted_match_${params.id}`) === "true" : false
     ));
@@ -448,6 +528,28 @@ export const MatchDetails = () => {
     }, [canShowVotes, canShowVoting, canShowFacts, isFactsDefault, params?.id]);
 
     const goBack = () => window.history.back();
+    const handleSwipeStart = (event) => {
+        const target = event.target;
+        if (!event.isPrimary || (target instanceof Element && target.closest("button, a, input, select, textarea"))) {
+            swipeStart.current = null;
+            return;
+        }
+        swipeStart.current = { x: event.clientX, y: event.clientY };
+        event.currentTarget.setPointerCapture(event.pointerId);
+    };
+    const handleSwipeEnd = (event) => {
+        const start = swipeStart.current;
+        swipeStart.current = null;
+        if (!start) return;
+
+        const deltaX = event.clientX - start.x;
+        const deltaY = event.clientY - start.y;
+        if (Math.abs(deltaX) < 60 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.25) return;
+
+        const targetIndex = deltaX < 0 ? matchIndex - 1 : matchIndex + 1;
+        const targetMatch = data.matches[targetIndex];
+        if (targetMatch) navigate(`/matches/${targetMatch.id}`);
+    };
 
     if (!match) {
         return (
@@ -478,24 +580,34 @@ export const MatchDetails = () => {
                 >
                     <BackIcon /> Back
                 </button>
-                <MatchActions editLineupHref={getLineupCreatorHref(match)} />
+                <div className="flex items-center gap-1">
+                    <MatchSwipeInfo />
+                    <MatchActions editLineupHref={getLineupCreatorHref(match)} />
+                </div>
             </div>
             <div className="mx-auto w-full max-w-3xl">
-                <MatchCard
-                    date={match.date}
-                    teamA={homeTeam}
-                    teamB={awayTeam}
-                    scoreA={homeResult.score}
-                    scoreB={awayResult.score}
-                    motm={motm}
-                    matchdayCount={match.id}
-                    posterFilename={match.poster_filename}
-                    streamUrl={match.stream_url}
-                    videoUrl={match.video_url}
-                    now={now}
-                    homeCaptain={playersById.get(homeResult.captainPlayerId)}
-                    awayCaptain={playersById.get(awayResult.captainPlayerId)}
-                />
+                <div
+                    className="touch-pan-y"
+                    onPointerDown={handleSwipeStart}
+                    onPointerUp={handleSwipeEnd}
+                    onPointerCancel={() => { swipeStart.current = null; }}
+                >
+                    <MatchCard
+                        date={match.date}
+                        teamA={homeTeam}
+                        teamB={awayTeam}
+                        scoreA={homeResult.score}
+                        scoreB={awayResult.score}
+                        motm={motm}
+                        matchdayCount={match.id}
+                        posterFilename={match.poster_filename}
+                        streamUrl={match.stream_url}
+                        videoUrl={match.video_url}
+                        now={now}
+                        homeCaptain={playersById.get(homeResult.captainPlayerId)}
+                        awayCaptain={playersById.get(awayResult.captainPlayerId)}
+                    />
+                </div>
 
                 <section className="mt-5">
                     <div className={`grid ${tabColumnClass} border-b border-white/10`} role="tablist" aria-label="Match details">

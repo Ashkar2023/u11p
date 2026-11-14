@@ -2399,6 +2399,20 @@
                     ]
                 }
             ]
+        },
+        {
+            "id": 22,
+            "date": "2026-11-14T15:30:00.000Z",
+            "teams": [
+                {
+                    "teamId": 1,
+                    "captainPlayerId": 4
+                },
+                {
+                    "teamId": 2,
+                    "captainPlayerId": 38
+                }
+            ]
         }
     ]
 }

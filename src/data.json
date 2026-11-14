@@ -2412,6 +2412,16 @@
                     "teamId": 2,
                     "captainPlayerId": 38
                 }
+            ],
+            "lineup": [
+                {
+                    "teamId": 1,
+                    "playerIds": [7, 29, 8, 26, 38, 20, 1, 30, 2, 14, 10]
+                },
+                {
+                    "teamId": 2,
+                    "playerIds": [18, 33, 12, 11, 15, 5, 6, 23, 4, 40, 27]
+                }
             ]
         }
     ]

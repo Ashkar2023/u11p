@@ -2406,21 +2406,51 @@
             "teams": [
                 {
                     "teamId": 1,
-                    "captainPlayerId": 4
+                    "captainPlayerId": 4,
+                    "score": 2
                 },
                 {
                     "teamId": 2,
-                    "captainPlayerId": 38
+                    "captainPlayerId": 38,
+                    "score": 7
+                }
+            ],
+            "goals": [
+                {
+                    "teamId": 2,
+                    "playerId": 27,
+                    "count": 1
+                },
+                {
+                    "teamId": 2,
+                    "playerId": 6,
+                    "count": 1
+                },
+                {
+                    "teamId": 2,
+                    "playerId": 8,
+                    "count": 3,
+                    "penaltiesCount": 1
+                },
+                {
+                    "teamId": 2,
+                    "playerId": 4,
+                    "count": 2
+                },
+                {
+                    "teamId": 1,
+                    "playerId": 14,
+                    "count": 2
                 }
             ],
             "lineup": [
                 {
                     "teamId": 1,
-                    "playerIds": [7, 29, 33, 8, 38, 20, 1, 30, 2, 14, 40]
+                    "playerIds": [7, 29, 33, 26, 38, 20, 1, 30, 2, 14, 40]
                 },
                 {
                     "teamId": 2,
-                    "playerIds": [18, 12, 11, 26, 15, 5, 6, 23, 10, 27, 4]
+                    "playerIds": [18, 12, 11, 8, 15, 5, 6, 23, 10, 27, 4]
                 }
             ]
         }

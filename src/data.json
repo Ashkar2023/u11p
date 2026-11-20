@@ -12,6 +12,12 @@
             "name": "Cheppu Fighters",
             "shortName": "CF",
             "logo": "/cf.png"
+        },
+        {
+            "id": 3,
+            "name": "Maaman FC",
+            "shortName": "MFC",
+            "logo": "/mfc.png"
         }
     ],
     "players": [
@@ -2405,13 +2411,11 @@
             "date": "2026-11-14T15:30:00.000Z",
             "teams": [
                 {
-                    "teamId": 1,
-                    "captainPlayerId": 4,
+                    "teamId": 3,
                     "score": 2
                 },
                 {
                     "teamId": 2,
-                    "captainPlayerId": 38,
                     "score": 7
                 }
             ],
@@ -2438,14 +2442,14 @@
                     "count": 2
                 },
                 {
-                    "teamId": 1,
+                    "teamId": 3,
                     "playerId": 14,
                     "count": 2
                 }
             ],
             "lineup": [
                 {
-                    "teamId": 1,
+                    "teamId": 3,
                     "playerIds": [7, 29, 33, 26, 38, 20, 1, 30, 2, 14, 40]
                 },
                 {

@@ -24,14 +24,6 @@ const availableMonths = [...new Set(completedMatches.map((match) => getMonthKey(
     .sort()
     .reverse();
 
-const statItems = [
-    ["Win", "wins"],
-    ["Loss", "losses"],
-    ["GF", "goalsFor"],
-    ["GD", "goalDifference"],
-    ["GA", "goalsAgainst"],
-];
-
 const awardLabels = {
     "ultimate-team": "Ultimate Team",
     "top-scorer": "Golden Boot Winner",
@@ -94,7 +86,7 @@ function usePeriodFilter(paramName, defaultPeriod = ALL_TIME) {
 
 function calculateTeamStats(matches) {
     return data.teams.map((team) => {
-        const stats = { wins: 0, losses: 0, goalsFor: 0, goalsAgainst: 0 };
+        const stats = { wins: 0, draws: 0, losses: 0, goalsFor: 0, goalsAgainst: 0, matchesPlayed: 0 };
 
         matches.forEach((match) => {
             const teamResult = match.teams.find((result) => result.teamId === team.id);
@@ -102,19 +94,24 @@ function calculateTeamStats(matches) {
 
             if (!teamResult || !opponentResult) return;
 
+            stats.matchesPlayed += 1;
             stats.goalsFor += teamResult.score;
             stats.goalsAgainst += opponentResult.score;
 
             if (teamResult.score > opponentResult.score) stats.wins += 1;
             if (teamResult.score < opponentResult.score) stats.losses += 1;
+            if (teamResult.score === opponentResult.score) stats.draws += 1;
         });
 
         return {
             ...team,
             ...stats,
             goalDifference: stats.goalsFor - stats.goalsAgainst,
+            points: stats.wins * 3 + stats.draws,
         };
-    });
+    })
+        .filter((team) => team.matchesPlayed > 0)
+        .sort((a, b) => b.points - a.points || b.goalDifference - a.goalDifference || b.goalsFor - a.goalsFor);
 }
 
 function TeamStats() {
@@ -130,28 +127,39 @@ function TeamStats() {
                 <PeriodSelect value={period} onChange={setPeriod} label="Team stats period" />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-                {teamStats.map((team) => (
-                    <article className="rounded-lg border border-white/10 bg-black/20 p-3" key={team.id}>
-                        <header className="mb-3 flex flex-col items-center gap-2 border-b border-white/10 pb-3 text-center">
-                            <SafeImage className="size-16 object-contain" src={team.logo} alt={`${team.name} logo`} />
-                            <h2 className="text-sm font-semibold text-zinc-100">{team.name}</h2>
-                        </header>
-
-                        <dl className="space-y-1.5">
-                            {statItems.map(([label, key]) => (
-                                <div className="flex items-center justify-between gap-2" key={key}>
-                                    <dt className="text-xs text-zinc-400 sm:text-sm">{label}</dt>
-                                    <dd className="text-sm font-semibold text-white sm:text-base">
-                                        {key === "goalDifference" && team[key] > 0 ? "+" : ""}
-                                        {team[key]}
-                                    </dd>
-                                </div>
+            {teamStats.length > 0 ? (
+                <div className="overflow-x-auto rounded-md border border-white/10">
+                    <table className="w-full min-w-155 border-collapse text-left text-xs sm:text-sm">
+                        <thead className="bg-white/5 text-[10px] uppercase tracking-wide text-zinc-400 sm:text-xs">
+                            <tr>
+                                {["#", "Team", "P", "W", "D", "L", "GF", "GA", "GD", "Pts"].map((label) => (
+                                    <th className={`px-2 py-2 font-semibold ${label === "Team" ? "text-left" : "text-center"} ${label === "GD" || label === "Pts" ? "text-amber-300" : ""}`} key={label} scope="col">{label}</th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-white/10">
+                            {teamStats.map((team, index) => (
+                                <tr className="bg-black/20 text-zinc-200" key={team.id}>
+                                    <td className="px-2 py-2 text-center font-semibold text-zinc-500">{index + 1}</td>
+                                    <th className="px-2 py-2 text-left font-semibold text-zinc-100" scope="row">
+                                        <span className="flex items-center gap-2">
+                                            <SafeImage className="size-7 shrink-0 object-contain" src={team.logo} alt="" />
+                                            {team.name}
+                                        </span>
+                                    </th>
+                                    {[team.matchesPlayed, team.wins, team.draws, team.losses, team.goalsFor, team.goalsAgainst].map((value, statIndex) => (
+                                        <td className="px-2 py-2 text-center" key={statIndex}>{value}</td>
+                                    ))}
+                                    <td className="px-2 py-2 text-center font-bold text-amber-300">{team.goalDifference > 0 ? "+" : ""}{team.goalDifference}</td>
+                                    <td className="px-2 py-2 text-center font-bold text-amber-300">{team.points}</td>
+                                </tr>
                             ))}
-                        </dl>
-                    </article>
-                ))}
-            </div>
+                        </tbody>
+                    </table>
+                </div>
+            ) : (
+                <p className="py-5 text-center text-sm text-zinc-500">No team results for this period.</p>
+            )}
         </section>
     );
 }

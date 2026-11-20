@@ -59,18 +59,21 @@ function EditIcon() {
 }
 
 function getLineupCreatorHref(match) {
-    const slots = data.teams.map((team) => {
+    const teamIds = (match.teams ?? []).map((team) => team.teamId).filter((teamId) => data.teams.some((team) => team.id === teamId)).slice(0, 2);
+    const selectedTeamIds = teamIds.length === 2 ? teamIds : data.teams.slice(0, 2).map((team) => team.id);
+    const selectedTeams = selectedTeamIds.map((teamId) => data.teams.find((team) => team.id === teamId));
+    const slots = selectedTeams.map((team) => {
         const playerIds = match.lineup?.find((lineup) => lineup.teamId === team.id)?.playerIds ?? [];
         const visiblePlayerIds = playerIds.slice(0, 11);
         return [...visiblePlayerIds, ...Array(11 - visiblePlayerIds.length).fill(null)];
     });
-    const targets = data.teams.map((team) => {
+    const targets = selectedTeams.map((team) => {
         const playerCount = match.lineup?.find((lineup) => lineup.teamId === team.id)?.playerIds?.length ?? 0;
         if (!playerCount) return 11;
         return Math.max(LINEUP_SIZES.at(-1), Math.min(LINEUP_SIZES[0], playerCount));
     });
     const lineups = slots.map((teamSlots, index) => ({
-        teamId: data.teams[index].id,
+        teamId: selectedTeamIds[index],
         playerIds: teamSlots.filter(Boolean),
     }));
     const params = writeLineupState({ step: "lineup", pool: [], targets, slots, lineups });

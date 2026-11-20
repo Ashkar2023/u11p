@@ -185,7 +185,7 @@ function PitchPlayer({ player, top, left, delay, selected, onSelect, onRemove, o
     );
 }
 
-function LineupEditor({ pool, slots, targets, selectedTeamIndex, setSelectedTeamIndex, setTarget, assignToSlot, swapSlots, moveToSlot, removeFromTeam, resetLineups, setStep, copy, message }) {
+function LineupEditor({ pool, slots, targets, teamIds, setTeamId, selectedTeamIndex, setSelectedTeamIndex, setTarget, assignToSlot, swapSlots, moveToSlot, removeFromTeam, resetLineups, setStep, copy, message }) {
     const [selectedSlotIndex, setSelectedSlotIndex] = useState(null);
     const [selectedSlotTeamIndex, setSelectedSlotTeamIndex] = useState(null);
     const [draggingSlot, setDraggingSlot] = useState(null);
@@ -195,6 +195,7 @@ function LineupEditor({ pool, slots, targets, selectedTeamIndex, setSelectedTeam
     const suppressClickRef = useRef(false);
     const selectedSlots = slots[selectedTeamIndex];
     const target = targets[selectedTeamIndex];
+    const activeTeam = data.teams.find((team) => team.id === teamIds[selectedTeamIndex]) ?? data.teams[0];
     const positions = getPositionMap(target);
     const selectedIds = selectedSlots.slice(0, target);
     const extraIds = selectedSlots.slice(target).filter(Boolean);
@@ -279,6 +280,10 @@ function LineupEditor({ pool, slots, targets, selectedTeamIndex, setSelectedTeam
         clearSelection();
     };
 
+    const selectPairTeam = (sideIndex, nextTeamId) => {
+        setTeamId(sideIndex, Number(nextTeamId));
+    };
+
     const selectAvailable = (playerId) => {
         if (selectedSlotIndex === null || selectedSlotTeamIndex === null || selectedSlotIndex >= targets[selectedSlotTeamIndex]) {
             return;
@@ -353,7 +358,7 @@ function LineupEditor({ pool, slots, targets, selectedTeamIndex, setSelectedTeam
 
     const lineupText = {
         lineups: slots.map((teamSlots, index) => ({
-            teamId: data.teams[index].id,
+            teamId: teamIds[index],
             playerIds: teamSlots.filter(Boolean),
         })),
     };
@@ -373,10 +378,33 @@ function LineupEditor({ pool, slots, targets, selectedTeamIndex, setSelectedTeam
                         <button type="button" onClick={() => copy(window.location.href, "Share URL copied.")} className="flex size-10 items-center justify-center rounded-xl border border-white/10 bg-zinc-800 text-zinc-200 transition-colors hover:bg-zinc-700" aria-label="Copy share URL" title="Copy share URL"><ShareIcon /></button>
                     </div>
                 </div>
-                <div className="flex border-b border-white/10" role="tablist" aria-label="Lineup teams">
-                    {data.teams.map((team, index) => <button key={team.id} type="button" role="tab" aria-selected={selectedTeamIndex === index} onClick={() => selectTeam(index)} className={`flex flex-1 items-center justify-center gap-2 border-b-2 px-3 py-2.5 transition-colors ${selectedTeamIndex === index ? "border-amber-400 text-amber-400" : "border-transparent text-zinc-500"}`}><SafeImage className="size-9 object-contain" src={team.logo} alt="" /><span className="text-sm font-semibold">{team.name}</span></button>)}
+                <div className="mb-3 grid grid-cols-2 gap-2">
+                    {teamIds.map((teamId, sideIndex) => {
+                        const team = data.teams.find((option) => option.id === teamId);
+                        const otherTeamId = teamIds[1 - sideIndex];
+                        const label = sideIndex === 0 ? "Team A" : "Team B";
+                        return (
+                            <label className="min-w-0 space-y-1" key={label}>
+                                <span className="block text-[10px] font-semibold uppercase tracking-wide text-zinc-500">{label}</span>
+                                <select
+                                    className="w-full min-w-0 rounded-md border border-white/10 bg-zinc-950 px-2 py-2 text-xs text-zinc-200 outline-none focus:border-amber-400 sm:text-sm"
+                                    value={team?.id ?? ""}
+                                    onChange={(event) => selectPairTeam(sideIndex, event.target.value)}
+                                    aria-label={label}
+                                >
+                                    {data.teams.map((option) => <option value={option.id} key={option.id} disabled={option.id === otherTeamId}>{option.name}</option>)}
+                                </select>
+                            </label>
+                        );
+                    })}
                 </div>
-                <div className="mt-3 flex items-center justify-between gap-3"><h2 className="text-sm font-semibold text-zinc-200">{assignedCount} assigned</h2><label className="flex items-center gap-2 text-xs text-zinc-500">Formation<select className="rounded-md border border-white/10 bg-zinc-950 px-2 py-1 text-zinc-200 outline-none focus:border-amber-400" value={target} onChange={(event) => { setTarget(selectedTeamIndex, Number(event.target.value)); setSelectedSlotIndex(null); setSelectedSlotTeamIndex(null); }} aria-label={`${data.teams[selectedTeamIndex].name} formation size`}>{LINEUP_SIZES.map((size) => <option value={size} key={size}>{size} players</option>)}</select></label></div>
+                <div className="flex border-b border-white/10" role="tablist" aria-label="Lineup teams">
+                    {teamIds.map((teamId, index) => {
+                        const team = data.teams.find((option) => option.id === teamId);
+                        return <button key={teamId} type="button" role="tab" aria-selected={selectedTeamIndex === index} onClick={() => selectTeam(index)} className={`flex flex-1 items-center justify-center gap-2 border-b-2 px-3 py-2.5 transition-colors ${selectedTeamIndex === index ? "border-amber-400 text-amber-400" : "border-transparent text-zinc-500"}`}><SafeImage className="size-9 object-contain" src={team?.logo} alt="" /><span className="text-sm font-semibold">{team?.name}</span></button>;
+                    })}
+                </div>
+                <div className="mt-3 flex items-center justify-between gap-3"><h2 className="text-sm font-semibold text-zinc-200">{assignedCount} assigned</h2><label className="flex items-center gap-2 text-xs text-zinc-500">Formation<select className="rounded-md border border-white/10 bg-zinc-950 px-2 py-1 text-zinc-200 outline-none focus:border-amber-400" value={target} onChange={(event) => { setTarget(selectedTeamIndex, Number(event.target.value)); setSelectedSlotIndex(null); setSelectedSlotTeamIndex(null); }} aria-label={`${activeTeam?.name ?? "Team"} formation size`}>{LINEUP_SIZES.map((size) => <option value={size} key={size}>{size} players</option>)}</select></label></div>
                 <div className="relative mt-2 aspect-3/4 w-full select-none"><img src={lineup_ground_png} alt="Football pitch" className="absolute inset-0 h-full w-full object-contain object-center" draggable={false} />{Array.from({ length: target }, (_, index) => { const id = selectedIds[index]; const player = id === null ? null : playersById.get(id); const [top, left] = positions[index] ?? [50, 50]; const isSelected = selectedSlotTeamIndex === selectedTeamIndex && selectedSlotIndex === index; const dropPlayer = (event) => { event.preventDefault(); const value = event.dataTransfer?.getData("text/lineup-slot")?.split(":"); const source = value?.length === 2 ? value.map(Number) : draggingSlot; if (source?.length === 2 && source[0] === selectedTeamIndex && !Number.isNaN(source[0])) moveToSlot(source[0], source[1], selectedTeamIndex, index); setDraggingSlot(null); }; return player ? <PitchPlayer key={id} player={player} top={top} left={left} delay={0} selected={isSelected} onSelect={() => { if (!suppressClickRef.current) selectPlayer(selectedTeamIndex, index); }} onPointerDragStart={beginPointerDrag} slotTeamIndex={selectedTeamIndex} slotIndex={index} onRemove={() => removeFromTeam(index, selectedTeamIndex)} /> : <button data-lineup-slot={`${selectedTeamIndex}:${index}`} type="button" key={`empty-${index}`} onClick={() => { if (!suppressClickRef.current) selectSlot(index); }} onPointerUp={dropPlayer} onDragOver={(event) => event.preventDefault()} onDrop={dropPlayer} className={`absolute flex size-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-dashed text-xl font-semibold focus-visible:outline-2 focus-visible:outline-amber-400 ${isSelected ? "lineup-slot-selected bg-amber-300 text-zinc-950" : "border-white/40 bg-zinc-950/30 text-white/70"}`} style={{ top: `${top}%`, left: `${left}%` }} aria-label={`Select empty position ${index + 1}`} aria-pressed={isSelected}>?</button>; })}</div>
                 {dragPreview && <div className="pointer-events-none fixed z-60 w-24 -translate-x-1/2 -translate-y-1/2 opacity-90 drop-shadow-[0_8px_16px_rgba(0,0,0,0.65)]" style={{ left: dragPreview.x, top: dragPreview.y }}><div className="relative aspect-[2/2.7] w-full"><img src={fifa_shield} alt="" className="absolute inset-0 h-full w-full object-contain" /><div className="absolute overflow-hidden" style={{ top: "5%", left: "7%", width: "85%", height: "72%" }}><SafeImage className="h-full w-full object-cover object-top" src={dragPreview.player.image} fallbackSrc={user_png} alt="" style={imageStyle} /></div><div className="absolute inset-x-[10%] bottom-[11%] flex justify-center"><span className="w-full truncate text-center font-ddin text-[10px] font-bold uppercase text-[#1A1A1A]">{dragPreview.player.name.split(" ")[0]}</span></div></div></div>}
                 {extraIds.length > 0 && <p className="border-t border-white/10 py-2 text-xs text-zinc-500">Extra: {extraIds.map((id) => playersById.get(id)?.name).filter(Boolean).join(", ")}</p>}
@@ -388,18 +416,19 @@ function LineupEditor({ pool, slots, targets, selectedTeamIndex, setSelectedTeam
 }
 
 export function LineupCreator() {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const initial = useMemo(() => readLineupState(searchParams, players, data.teams), []);
     const [step, setStep] = useState(initial.step);
     const [pool, setPool] = useState(initial.pool);
     const [targets, setTargets] = useState(initial.targets);
     const [slots, setSlots] = useState(initial.slots);
+    const [teamIds, setTeamIds] = useState(initial.lineups.map((lineup) => lineup.teamId));
     const [selectedTeamIndex, setSelectedTeamIndex] = useState(0);
     const [search, setSearch] = useState("");
     const [paste, setPaste] = useState("");
     const [message, setMessage] = useState("");
 
-    const lineups = useMemo(() => slots.map((teamSlots, index) => ({ teamId: data.teams[index].id, playerIds: teamSlots.filter(Boolean) })), [slots]);
+    const lineups = useMemo(() => slots.map((teamSlots, index) => ({ teamId: teamIds[index], playerIds: teamSlots.filter(Boolean) })), [slots, teamIds]);
     useEffect(() => {
         const params = writeLineupState({ step, pool, targets, slots, lineups });
         window.history.replaceState(window.history.state, "", `${window.location.pathname}?${params.toString()}`);
@@ -438,6 +467,12 @@ export function LineupCreator() {
             return playerId;
         })));
     };
+    const setTeamId = (sideIndex, nextTeamId) => {
+        setTeamIds((current) => current.map((teamId, index) => {
+            if (index === sideIndex) return nextTeamId;
+            return teamId === nextTeamId ? current[sideIndex] : teamId;
+        }));
+    };
     const resetLineups = () => {
         const assignedPlayers = slots.flatMap((teamSlots) => teamSlots.filter(Boolean));
         setSlots([Array(11).fill(null), Array(11).fill(null)]);
@@ -448,5 +483,5 @@ export function LineupCreator() {
     const copy = async (value, success) => { setMessage(await copyToClipboard(value) ? success : "Clipboard access is unavailable in this browser."); };
 
     if (step === "pool") return <PoolSelection pool={pool} assigned={assigned} search={search} setSearch={setSearch} addToPool={addToPool} removeFromPool={removeFromPool} paste={paste} setPaste={setPaste} addPasted={addPasted} message={message} clearPool={() => setPool([])} continueToLineup={() => setStep("lineup")} />;
-    return <LineupEditor pool={pool} slots={slots} targets={targets} selectedTeamIndex={selectedTeamIndex} setSelectedTeamIndex={setSelectedTeamIndex} setTarget={(index, value) => setTargets((current) => current.map((target, targetIndex) => targetIndex === index ? value : target))} assignToSlot={assignToSlot} swapSlots={swapSlots} moveToSlot={moveToSlot} removeFromTeam={removeFromTeam} resetLineups={resetLineups} setStep={setStep} copy={copy} message={message} />;
+    return <LineupEditor pool={pool} slots={slots} targets={targets} teamIds={teamIds} setTeamId={setTeamId} selectedTeamIndex={selectedTeamIndex} setSelectedTeamIndex={setSelectedTeamIndex} setTarget={(index, value) => setTargets((current) => current.map((target, targetIndex) => targetIndex === index ? value : target))} assignToSlot={assignToSlot} swapSlots={swapSlots} moveToSlot={moveToSlot} removeFromTeam={removeFromTeam} resetLineups={resetLineups} setStep={setStep} copy={copy} message={message} />;
 }

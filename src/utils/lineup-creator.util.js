@@ -37,6 +37,15 @@ function uniqueVisibleIds(ids, visibleIds, usedIds = new Set()) {
 export function readLineupState(searchParams, players, teams) {
     const visibleIds = new Set(players.filter((player) => !player.hidden).map((player) => player.id));
     const usedIds = new Set();
+    const defaultTeamIds = teams.length >= 3
+        ? [teams[1].id, teams[2].id]
+        : teams.slice(0, 2).map((team) => team.id);
+    const hasLegacyLineup = ["team1", "team2", "slots1", "slots2"].some((key) => searchParams.has(key));
+    const legacyTeamIds = teams.slice(0, 2).map((team) => team.id);
+    const requestedTeamIds = [Number(searchParams.get("teamAId")), Number(searchParams.get("teamBId"))];
+    const hasValidTeamPair = requestedTeamIds.every((id) => teams.some((team) => team.id === id))
+        && requestedTeamIds[0] !== requestedTeamIds[1];
+    const teamIds = hasValidTeamPair ? requestedTeamIds : hasLegacyLineup ? legacyTeamIds : defaultTeamIds;
     const requestedTarget1 = Number(searchParams.get("target1"));
     const requestedTarget2 = Number(searchParams.get("target2"));
     const target1 = LINEUP_SIZES.includes(requestedTarget1) ? requestedTarget1 : 11;
@@ -45,8 +54,8 @@ export function readLineupState(searchParams, players, teams) {
     const parsedSlots2 = parseSlots(searchParams.get("slots2"), visibleIds);
     const team1 = uniqueVisibleIds(parsedSlots1 ?? parseIds(searchParams.get("team1")), visibleIds, usedIds);
     const team2 = uniqueVisibleIds(parsedSlots2 ?? parseIds(searchParams.get("team2")), visibleIds, usedIds);
-    const slots1 = parsedSlots1 ?? [...team1, ...Array(11 - team1.length).fill(null)];
-    const slots2 = parsedSlots2 ?? [...team2, ...Array(11 - team2.length).fill(null)];
+    const slots1 = Array.from({ length: 11 }, (_, index) => parsedSlots1 ? parsedSlots1[index] ?? null : team1[index] ?? null);
+    const slots2 = Array.from({ length: 11 }, (_, index) => parsedSlots2 ? parsedSlots2[index] ?? null : team2[index] ?? null);
     const assignedIds = new Set([...team1, ...team2]);
     const pool = uniqueVisibleIds(parseIds(searchParams.get("pool")), visibleIds, assignedIds);
     const requestedStep = searchParams.get("step");
@@ -58,8 +67,8 @@ export function readLineupState(searchParams, players, teams) {
         targets: [target1, target2],
         slots: [slots1, slots2],
         lineups: [
-            { teamId: teams[0].id, playerIds: team1 },
-            { teamId: teams[1].id, playerIds: team2 },
+            { teamId: teamIds[0], playerIds: team1 },
+            { teamId: teamIds[1], playerIds: team2 },
         ],
     };
 }
@@ -68,6 +77,8 @@ export function writeLineupState(state) {
     const params = new URLSearchParams();
     params.set("step", state.step);
     params.set("pool", state.pool.join(","));
+    params.set("teamAId", String(state.lineups[0].teamId));
+    params.set("teamBId", String(state.lineups[1].teamId));
     params.set("target1", String(state.targets[0]));
     params.set("target2", String(state.targets[1]));
     params.set("team1", state.lineups[0].playerIds.join(","));
@@ -107,7 +118,7 @@ export async function copyToClipboard(value) {
 
 export function getLineupText(state, teams) {
     return state.lineups
-        .map(({ playerIds }, index) => `${teams[index].name}: ${playerIds.join(", ")}`)
+    .map(({ teamId, playerIds }) => `${teams.find((team) => team.id === teamId)?.name ?? "Team"}: ${playerIds.join(", ")}`)
         .join("\n");
 }
 

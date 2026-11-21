@@ -2430,10 +2430,55 @@
             "date": "2026-11-21T15:30:00.000Z",
             "teams": [
                 {
-                    "teamId": 3
+                    "teamId": 3,
+                    "score": 8
                 },
                 {
-                    "teamId": 2
+                    "teamId": 2,
+                    "score": 2
+                }
+            ],
+            "goals": [
+                {
+                    "teamId": 3,
+                    "playerId": 1,
+                    "count": 1
+                },
+                {
+                    "teamId": 3,
+                    "playerId": 14,
+                    "count": 1
+                },
+                {
+                    "teamId": 3,
+                    "playerId": 22,
+                    "count": 2
+                },
+                {
+                    "teamId": 3,
+                    "playerId": 15,
+                    "count": 2
+                },
+                {
+                    "teamId": 3,
+                    "playerId": 4,
+                    "count": 1
+                },
+                {
+                    "teamId": 3,
+                    "playerId": 26,
+                    "count": 1
+                },
+                {
+                    "teamId": 2,
+                    "playerId": 6,
+                    "count": 1
+                },
+                {
+                    "teamId": 2,
+                    "playerId": 8,
+                    "count": 1,
+                    "penaltiesCount": 1
                 }
             ],
             "lineup": [
